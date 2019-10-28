@@ -9,6 +9,15 @@ and reflectance means}
 \usage{
 import_lizard_data(path, species = "")
 }
+\arguments{
+\item{path}{The path to the csv data file}
+
+\item{species}{The name of the species starting with a capital letter and an underscore as
+seperation between genus and species name; by default empty to load the whole data set}
+}
+\value{
+R data frame
+}
 \description{
 Import lizard data
 This function imports a CSV file of processed field data of lizard individuals
