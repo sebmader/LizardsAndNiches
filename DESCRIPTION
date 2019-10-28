@@ -3,7 +3,7 @@ Type: Package
 Title: Handleing specific data frames of lizard morphology and reflectance data
 Version: 0.1.0
 Author: Sebastian Mader
-Maintainer: Sebastian Mader
+Maintainer: Sebastian Mader <me@email.com>
 Description: More about what it does (maybe more than one line)
     Use four spaces when indenting paragraphs within the Description.
 License: GPL-3

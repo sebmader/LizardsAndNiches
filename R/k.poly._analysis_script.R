@@ -5,8 +5,6 @@
 #' populations
 
 
-library(LizardsAndNiches)
-
 # define path and species (in this case Karusasaurus polyzonus)
 path <- "../../fedes processed data/Dataset_nolog_bifpr_nosoil.csv"
 species <- "Karusasaurus_polyzonus"
@@ -16,7 +14,7 @@ data <- import_lizard_data(path = path,
                            species = species)
 
 # checking that the extra factor levels have been dropped
-str(data)
+# str(data)
 
 # splitting the species data into population data
 populations <- levels(data$LID)
