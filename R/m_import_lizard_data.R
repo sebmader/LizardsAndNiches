@@ -1,14 +1,18 @@
-#' Import lizard data
+#' @title Import lizard data
 #' This function imports a CSV file of processed field data of lizard individuals
 #' of different species including sites, their location (coordinates), morphology data
 #' and reflectance means
+#' @name m_import_lizard_data
 #' @param path The path to the csv data file
 #' @param species The name of the species starting with a capital letter and an underscore as
 #' seperation between genus and species name; by default empty to load the whole data set
 #' @return R data frame
+#' @importFrom utils read.csv
 #' @export
 
-import_lizard_data <- function(path, species = "") {
+# require(assertthat)
+
+m_import_lizard_data <- function(path, species = "") {
   assertthat::is.string(path)
   assertthat::is.string(species)
 

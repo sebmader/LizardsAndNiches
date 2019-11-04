@@ -3,7 +3,7 @@ Type: Package
 Title: Handleing specific data frames of lizard morphology and reflectance data
 Version: 0.1.0
 Author: Sebastian Mader
-Maintainer: Sebastian Mader <me@email.com>
+Maintainer: Sebastian Mader <s.mader@student.rug.nl>
 Description: More about what it does (maybe more than one line)
     Use four spaces when indenting paragraphs within the Description.
 License: GPL-3
@@ -12,3 +12,8 @@ LazyData: true
 RoxygenNote: 6.1.1
 Suggests: 
     testthat (>= 2.1.0)
+Imports: 
+    assertthat,
+    car,
+    ggplot2,
+    multcomp
