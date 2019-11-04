@@ -5,14 +5,12 @@
 \title{Function for simple boxplot
 for statistical analysis}
 \usage{
-m_boxplot(x, y, data)
+m_boxplot(x, y)
 }
 \arguments{
-\item{x}{Variable to use for x axis}
+\item{x}{factor vector for catigorical variable on x axis}
 
-\item{y}{Variable to use for y axis}
-
-\item{data}{Data set to use}
+\item{y}{vector for response variable on y axis}
 }
 \description{
 Function for simple boxplot
