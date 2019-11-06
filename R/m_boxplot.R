@@ -55,7 +55,11 @@ m_boxplot <- function(x, y, labs = c("", "", ""), fill = c("")) {
       geom_boxplot()+
       scale_x_discrete(labels = names_with_N)+
       theme_bw()+
-      geom_point(size = 1.5, position = position_jitter(width = 0.05))+
+      geom_point(size = 1.5,
+                 position = position_jitter(width = 0.05),
+                 pch = 21,
+                 colour = "darkgrey",
+                 fill = "grey")+
       labs(x = labs[1], y = labs[2])
   }
 }
