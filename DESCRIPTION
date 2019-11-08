@@ -16,4 +16,5 @@ Imports:
     assertthat,
     car,
     ggplot2,
-    multcomp
+    multcomp,
+    NicheMapR

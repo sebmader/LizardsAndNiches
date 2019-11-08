@@ -2,6 +2,7 @@
 
 export(hello)
 export(m_boxplot)
+export(m_extract_microclim_input)
 export(m_import_lizard_data)
 import(ggplot2)
 importFrom(utils,read.csv)

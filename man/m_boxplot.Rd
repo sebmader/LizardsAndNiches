@@ -3,16 +3,21 @@
 \name{m_boxplot}
 \alias{m_boxplot}
 \title{Function for simple boxplot
-for statistical analysis}
+  for statistical analysis}
 \usage{
-m_boxplot(x, y)
+m_boxplot(x, y, labs = c("", "", ""), fill = c(""))
 }
 \arguments{
 \item{x}{factor vector for catigorical variable on x axis}
 
 \item{y}{vector for response variable on y axis}
+
+\item{labs}{vector of two elements for axis labels
+(c("x label", "y label))}
+
+\item{fill}{potential second factor to take into account}
 }
 \description{
 Function for simple boxplot
-for statistical analysis
+  for statistical analysis
 }
