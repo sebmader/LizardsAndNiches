@@ -1,14 +1,14 @@
-#' @title Extract microclimate input
-#' This function extracts the input data for the micro_global() function of NicheMapR
-#' from our data structure (see example_lizard_data.csv in the testthat folder in tests)
-#' @name m_extract_microclim_input
+#' @title Extract microclimate
+#' This function extracts the output data of the micro_global() function of NicheMapR
+#' based on our data structure (see example_lizard_data.csv in the testthat folder in tests)
+#' @name m_extract_microclim
 #' @param file Data file in csv format (set working directory to folder with all data files)
 #' @param species Species of interest in format "Genus_species"
 #' @return List of vectors of micro climate data for each location
 #' @importFrom utils read.csv
 #' @export
 
-m_extract_microclim_input <- function(file, species = "") {
+m_extract_microclim <- function(file, species = "") {
 
   # load data set
   data <- m_import_lizard_data(path = file, species = species)
