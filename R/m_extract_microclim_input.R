@@ -2,18 +2,18 @@
 #' @description This function extracts the input data of the micro_global() function of NicheMapR
 #' based on our data structure (see example_lizard_data.csv in the testthat folder in tests)
 #' @name m_extract_microclim_input
-#' @param file Data file in csv format (set working directory to folder with all data files)
-#' @param species Species of interest in format "Genus_species"
+#' @param locations An R factor containing the location IDs of interest (as in example_lizard_data.csv)
 #' @return List of vectors of input data for each location for the micro_global function
 #' @importFrom utils read.csv
 #' @export
 
-m_extract_microclim_input <- function(file, species = "") {
+m_extract_microclim_input <- function(locations) {
+  assertthat::assert_that(is.character(locations))
 
   # load data set
-  data <- m_import_lizard_data(path = file, species = species)
+  # data <- m_import_lizard_data(path = file, species = species)
   # extract location IDs
-  locations <- levels(data$LID)
+  # locations <- levels(data$LID)
   # load location data
   loc_data_all <- read.csv(file = "Coordinates_Clean.csv")
   loc_data <- data.frame()
@@ -30,6 +30,9 @@ m_extract_microclim_input <- function(file, species = "") {
   loc_data$Nature <- as.numeric(loc_data$Nature)
   # make list to add the micro_global output to each location
   loc_list <- split(loc_data, loc_data$LID)
+
+  # write as csv file for direct use in the future
+  # write.csv(loc_list, "Microclimate_Southafrica.csv")
 
   loc_list
 }

@@ -4,12 +4,10 @@
 \alias{m_extract_microclim_input}
 \title{Extract microclimate input}
 \usage{
-m_extract_microclim_input(file, species = "")
+m_extract_microclim_input(locations)
 }
 \arguments{
-\item{file}{Data file in csv format (set working directory to folder with all data files)}
-
-\item{species}{Species of interest in format "Genus_species"}
+\item{locations}{An R factor containing the location IDs of interest (as in example_lizard_data.csv)}
 }
 \value{
 List of vectors of input data for each location for the micro_global function
