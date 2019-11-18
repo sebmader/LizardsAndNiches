@@ -4,15 +4,17 @@
 \alias{m_extract_microclim_input}
 \title{Extract microclimate input}
 \usage{
-m_extract_microclim_input(locations)
+m_extract_microclim_input(location, loc_data)
 }
 \arguments{
-\item{locations}{An R factor containing the location IDs of interest (as in example_lizard_data.csv)}
+\item{location}{An R factor containing the location ID of interest}
+
+\item{loc_data}{A data frame with location IDs, coordinates and soil data}
 }
 \value{
-List of vectors of input data for each location for the micro_global function
+Data frame of input data for given location for the micro_global function
 }
 \description{
 This function extracts the input data of the micro_global() function of NicheMapR
-based on our data structure (see example_lizard_data.csv in the testthat folder in tests)
+based on our data structure (see example_coordinates.csv in the testthat folder in tests)
 }
