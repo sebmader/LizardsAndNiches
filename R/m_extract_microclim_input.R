@@ -8,7 +8,7 @@
 #' @export
 
 m_extract_microclim_input <- function(location, loc_data) {
-  assertthat::assert_that(is.factor(location))
+  assertthat::assert_that(is.character(location))
   assertthat::assert_that(is.data.frame(loc_data))
 
   # load data set
