@@ -18,6 +18,9 @@ m_import_lizard_data <- function(path, species = "") {
 
   data <- read.csv(file = path, header = T)
 
+  # drop non-adults
+  data <- data[which(data$SEX == "M" | data$SEX == "F"),]
+
   if(species == "") {
     data
   } else {
