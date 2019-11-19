@@ -6,6 +6,8 @@
 \arguments{
 \item{loc_list}{A list containing information on location (location ID, latitude & longitude,
 nature of soil, soil reflectance, soilgrids (downloading: yes or no))}
+
+\item{nyears}{Number of years the model runs.}
 }
 \value{
 list of locations (as sublists) with corresponding microclimate data

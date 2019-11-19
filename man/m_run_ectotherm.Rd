@@ -3,9 +3,6 @@
 \name{m_run_ectotherm}
 \alias{m_run_ectotherm}
 \title{m_run_ectotherm}
-\usage{
-m_run_ectotherm(param, micro, DEB = FALSE)
-}
 \arguments{
 \item{param}{List of input parameters for ectotherm function.}
 

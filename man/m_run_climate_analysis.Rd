@@ -6,7 +6,7 @@
 \usage{
 m_run_climate_analysis(liz_file = "example_lizard_data.csv",
   species = "Karusasaurus_polyzonus",
-  loc_file = "example_coordinates.csv", DEB = FALSE)
+  loc_file = "example_coordinates.csv", nyears = 1, DEB = FALSE)
 }
 \arguments{
 \item{liz_file}{A file with lizard data (see example_lizard_data.csv) containing at least
@@ -16,6 +16,8 @@ one individual with location, morphology and reflectance data.}
 split into sub groups of morphs if present.}
 
 \item{loc_file}{File with information on locations (see example_coordinates.csv).}
+
+\item{nyears}{Numer of years the model is run.}
 
 \item{DEB}{Boolean stating wheather the ectotherm should be run with or without
 the Dynamic Energy Budget model.}
