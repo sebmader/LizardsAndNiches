@@ -11,10 +11,12 @@ test_that("importing a data set results in data frame", {
                 "data.frame")
 })
 
-test_that("importing data with default species prints whole data set", {
+test_that("default for species parameter includes all species", {
   data <- read.csv("example_lizard_data.csv")
+  specieslvl <- levels(data$Species)
   data1 <- m_import_lizard_data(path = "example_lizard_data.csv")
-  expect_identical(data1, data)
+  specieslvl1 <- levels(data1$Species)
+  expect_identical(specieslvl, specieslvl1)
 })
 
 test_that("when selecting species, extra levels are dropped", {
@@ -25,4 +27,10 @@ test_that("when selecting species, extra levels are dropped", {
     data <- m_import_lizard_data(path = path, species = spec)
     expect_length(levels(data$Species), 1)
   }
+})
+
+test_that("juveniles are dropped from dataset", {
+  path <- "example_lizard_data.csv"
+  data <- m_import_lizard_data(path = path)
+  expect_equal(which(data$SEX == "J"), integer(0))
 })
