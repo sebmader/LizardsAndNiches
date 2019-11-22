@@ -7,8 +7,7 @@
 #' @return Data frame of input data for given location for the micro_global function
 #' @export
 
-m_extract_microclim_input <- function(location, loc_data) {
-  assertthat::assert_that(is.character(location))
+m_extract_microclim_input <- function(location = "", loc_data) {
   assertthat::assert_that(is.data.frame(loc_data))
 
   # load data set
@@ -25,7 +24,9 @@ m_extract_microclim_input <- function(location, loc_data) {
 
   location <- as.character(location)
   # extract data for location of interest
-  loc_data <- loc_data[which(loc_data$LID == location),]
+  if(!location == "") {
+    loc_data <- loc_data[which(loc_data$LID == location),]
+  }
   # delete levels of factors not present in the selected data frame
   loc_data <- droplevels(loc_data)
   # change substrate code into the one used by NicheMapR (copied from Fedes script)

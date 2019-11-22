@@ -4,7 +4,7 @@
 \alias{m_extract_microclim_input}
 \title{Extract microclimate input}
 \usage{
-m_extract_microclim_input(location, loc_data)
+m_extract_microclim_input(location = "", loc_data)
 }
 \arguments{
 \item{location}{An R factor containing the location ID of interest}

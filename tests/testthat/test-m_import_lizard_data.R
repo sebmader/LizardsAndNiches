@@ -1,6 +1,6 @@
 #' Tests for import_lizard_data function
 
-context("m_import_lizard_data")
+context("Testing importing lizard data")
 
 test_that("import does not work without path", {
   expect_error(m_import_lizard_data(), regexp = "argument \"path\" is missing, with no default")
@@ -33,4 +33,12 @@ test_that("juveniles are dropped from dataset", {
   path <- "example_lizard_data.csv"
   data <- m_import_lizard_data(path = path)
   expect_equal(which(data$SEX == "J"), integer(0))
+})
+
+test_that("error message when the species is not present in data set", {
+  path <- "example_lizard_data.csv"
+  expect_error(m_import_lizard_data(path = path, species = "somethingstrange"),
+               regexp = "The species you are looking for is not existent in this data frame.
+          Try another species and make sure the genus and species names are separated
+          by an underscore.")
 })
