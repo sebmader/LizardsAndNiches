@@ -4,38 +4,78 @@
 #' @name m_run_ectotherm
 #' @param param List of input parameters for ectotherm function.
 #' @param micro List of microclimate data as the output of micro_global function.
-#' @param DEB Boolean wheather Dynamic Energy Budget (DEB) model should be included.
+#' @param DEB Boolean whether Dynamic Energy Budget (DEB) model should be included.
 #' @export
 
-library(NicheMapR)
-
 m_run_ectotherm <- function(param, micro, DEB = FALSE) {
-  assertthat::assert_that(is.list(param))
+  assertthat::assert_that(is.data.frame(param))
   assertthat::assert_that(is.list(micro))
   assertthat::assert_that(is.logical(DEB))
+  # require(NicheMapR)
 
-  ww <- param$mean_W
-  absorp <- param$mean_absorp
-  temp_f_min <- param$min_forage
-  temp_f_max <- param$max_forage
-  ct_min <- param$min_CT
-  ct_max <- param$max_CT
-  temp_pref <- param$pref_T
-  temp_bask <- param$bask_temp
+  ww <- param$WW_mean
+  absorp <- param$absorp_mean
+  temp_f_min <- param$tf_min
+  temp_f_max <- param$tf_max
+  ct_min <- param$ct_min
+  ct_max <- param$ct_max
+  temp_pref <- param$t_pref
+  temp_bask <- param$t_bask
 
   micro <- micro # I don't get why I need to do this but otherwise it cannot find
                  # the variable 'micro'
 
-    if(DEB) {
+  # as in example on github:
+  # retrieve output
+  metout <- as.data.frame(micro$metout) # above ground microclimatic conditions, min shade
+  shadmet <- as.data.frame(micro$shadmet) # above ground microclimatic conditions, max shade
+  soil <- as.data.frame(micro$soil) # soil temperatures, minimum shade
+  shadsoil <- as.data.frame(micro$shadsoil) # soil temperatures, maximum shade
+
+  # append dates
+  dates <- micro$dates
+  metout <- cbind(dates, metout)
+  soil <- cbind(dates, soil)
+  shadmet <- cbind(dates, shadmet)
+  shadsoil <- cbind(dates, shadsoil)
+
+  minshade <- 0
+
+  if(DEB) {
     # m_estimate_deb(param)
 
     # ectotherm(..., DEB = 1)
   } else {
+    # micro <- micro # I don't get why I need to do this but otherwise it cannot find
+    # the variable 'micro'
+
     # run ectotherm function without DEB model
-    ecto <- ectotherm(Ww_g = ww, shape = 3, alpha_max = absorp, alpha_min = absorp,
-                         T_F_min = temp_f_min, T_F_max = temp_f_max, T_B_min = temp_bask,
-                         T_RB_min = temp_bask, T_pref = temp_pref, CT_min = ct_min,
-                         CT_max = ct_max, burrow = 0, DEB = DEB)
+    ecto <- NicheMapR::ectotherm(Ww_g = ww, shape = 3, alpha_max = absorp, alpha_min = absorp,
+                      T_F_min = temp_f_min, T_F_max = temp_f_max, T_B_min = temp_bask,
+                      T_RB_min = temp_bask, T_pref = temp_pref, CT_min = ct_min,
+                      CT_max = ct_max, burrow = 0, DEB = DEB,
+                      nyears = micro$nyears,
+                      minshade = minshade,
+                      minshades = rep(minshade, length(micro$MAXSHADES)),
+                      maxshades = micro$MAXSHADES,
+                      alpha_sub = (1 - micro$REFL),
+                      DEP = micro$DEP,
+                      metout = micro$metout,
+                      shadmet = micro$shadmet,
+                      soil = micro$soil,
+                      shadsoil = micro$shadsoil,
+                      soilmoist = micro$soilmoist,
+                      shadmoist = micro$shadmoist,
+                      humid = micro$humid,
+                      shadhumid = micro$shadhumid,
+                      soilpot = micro$soilpot,
+                      shadpot = micro$shadpot,
+                      rainfall = micro$RAINFALL,
+                      rainhr = rep(-1,nrow(metout)),
+                      elev = as.numeric(micro$elev),
+                      longitude = as.numeric(micro$longlat[1]),
+                      latitude = as.numeric(micro$longlat[2])
+                      )
   }
   ecto
 }

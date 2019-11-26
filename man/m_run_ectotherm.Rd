@@ -3,12 +3,15 @@
 \name{m_run_ectotherm}
 \alias{m_run_ectotherm}
 \title{m_run_ectotherm}
+\usage{
+m_run_ectotherm(param, micro, DEB = FALSE)
+}
 \arguments{
 \item{param}{List of input parameters for ectotherm function.}
 
 \item{micro}{List of microclimate data as the output of micro_global function.}
 
-\item{DEB}{Boolean wheather Dynamic Energy Budget (DEB) model should be included.}
+\item{DEB}{Boolean whether Dynamic Energy Budget (DEB) model should be included.}
 }
 \description{
 This function runs the ectotherm function of NicheMapR given the input

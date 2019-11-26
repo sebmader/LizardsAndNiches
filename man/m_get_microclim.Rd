@@ -3,9 +3,13 @@
 \name{m_get_microclim}
 \alias{m_get_microclim}
 \title{m_get_microclim}
+\usage{
+m_get_microclim(loc_row, nyears = 1)
+}
 \arguments{
-\item{loc_list}{A list containing information on location (location ID, latitude & longitude,
-nature of soil, soil reflectance, soilgrids (downloading: yes or no))}
+\item{loc_row}{A data frame row containing information on location
+(location ID, latitude & longitude, nature of soil, soil reflectance,
+soilgrids (downloading: yes or no))}
 
 \item{nyears}{Number of years the model runs.}
 }

@@ -37,17 +37,20 @@ m_run_climate_analysis <- function(liz_file = "example_lizard_data.csv",
     micro_list[[loc]] <- m_get_microclim(loc_row = loc_row,
                                          nyears = nyears)
   }
-  ecto_input <- read.csv("Physio_summary.csv")
+  ecto_input <- read.csv("Physio_sum_locations.csv")
   for(loc in ecto_list) {
-    ecto_list[[loc]] <- list()
+    param <- ecto_input[which(ecto_input$LID == loc),]
+    ecto_list[[loc]] <- m_run_ectotherm(param = param,
+                                        micro = micro_list[[loc]],
+                                        DEB = DEB)
     # m_extract_ectotherm_input()
-    morph <- as.character(data$VID[which(data$LID == loc)])
-    for(m in morph) {
-      param <- ecto_input[which(ecto_input$species == m),]
-      ecto_list[[loc]][[m]] <- m_run_ectotherm(param = param,
-                                               micro = micro_list[[loc]],
-                                               DEB = DEB)
-    }
+    # morph <- as.character(data$VID[which(data$LID == loc)])
+    # for(m in morph) {
+    #   param <- ecto_input[which(ecto_input$species == m),]
+    #   ecto_list[[loc]][[m]] <- m_run_ectotherm(param = param,
+    #                                            micro = micro_list[[loc]],
+    #                                            DEB = DEB)
+    # }
   }
   ecto_list
 }
