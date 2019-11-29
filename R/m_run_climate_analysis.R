@@ -7,7 +7,8 @@
 #' @param species The species to be looked at, which will be selected from the data frame and
 #' split into sub groups of morphs if present.
 #' @param loc_file File with information on locations (see example_coordinates.csv).
-#' @param nyears Numer of years the model is run.
+#' @param nyears Number of years the model is run.
+#' @param ndays Number of days modeled per year.
 #' @param DEB Boolean stating wheather the ectotherm should be run with or without
 #' the Dynamic Energy Budget model.
 #' @return List of lists with output if ectotherm function for each species/population/entity
@@ -18,6 +19,7 @@ m_run_climate_analysis <- function(liz_file = "example_lizard_data.csv",
                                    species = "Karusasaurus_polyzonus",
                                    loc_file = "example_coordinates.csv",
                                    nyears = 1,
+                                   ndays = 12,
                                    DEB = FALSE) {
 
   # import dataset from file
@@ -31,11 +33,13 @@ m_run_climate_analysis <- function(liz_file = "example_lizard_data.csv",
   micro_list <- split(locations, locations, drop = T)
   ecto_list <- micro_list
   for(loc in micro_list) {
-    micro_list[[loc]] <- list()
+    # micro_list[[loc]] <- list()
     loc_row <- m_extract_microclim_input(location = loc,
                                          loc_data = loc_data)
     micro_list[[loc]] <- m_get_microclim(loc_row = loc_row,
-                                         nyears = nyears)
+                                         nyears = nyears,
+                                         ndays = ndays
+                                         )
   }
   ecto_input <- read.csv("Physio_sum_locations.csv")
   for(loc in ecto_list) {
@@ -51,6 +55,11 @@ m_run_climate_analysis <- function(liz_file = "example_lizard_data.csv",
     #                                            micro = micro_list[[loc]],
     #                                            DEB = DEB)
     # }
+
+    # plot and save results
+    cat("\nplotting results...\n")
+    m_plot_ecto(ecto = ecto_list[[loc]], sim_name = ecto_list[[loc]]$LID,
+                sub_title = paste0(ndays, " days,", nyears, " years"))
   }
   ecto_list
 }

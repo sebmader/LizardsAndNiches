@@ -7,10 +7,11 @@
 #' soilgrids (downloading: yes or no))
 # @param year The year for which the microclimate shall be modelled (default = present)
 #' @param nyears Number of years the model runs.
+#' @param ndays Number of days modeled per year (12 - 365)
 #' @return list of locations (as sublists) with corresponding microclimate data
 #' @export
 
-m_get_microclim <- function(loc_row, nyears = 1) {
+m_get_microclim <- function(loc_row, nyears = 1, ndays = 365) {
   # load NicheMapR; otherwise an error is thrown because there is an object in the package
   # that is used by micro_global() ...
   require(NicheMapR)
@@ -52,12 +53,14 @@ m_get_microclim <- function(loc_row, nyears = 1) {
   # BulkDensity <- 1.3
   # CampNormTbl9_1 <- NicheMapR::CampNormTbl9_1
 
-  micro <- NicheMapR::micro_global(loc = loc, timeinterval = 365, nyears = nyears,
+  micro <- NicheMapR::micro_global(loc = loc, timeinterval = ndays, nyears = nyears,
                                    soiltype = soiltype, REFL = soilrefl, runshade = 1,
                                    run.gads = 1, Usrhyt = 0.01
                                    )
   # sometimes: "no climate data for this site, using dummy data so solar is still produced "
   # ... fuck?
+
+  micro$LID <- loc_row$LID
 
   micro
 }

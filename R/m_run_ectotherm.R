@@ -13,6 +13,7 @@ m_run_ectotherm <- function(param, micro, DEB = FALSE) {
   assertthat::assert_that(is.logical(DEB))
   # require(NicheMapR)
 
+  loc_name <- param$LID
   ww <- param$WW_mean
   absorp <- param$absorp_mean
   temp_f_min <- param$tf_min
@@ -77,5 +78,6 @@ m_run_ectotherm <- function(param, micro, DEB = FALSE) {
                       latitude = as.numeric(micro$longlat[2])
                       )
   }
+  ecto$LID <- loc_name
   ecto
 }

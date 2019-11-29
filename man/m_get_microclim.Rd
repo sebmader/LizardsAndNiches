@@ -4,7 +4,7 @@
 \alias{m_get_microclim}
 \title{m_get_microclim}
 \usage{
-m_get_microclim(loc_row, nyears = 1)
+m_get_microclim(loc_row, nyears = 1, ndays = 365)
 }
 \arguments{
 \item{loc_row}{A data frame row containing information on location
@@ -12,6 +12,8 @@ m_get_microclim(loc_row, nyears = 1)
 soilgrids (downloading: yes or no))}
 
 \item{nyears}{Number of years the model runs.}
+
+\item{ndays}{Number of days modeled per year (12 - 365)}
 }
 \value{
 list of locations (as sublists) with corresponding microclimate data
