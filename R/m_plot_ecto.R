@@ -35,6 +35,8 @@ m_plot_ecto <- function(ecto, sim_name, sub_title) {
 
   T_F_max <- ecto$T_F_max
   T_F_min <- ecto$T_F_min
+  CT_max <- ecto$CT_max
+  CT_min <- ecto$CT_min
   # TODO: pipe preferred body temperature
   T_pref <- 33.6
 
@@ -48,12 +50,16 @@ m_plot_ecto <- function(ecto, sim_name, sub_title) {
   with(environ, graphics::points(ACT * 5 ~ dates, type = "l", col = "orange"))
   with(environ, graphics::points(SHADE / 10 ~ dates, type = "h", col = "dark green"))
   # with(environ, points(DEP / 10 ~ dates, type = "l",col = "brown"))
-  graphics::abline(T_F_max, 0, lty = 2,col = 'red')
-  graphics::abline(T_F_min, 0, lty = 2,col = 'blue')
-  graphics::abline(T_pref, 0, lty = 2,col = 'orange')
-  graphics::text(x = 6, y = T_F_max + 2, "T_F_max", col = 'red', adj = c(0,0.5))
-  graphics::text(x = 6, y = T_F_min + 2, "T_F_min", col = 'blue', adj = c(0,0.5))
-  graphics::text(x = 6, y = T_pref + 2, "T_pref", col = 'orange', adj = c(0,0.5))
+  graphics::abline(T_F_max, 0, lty = 2, col = 'orange')
+  graphics::abline(T_F_min, 0, lty = 2, col = 'lightblue')
+  graphics::abline(T_pref, 0, lty = 2, col = 'green')
+  graphics::abline(h = CT_max, lty = 2, col = "red")
+  graphics::abline(h = CT_min, lty = 2, col = "blue")
+  graphics::text(x = 6, y = T_F_max + 2, "T_F_max", col = 'orange', adj = c(0,0.5))
+  graphics::text(x = 6, y = T_F_min + 2, "T_F_min", col = 'lightblue', adj = c(0,0.5))
+  graphics::text(x = 6, y = T_pref + 2, "T_pref", col = 'green', adj = c(0,0.5))
+  graphics::text(x = 6, y = CT_max + 2, "CT_max", col = 'red', adj = c(0,0.5))
+  graphics::text(x = 6, y = CT_min + 2, "CT_min", col = 'blue', adj = c(0,0.5))
   graphics::legend(x = "topright",
          legend = c("T_b (°C)", "activity (0, 5 or 10)", "shade (%/10)"),
          col = c("black", "orange", "dark green"), lty = rep(1, 3), bty = "n")

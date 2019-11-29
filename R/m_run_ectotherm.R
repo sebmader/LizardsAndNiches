@@ -42,42 +42,39 @@ m_run_ectotherm <- function(param, micro, DEB = FALSE) {
 
   minshade <- 0
 
-  if(DEB) {
-    # m_estimate_deb(param)
 
-    # ectotherm(..., DEB = 1)
-  } else {
-    # micro <- micro # I don't get why I need to do this but otherwise it cannot find
-    # the variable 'micro'
+  # m_estimate_deb(param)
 
-    # run ectotherm function without DEB model
-    ecto <- NicheMapR::ectotherm(Ww_g = ww, shape = 3, alpha_max = absorp, alpha_min = absorp,
-                      T_F_min = temp_f_min, T_F_max = temp_f_max, T_B_min = temp_bask,
-                      T_RB_min = temp_bask, T_pref = temp_pref, CT_min = ct_min,
-                      CT_max = ct_max, burrow = 0, DEB = DEB,
-                      nyears = micro$nyears,
-                      minshade = minshade,
-                      minshades = rep(minshade, length(micro$MAXSHADES)),
-                      maxshades = micro$MAXSHADES,
-                      alpha_sub = (1 - micro$REFL),
-                      DEP = micro$DEP,
-                      metout = micro$metout,
-                      shadmet = micro$shadmet,
-                      soil = micro$soil,
-                      shadsoil = micro$shadsoil,
-                      soilmoist = micro$soilmoist,
-                      shadmoist = micro$shadmoist,
-                      humid = micro$humid,
-                      shadhumid = micro$shadhumid,
-                      soilpot = micro$soilpot,
-                      shadpot = micro$shadpot,
-                      rainfall = micro$RAINFALL,
-                      rainhr = rep(-1,nrow(metout)),
-                      elev = as.numeric(micro$elev),
-                      longitude = as.numeric(micro$longlat[1]),
-                      latitude = as.numeric(micro$longlat[2])
-                      )
-  }
+  # micro <- micro # I don't get why I need to do this but otherwise it cannot find
+  # the variable 'micro'
+
+  # run ectotherm function without DEB model
+  ecto <- NicheMapR::ectotherm(Ww_g = ww, shape = 3, alpha_max = absorp, alpha_min = absorp,
+                               T_F_min = temp_f_min, T_F_max = temp_f_max, T_B_min = temp_bask,
+                               T_RB_min = temp_bask, T_pref = temp_pref, CT_min = ct_min,
+                               CT_max = ct_max, burrow = 0, DEB = DEB,
+                               nyears = micro$nyears,
+                               minshade = minshade,
+                               minshades = rep(minshade, length(micro$MAXSHADES)),
+                               maxshades = micro$MAXSHADES,
+                               alpha_sub = (1 - micro$REFL),
+                               DEP = micro$DEP,
+                               metout = micro$metout,
+                               shadmet = micro$shadmet,
+                               soil = micro$soil,
+                               shadsoil = micro$shadsoil,
+                               soilmoist = micro$soilmoist,
+                               shadmoist = micro$shadmoist,
+                               humid = micro$humid,
+                               shadhumid = micro$shadhumid,
+                               soilpot = micro$soilpot,
+                               shadpot = micro$shadpot,
+                               rainfall = micro$RAINFALL,
+                               rainhr = rep(-1,nrow(metout)),
+                               elev = as.numeric(micro$elev),
+                               longitude = as.numeric(micro$longlat[1]),
+                               latitude = as.numeric(micro$longlat[2])
+  )
   ecto$LID <- loc_name
   ecto
 }
