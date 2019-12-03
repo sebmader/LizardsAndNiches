@@ -57,7 +57,6 @@ m_run_climate_analysis <- function(liz_file = "example_lizard_data.csv",
     # }
 
     # plot and save results
-    cat("\nplotting results...\n")
     sim_name <- character()
     if(DEB) {
       sim_name <- paste0(ecto_list[[loc]]$LID, "_DEB")
@@ -67,6 +66,9 @@ m_run_climate_analysis <- function(liz_file = "example_lizard_data.csv",
 
     m_plot_ecto(ecto = ecto_list[[loc]], sim_name = sim_name,
                 sub_title = paste0(ndays, " days,", nyears, " years"))
+
+    cat("\nplotted and saved results in ./Plots...\n")
+
   }
   ecto_list
 }

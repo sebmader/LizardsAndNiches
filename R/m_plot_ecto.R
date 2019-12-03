@@ -12,7 +12,7 @@
 #' @importFrom grDevices png
 #' @export
 
-m_plot_ecto <- function(ecto, sim_name, sub_title) {
+m_plot_ecto <- function(ecto, sim_name = ecto$LID, sub_title = "") {
   # retrieve output
   environ <- as.data.frame(ecto$environ) # behaviour, Tb and environment
   enbal <- as.data.frame(ecto$enbal) # heat balance outputs
@@ -50,16 +50,16 @@ m_plot_ecto <- function(ecto, sim_name, sub_title) {
   with(environ, graphics::points(ACT * 5 ~ dates, type = "l", col = "orange"))
   with(environ, graphics::points(SHADE / 10 ~ dates, type = "h", col = "dark green"))
   # with(environ, points(DEP / 10 ~ dates, type = "l",col = "brown"))
-  graphics::abline(T_F_max, 0, lty = 2, col = 'orange')
-  graphics::abline(T_F_min, 0, lty = 2, col = 'lightblue')
-  graphics::abline(T_pref, 0, lty = 2, col = 'green')
+  graphics::abline(T_F_max, 0, lty = 2, col = "orange")
+  graphics::abline(T_F_min, 0, lty = 2, col = "lightblue3")
+  graphics::abline(T_pref, 0, lty = 2, col = "green")
   graphics::abline(h = CT_max, lty = 2, col = "red")
   graphics::abline(h = CT_min, lty = 2, col = "blue")
-  graphics::text(x = 6, y = T_F_max + 2, "T_F_max", col = 'orange', adj = c(0,0.5))
-  graphics::text(x = 6, y = T_F_min + 2, "T_F_min", col = 'lightblue', adj = c(0,0.5))
-  graphics::text(x = 6, y = T_pref + 2, "T_pref", col = 'green', adj = c(0,0.5))
-  graphics::text(x = 6, y = CT_max + 2, "CT_max", col = 'red', adj = c(0,0.5))
-  graphics::text(x = 6, y = CT_min + 2, "CT_min", col = 'blue', adj = c(0,0.5))
+  graphics::text(x = 0, y = T_F_max + 2, "T_F_max", col = "orange", adj = c(0,0.5))
+  graphics::text(x = 0, y = T_F_min + 2, "T_F_min", col = "lightblue3", adj = c(0,0.5))
+  graphics::text(x = 0, y = T_pref + 2, "T_pref", col = "green", adj = c(0,0.5))
+  graphics::text(x = 0, y = CT_max + 2, "CT_max", col = "red", adj = c(0,0.5))
+  graphics::text(x = 0, y = CT_min + 2, "CT_min", col = "blue", adj = c(0,0.5))
   graphics::legend(x = "topright",
          legend = c("T_b (°C)", "activity (0, 5 or 10)", "shade (%/10)"),
          col = c("black", "orange", "dark green"), lty = rep(1, 3), bty = "n")

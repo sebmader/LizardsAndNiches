@@ -27,26 +27,23 @@ m_run_ectotherm <- function(param, micro, DEB = FALSE) {
                  # the variable 'micro'
 
   # as in example on github:
+  # TODO: I don't use them as input for ectotherm()... even need it ??? -> nope
   # retrieve output
-  metout <- as.data.frame(micro$metout) # above ground microclimatic conditions, min shade
-  shadmet <- as.data.frame(micro$shadmet) # above ground microclimatic conditions, max shade
-  soil <- as.data.frame(micro$soil) # soil temperatures, minimum shade
-  shadsoil <- as.data.frame(micro$shadsoil) # soil temperatures, maximum shade
-
-  # append dates
-  dates <- micro$dates
-  metout <- cbind(dates, metout)
-  soil <- cbind(dates, soil)
-  shadmet <- cbind(dates, shadmet)
-  shadsoil <- cbind(dates, shadsoil)
+  # metout <- as.data.frame(micro$metout) # above ground microclimatic conditions, min shade
+  # shadmet <- as.data.frame(micro$shadmet) # above ground microclimatic conditions, max shade
+  # soil <- as.data.frame(micro$soil) # soil temperatures, minimum shade
+  # shadsoil <- as.data.frame(micro$shadsoil) # soil temperatures, maximum shade
+  #
+  # # append dates
+  # dates <- micro$dates
+  # metout <- cbind(dates, metout)
+  # soil <- cbind(dates, soil)
+  # shadmet <- cbind(dates, shadmet)
+  # shadsoil <- cbind(dates, shadsoil)
 
   minshade <- 0
 
-
   # m_estimate_deb(param)
-
-  # micro <- micro # I don't get why I need to do this but otherwise it cannot find
-  # the variable 'micro'
 
   # run ectotherm function without DEB model
   ecto <- NicheMapR::ectotherm(Ww_g = ww, shape = 3, alpha_max = absorp, alpha_min = absorp,
