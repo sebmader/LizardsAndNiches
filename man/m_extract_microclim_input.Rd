@@ -9,7 +9,8 @@ m_extract_microclim_input(location = "", loc_data)
 \arguments{
 \item{location}{An R factor containing the location ID of interest}
 
-\item{loc_data}{A data frame with location IDs, coordinates and soil data}
+\item{loc_data}{A data frame with location IDs, coordinates, elevation, slope,
+aspect of slope and soil data (type, reflectance, if soilgrids should be computed)}
 }
 \value{
 Data frame of input data for given location for the micro_global function

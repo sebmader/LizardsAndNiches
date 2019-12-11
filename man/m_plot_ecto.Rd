@@ -4,7 +4,7 @@
 \alias{m_plot_ecto}
 \title{Plot results of ectotherm function}
 \usage{
-m_plot_ecto(ecto, sim_name, sub_title)
+m_plot_ecto(ecto, sim_name = ecto$LID, sub_title = "")
 }
 \arguments{
 \item{ecto}{A list with the structure of the output of the ectotherm function (see

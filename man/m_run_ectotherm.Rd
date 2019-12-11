@@ -4,12 +4,14 @@
 \alias{m_run_ectotherm}
 \title{m_run_ectotherm}
 \usage{
-m_run_ectotherm(param, micro, DEB = FALSE)
+m_run_ectotherm(param, micro, burrow = FALSE, DEB = FALSE)
 }
 \arguments{
 \item{param}{List of input parameters for ectotherm function.}
 
 \item{micro}{List of microclimate data as the output of micro_global function.}
+
+\item{burrow}{Boolean whether lizard is allowed to seek shelter in burrow.}
 
 \item{DEB}{Boolean whether Dynamic Energy Budget (DEB) model should be included.}
 }

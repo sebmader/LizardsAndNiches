@@ -4,7 +4,7 @@
 \alias{m_get_microclim}
 \title{m_get_microclim}
 \usage{
-m_get_microclim(loc_row, nyears = 1, ndays = 365)
+m_get_microclim(loc_row, nyears = 1, ndays = 12)
 }
 \arguments{
 \item{loc_row}{A data frame row containing information on location

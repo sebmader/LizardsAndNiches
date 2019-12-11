@@ -3,7 +3,8 @@
 #' based on our data structure (see example_coordinates.csv in the testthat folder in tests)
 #' @name m_extract_microclim_input
 #' @param location An R factor containing the location ID of interest
-#' @param loc_data A data frame with location IDs, coordinates and soil data
+#' @param loc_data A data frame with location IDs, coordinates, elevation, slope,
+#' aspect of slope and soil data (type, reflectance, if soilgrids should be computed)
 #' @return Data frame of input data for given location for the micro_global function
 #' @export
 

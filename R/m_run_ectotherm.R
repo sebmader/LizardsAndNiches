@@ -4,13 +4,18 @@
 #' @name m_run_ectotherm
 #' @param param List of input parameters for ectotherm function.
 #' @param micro List of microclimate data as the output of micro_global function.
+#' @param burrow Boolean whether lizard is allowed to seek shelter in burrow.
 #' @param DEB Boolean whether Dynamic Energy Budget (DEB) model should be included.
 #' @export
 
-m_run_ectotherm <- function(param, micro, DEB = FALSE) {
+m_run_ectotherm <- function(param,
+                            micro,
+                            burrow = FALSE,
+                            DEB = FALSE) {
   assertthat::assert_that(is.data.frame(param))
   assertthat::assert_that(is.list(micro))
   assertthat::assert_that(is.logical(DEB))
+  assertthat::assert_that(is.logical(burrow))
   # require(NicheMapR)
 
   loc_name <- param$LID
@@ -23,7 +28,7 @@ m_run_ectotherm <- function(param, micro, DEB = FALSE) {
   temp_pref <- param$t_pref
   temp_bask <- param$t_bask
 
-  micro <- micro # I don't get why I need to do this but otherwise it cannot find
+  # micro <- micro # I don't get why I need to do this but otherwise it cannot find
                  # the variable 'micro'
 
   # as in example on github:
@@ -42,6 +47,7 @@ m_run_ectotherm <- function(param, micro, DEB = FALSE) {
   # shadsoil <- cbind(dates, shadsoil)
 
   minshade <- 0
+  burrow <- as.numeric(burrow)
 
   # m_estimate_deb(param)
 
@@ -49,7 +55,8 @@ m_run_ectotherm <- function(param, micro, DEB = FALSE) {
   ecto <- NicheMapR::ectotherm(Ww_g = ww, shape = 3, alpha_max = absorp, alpha_min = absorp,
                                T_F_min = temp_f_min, T_F_max = temp_f_max, T_B_min = temp_bask,
                                T_RB_min = temp_bask, T_pref = temp_pref, CT_min = ct_min,
-                               CT_max = ct_max, burrow = 0, DEB = DEB,
+                               CT_max = ct_max, burrow = burrow, DEB = DEB,
+                               maxdepth = 10, mindepth = 1,
                                nyears = micro$nyears,
                                minshade = minshade,
                                minshades = rep(minshade, length(micro$MAXSHADES)),
@@ -67,11 +74,12 @@ m_run_ectotherm <- function(param, micro, DEB = FALSE) {
                                soilpot = micro$soilpot,
                                shadpot = micro$shadpot,
                                rainfall = micro$RAINFALL,
-                               rainhr = rep(-1,nrow(metout)),
+                               rainhr = rep(-1,nrow(micro$metout)),
                                elev = as.numeric(micro$elev),
                                longitude = as.numeric(micro$longlat[1]),
                                latitude = as.numeric(micro$longlat[2])
   )
   ecto$LID <- loc_name
+  ecto$burrow <- burrow
   ecto
 }

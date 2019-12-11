@@ -11,7 +11,7 @@
 #' @return list of locations (as sublists) with corresponding microclimate data
 #' @export
 
-m_get_microclim <- function(loc_row, nyears = 1, ndays = 365) {
+m_get_microclim <- function(loc_row, nyears = 1, ndays = 12) {
   # load NicheMapR; otherwise an error is thrown because there is an object in the package
   # that is used by micro_global() ...
   require(NicheMapR)
@@ -43,8 +43,11 @@ m_get_microclim <- function(loc_row, nyears = 1, ndays = 365) {
   loc <- c(loc_row$Longitude, loc_row$Latitude)
   soiltype <- loc_row$Nature
   soilgrids <- loc_row$soilgrids
-  soilrefl <- loc_row$SREF
-  soilrefl <- if(is.na(soilrefl)) {FALSE} else {soilrefl}
+  soilrefl <- ifelse(is.na(loc_row$SREF), FALSE, loc_row$SREF)
+  elev <- loc_row$Elevation
+  slope <- ifelse(is.na(loc_row$Slope), 0, loc_row$Slope)
+  asp <- ifelse(is.na(loc_row$Aspect), 0, loc_row$Aspect)
+
 
   # function micro_global uses variables as defaults that are defined in the defaults..
   minshade <- 0
@@ -55,7 +58,8 @@ m_get_microclim <- function(loc_row, nyears = 1, ndays = 365) {
 
   micro <- NicheMapR::micro_global(loc = loc, timeinterval = ndays, nyears = nyears,
                                    soiltype = soiltype, REFL = soilrefl, runshade = 1,
-                                   run.gads = 1, Usrhyt = 0.01
+                                   run.gads = 1, Usrhyt = 0.01, elev = elev,
+                                   slope = slope, aspect = asp
                                    )
   # sometimes: "no climate data for this site, using dummy data so solar is still produced "
   # ... fuck?
