@@ -18,7 +18,7 @@ context("Testing functionality of running ectotherm model")
 
   test_that("if 'burrow' is not allowed, ecto does not allow shelter underground", {
     expect_equal(sum(ecto$environ[,8]), 0)
-    expect_equal(ecto$burrow, 0)
+    expect_false(ecto$burrow)
   })
 }
 

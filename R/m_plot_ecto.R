@@ -44,15 +44,21 @@ m_plot_ecto <- function(ecto, sim_name = ecto$LID, sub_title = "") {
   grDevices::png(filename = paste0("Plots/", sim_name, ".png"),
                  type = "cairo", units = "in",
                  width = 6, height = 6, res = 300)
-  # with(environ, graphics::plot(TC ~ dates, ylab = "T_b, activity & shade",
-  #                    xlab = "month of year", ylim = c(0, 50), type = "l",
-  #                    main = sim_name, sub = sub_title))
-  with(environ, graphics::plot(TC ~ dates, ylab = "T_b, activity, shade & depth",
+
+  if(ecto$burrow) {
+      with(environ, graphics::plot(TC ~ dates, ylab = "T_b, activity, shade & depth",
                                xlab = "month of year", ylim = c(0, 50), type = "l",
                                main = sim_name, sub = sub_title))
+  } else {
+    with(environ, graphics::plot(TC ~ dates, ylab = "T_b, activity & shade",
+                     xlab = "month of year", ylim = c(0, 50), type = "l",
+                     main = sim_name, sub = sub_title))
+  }
   with(environ, graphics::points(ACT * 5 ~ dates, type = "l", col = "orange"))
   with(environ, graphics::points(SHADE / 10 ~ dates, type = "h", col = "dark green"))
-  with(environ, points(DEP / 10 ~ dates, type = "l",col = "brown"))
+  if(ecto$burrow) {
+      with(environ, points(DEP / 10 ~ dates, type = "l",col = "brown"))
+  }
   graphics::abline(T_F_max, 0, lty = 2, col = "orange")
   graphics::abline(T_F_min, 0, lty = 2, col = "lightblue3")
   graphics::abline(T_pref, 0, lty = 2, col = "green")
@@ -63,11 +69,15 @@ m_plot_ecto <- function(ecto, sim_name = ecto$LID, sub_title = "") {
   graphics::text(x = 0, y = T_pref + 2, "T_pref", col = "green", adj = c(0,0.5))
   graphics::text(x = 0, y = CT_max + 2, "CT_max", col = "red", adj = c(0,0.5))
   graphics::text(x = 0, y = CT_min + 2, "CT_min", col = "blue", adj = c(0,0.5))
-  # graphics::legend(x = "topright",
-  #        legend = c("T_b (°C)", "activity (0, 5 or 10)", "shade (%/10)"),
-  #        col = c("black", "orange", "dark green"), lty = rep(1, 3), bty = "n")
-  graphics::legend(x = "topright",
+  if(ecto$burrow) {
+      graphics::legend(x = "topright",
                    legend = c("T_b (°C)", "activity (0, 5 or 10)", "shade (%/10)", "depth (cm/10)"),
                    col = c("black", "orange", "dark green", "brown"), lty = rep(1, 3), bty = "n")
+  } else {
+      graphics::legend(x = "topright",
+         legend = c("T_b (°C)", "activity (0, 5 or 10)", "shade (%/10)"),
+         col = c("black", "orange", "dark green"), lty = rep(1, 3), bty = "n")
+  }
+
   grDevices::dev.off()
 }

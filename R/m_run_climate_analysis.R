@@ -9,6 +9,7 @@
 #' @param loc_file File with information on locations (see example_coordinates.csv).
 #' @param nyears Number of years the model is run.
 #' @param ndays Number of days modeled per year.
+#' @param burrow Boolean whether lizard is allowed to seek shelter in burrow.
 #' @param DEB Boolean stating wheather the ectotherm should be run with or without
 #' the Dynamic Energy Budget model.
 #' @return List of lists with output if ectotherm function for each species/population/entity
@@ -20,6 +21,7 @@ m_run_climate_analysis <- function(liz_file = "example_lizard_data.csv",
                                    loc_file = "example_coordinates.csv",
                                    nyears = 1,
                                    ndays = 12,
+                                   burrow = FALSE,
                                    DEB = FALSE) {
 
   # import dataset from file
@@ -46,6 +48,7 @@ m_run_climate_analysis <- function(liz_file = "example_lizard_data.csv",
     param <- ecto_input[which(ecto_input$LID == loc),]
     ecto_list[[loc]] <- m_run_ectotherm(param = param,
                                         micro = micro_list[[loc]],
+                                        burrow = burrow,
                                         DEB = DEB)
     # m_extract_ectotherm_input()
     # morph <- as.character(data$VID[which(data$LID == loc)])

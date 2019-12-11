@@ -47,7 +47,7 @@ m_run_ectotherm <- function(param,
   # shadsoil <- cbind(dates, shadsoil)
 
   minshade <- 0
-  burrow <- as.numeric(burrow)
+  # burrow <- as.numeric(burrow)
 
   # m_estimate_deb(param)
 
@@ -55,7 +55,7 @@ m_run_ectotherm <- function(param,
   ecto <- NicheMapR::ectotherm(Ww_g = ww, shape = 3, alpha_max = absorp, alpha_min = absorp,
                                T_F_min = temp_f_min, T_F_max = temp_f_max, T_B_min = temp_bask,
                                T_RB_min = temp_bask, T_pref = temp_pref, CT_min = ct_min,
-                               CT_max = ct_max, burrow = burrow, DEB = DEB,
+                               CT_max = ct_max, burrow = as.numeric(burrow), DEB = DEB,
                                maxdepth = 10, mindepth = 1,
                                nyears = micro$nyears,
                                minshade = minshade,
