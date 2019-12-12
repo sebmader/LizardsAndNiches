@@ -59,7 +59,8 @@ m_get_microclim <- function(loc_row, nyears = 1, ndays = 12) {
   micro <- NicheMapR::micro_global(loc = loc, timeinterval = ndays, nyears = nyears,
                                    soiltype = soiltype, REFL = soilrefl, runshade = 1,
                                    run.gads = 1, Usrhyt = 0.01, elev = elev,
-                                   slope = slope, aspect = asp
+                                   slope = slope, aspect = asp, minshade = minshade,
+                                   maxshade = maxshade
                                    )
   # sometimes: "no climate data for this site, using dummy data so solar is still produced "
   # ... fuck?
