@@ -49,7 +49,7 @@ m_run_ectotherm <- function(param,
   # some fixed parameter values
   minshade <- 0
   maxdepth <- 10
-  mindepth <- 2
+  mindepth <- 2  # because soil node 1 is the surface
   # burrow <- as.numeric(burrow)
 
   # m_estimate_deb(param)
