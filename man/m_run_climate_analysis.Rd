@@ -7,7 +7,7 @@
 m_run_climate_analysis(liz_file = "example_lizard_data.csv",
   species = "Karusasaurus_polyzonus",
   loc_file = "example_coordinates.csv", nyears = 1, ndays = 12,
-  burrow = FALSE, DEB = FALSE)
+  burrow = FALSE, DEB = FALSE, timeper = "present", rcp = "none")
 }
 \arguments{
 \item{liz_file}{A file with lizard data (see example_lizard_data.csv) containing at least
@@ -26,6 +26,12 @@ split into sub groups of morphs if present.}
 
 \item{DEB}{Boolean stating wheather the ectotherm should be run with or without
 the Dynamic Energy Budget model.}
+
+\item{timeper}{Character string of the time period for the climate data /
+predictions ("present", "2040_2059", "2080_2099").}
+
+\item{rcp}{Character string to specify the emission scenario in case of climate
+predictions ("none", "45", "85").}
 }
 \value{
 List of lists with output if ectotherm function for each species/population/entity

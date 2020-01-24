@@ -12,6 +12,10 @@
 #' @param burrow Boolean whether lizard is allowed to seek shelter in burrow.
 #' @param DEB Boolean stating wheather the ectotherm should be run with or without
 #' the Dynamic Energy Budget model.
+#' @param timeper Character string of the time period for the climate data /
+#' predictions ("present", "2040_2059", "2080_2099").
+#' @param rcp Character string to specify the emission scenario in case of climate
+#' predictions ("none", "45", "85").
 #' @return List of lists with output if ectotherm function for each species/population/entity
 #' @export
 
@@ -22,7 +26,9 @@ m_run_climate_analysis <- function(liz_file = "example_lizard_data.csv",
                                    nyears = 1,
                                    ndays = 12,
                                    burrow = FALSE,
-                                   DEB = FALSE) {
+                                   DEB = FALSE,
+                                   timeper = "present",
+                                   rcp = "none") {
 
   # import dataset from file
   data <- m_import_lizard_data(path = liz_file, species = species)
@@ -40,7 +46,9 @@ m_run_climate_analysis <- function(liz_file = "example_lizard_data.csv",
                                          loc_data = loc_data)
     micro_list[[loc]] <- m_get_microclim(loc_row = loc_row,
                                          nyears = nyears,
-                                         ndays = ndays
+                                         ndays = ndays,
+                                         timeper = timeper,
+                                         rcp = rcp
                                          )
   }
   ecto_input <- read.csv("Physio_sum_locations.csv")
