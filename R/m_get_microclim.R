@@ -5,13 +5,17 @@
 #' @param loc_row A data frame row containing information on location
 #' (location ID, latitude & longitude, nature of soil, soil reflectance,
 #' soilgrids (downloading: yes or no))
-# @param year The year for which the microclimate shall be modelled (default = present)
 #' @param nyears Number of years the model runs.
 #' @param ndays Number of days modeled per year (12 - 365)
+#' @param timeper Time period for climate data: either present or future ("present",
+#' "2040_2059", "2080_2099")
+#' @param rcp Pick a representative concentration pathway (rcp) for climate predictions
+#' ("none" (for present), "45" (medium low emissions), "85" (high emissions))
 #' @return list of locations (as sublists) with corresponding microclimate data
 #' @export
 
-m_get_microclim <- function(loc_row, nyears = 1, ndays = 12) {
+m_get_microclim <- function(loc_row, nyears = 1, ndays = 12,
+                            timeper = "present", rcp = "none") {
   # load NicheMapR; otherwise an error is thrown because there is an object in the package
   # that is used by micro_global() ...
   require(NicheMapR)
@@ -56,7 +60,8 @@ m_get_microclim <- function(loc_row, nyears = 1, ndays = 12) {
   # BulkDensity <- 1.3
   # CampNormTbl9_1 <- NicheMapR::CampNormTbl9_1
 
-  micro <- NicheMapR::micro_global(loc = loc, timeinterval = ndays, nyears = nyears,
+  micro <- NicheMapR::micro_global(time = timeper, rcp = rcp, loc = loc,
+                                   timeinterval = ndays, nyears = nyears,
                                    soiltype = soiltype, REFL = soilrefl, runshade = 1,
                                    run.gads = 1, Usrhyt = 0.01, elev = elev,
                                    slope = slope, aspect = asp, minshade = minshade,
@@ -66,6 +71,8 @@ m_get_microclim <- function(loc_row, nyears = 1, ndays = 12) {
   # ... fuck?
 
   micro$LID <- loc_row$LID
+  micro$timeper <- timeper
+  micro$rcp <- rcp
 
   micro
 }

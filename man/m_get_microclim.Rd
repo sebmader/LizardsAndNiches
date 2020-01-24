@@ -4,7 +4,8 @@
 \alias{m_get_microclim}
 \title{m_get_microclim}
 \usage{
-m_get_microclim(loc_row, nyears = 1, ndays = 12)
+m_get_microclim(loc_row, nyears = 1, ndays = 12, timeper = "present",
+  rcp = "none")
 }
 \arguments{
 \item{loc_row}{A data frame row containing information on location
@@ -14,6 +15,12 @@ soilgrids (downloading: yes or no))}
 \item{nyears}{Number of years the model runs.}
 
 \item{ndays}{Number of days modeled per year (12 - 365)}
+
+\item{timeper}{Time period for climate data: either present or future ("present",
+"2040_2059", "2080_2099")}
+
+\item{rcp}{Pick a representative concentration pathway (rcp) for climate predictions
+("none" (for present), "45" (medium low emissions), "85" (high emissions))}
 }
 \value{
 list of locations (as sublists) with corresponding microclimate data

@@ -44,20 +44,21 @@ m_plot_ecto <- function(ecto, sim_name = ecto$LID, sub_title = "") {
   grDevices::png(filename = paste0("Plots/", sim_name, ".png"),
                  type = "cairo", units = "in",
                  width = 6, height = 6, res = 300)
-
+  ylim_min <- -8
+  depth_div <- 10
   if(ecto$burrow) {
       with(environ, graphics::plot(TC ~ dates, ylab = "T_b, activity, shade & depth",
-                               xlab = "month of year", ylim = c(0, 50), type = "l",
+                               xlab = "month of year", ylim = c(ylim_min, 50), type = "l",
                                main = sim_name, sub = sub_title))
   } else {
     with(environ, graphics::plot(TC ~ dates, ylab = "T_b, activity & shade",
-                     xlab = "month of year", ylim = c(0, 50), type = "l",
+                     xlab = "month of year", ylim = c(ylim_min, 50), type = "l",
                      main = sim_name, sub = sub_title))
   }
   with(environ, graphics::points(ACT * 5 ~ dates, type = "l", col = "orange"))
   with(environ, graphics::points(SHADE / 10 ~ dates, type = "h", col = "dark green"))
   if(ecto$burrow) {
-      with(environ, points(DEP / 10 ~ dates, type = "l",col = "brown"))
+      with(environ, points(DEP / depth_div ~ dates, type = "l",col = "brown"))
   }
   graphics::abline(T_F_max, 0, lty = 2, col = "orange")
   graphics::abline(T_F_min, 0, lty = 2, col = "lightblue3")
@@ -71,7 +72,8 @@ m_plot_ecto <- function(ecto, sim_name = ecto$LID, sub_title = "") {
   graphics::text(x = 0, y = CT_min + 2, "CT_min", col = "blue", adj = c(0,0.5))
   if(ecto$burrow) {
       graphics::legend(x = "topright",
-                   legend = c("T_b (°C)", "activity (0, 5 or 10)", "shade (%/10)", "depth (cm/10)"),
+                   legend = c("T_b (°C)", "activity (0, 5 or 10)", "shade (%/10)",
+                              paste0("depth (cm/", depth_div, ")")),
                    col = c("black", "orange", "dark green", "brown"), lty = rep(1, 3), bty = "n")
   } else {
       graphics::legend(x = "topright",
