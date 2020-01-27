@@ -48,11 +48,11 @@ m_plot_ecto <- function(ecto, sim_name = ecto$LID, sub_title = "") {
   depth_div <- 10
   if(ecto$burrow) {
       with(environ, graphics::plot(TC ~ dates, ylab = "T_b, activity, shade & depth",
-                               xlab = "month of year", ylim = c(ylim_min, 50), type = "l",
+                               xlab = "days", ylim = c(ylim_min, 50), type = "l",
                                main = sim_name, sub = sub_title))
   } else {
     with(environ, graphics::plot(TC ~ dates, ylab = "T_b, activity & shade",
-                     xlab = "month of year", ylim = c(ylim_min, 50), type = "l",
+                     xlab = "days", ylim = c(ylim_min, 50), type = "l",
                      main = sim_name, sub = sub_title))
   }
   with(environ, graphics::points(ACT * 5 ~ dates, type = "l", col = "orange"))
