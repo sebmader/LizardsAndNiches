@@ -5,14 +5,12 @@
 #' @param ecto A list with the structure of the output of the ectotherm function (see
 #' vignette of ectotherm in NicheMapR package).
 #' @param sim_name A character string naming the simulation output.
-#' @param sub_title A character string to be shown as subtitle of the plot.
-#' This is to display some parameter values, like days and years the model is run for.
 #' @return Plot
 #' @importFrom graphics abline legend text
 #' @importFrom grDevices png
 #' @export
 
-m_plot_ecto <- function(ecto, sim_name = ecto$LID, sub_title = "") {
+m_plot_ecto <- function(ecto, sim_name = ecto$LID) {
   # retrieve output
   environ <- as.data.frame(ecto$environ) # behaviour, Tb and environment
   enbal <- as.data.frame(ecto$enbal) # heat balance outputs
@@ -23,7 +21,7 @@ m_plot_ecto <- function(ecto, sim_name = ecto$LID, sub_title = "") {
   nyears <- ecto$nyears
 
   # append dates
-  ndays <- length(ecto$rainfall)
+  ndays <- ecto$ndays
   days <- rep(seq(1, ndays),24)
   days <- days[order(days)]
   dates <- days + metout$TIME / 60 / 24 - 1 # dates for hourly output
@@ -40,6 +38,39 @@ m_plot_ecto <- function(ecto, sim_name = ecto$LID, sub_title = "") {
   # TODO: pipe preferred body temperature
   T_pref <- 33.6
 
+  # substitute the underscore in 'timeper' with a dash
+  # time <- ecto$timeper
+  if(ecto$timeper != "present") {
+    ecto$timeper <- gsub(pattern = "_", replacement = "-",
+                                     x = ecto$timeper)
+  }
+
+  # make the rcp to a decimal (correct value of radiative forcing)
+  sim_name <- paste0(sim_name, ", ", ecto$timeper)
+  if(ecto$rcp != "none") {
+    rcp_name <- ifelse(ecto$rcp == "45", yes = "4.5", no = "8.5")
+    if(rcp_name == "8.5" & ecto$rcp != "85") {
+      cat("something's fishy...\n")
+    }
+    sim_name <- paste0(sim_name, ", RCP", rcp_name)
+  }
+
+  # make the subtitle more flexible and applicable for the situation (sigular or plural)
+  subtitle <- paste0(ecto$ndays/12)
+  if(ecto$ndays/12 > 1) {
+    subtitle <- paste0(subtitle, " days per month, ")
+  } else {
+    assertthat::are_equal(ecto$ndays/12, 1)
+    subtitle <- paste0(subtitle, " day per month, ")
+  }
+  if(ecto$nyears > 1) {
+    subtitle <- paste0(subtitle, ecto$nyears, " years")
+  } else {
+    assertthat::are_equal(ecto$nyears, 1)
+    subtitle <- paste0(subtitle, ecto$nyears, " year")
+  }
+
+
   # make the plot and save
   grDevices::png(filename = paste0("Plots/", sim_name, ".png"),
                  type = "cairo", units = "in",
@@ -49,11 +80,11 @@ m_plot_ecto <- function(ecto, sim_name = ecto$LID, sub_title = "") {
   if(ecto$burrow) {
       with(environ, graphics::plot(TC ~ dates, ylab = "T_b, activity, shade & depth",
                                xlab = "days", ylim = c(ylim_min, 50), type = "l",
-                               main = sim_name, sub = sub_title))
+                               main = sim_name, sub = subtitle))
   } else {
     with(environ, graphics::plot(TC ~ dates, ylab = "T_b, activity & shade",
                      xlab = "days", ylim = c(ylim_min, 50), type = "l",
-                     main = sim_name, sub = sub_title))
+                     main = sim_name, sub = subtitle))
   }
   with(environ, graphics::points(ACT * 5 ~ dates, type = "l", col = "orange"))
   with(environ, graphics::points(SHADE / 10 ~ dates, type = "h", col = "dark green"))

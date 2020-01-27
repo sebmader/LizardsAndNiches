@@ -86,5 +86,7 @@ m_run_ectotherm <- function(param,
   ecto$burrow <- burrow
   ecto$timeper <- micro$timeper
   ecto$rcp <- micro$rcp
+  ecto$nyears <- micro$nyears
+  ecto$ndays <- micro$ndays
   ecto
 }

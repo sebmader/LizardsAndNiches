@@ -77,41 +77,40 @@ m_run_climate_analysis <- function(liz_file = "example_lizard_data.csv",
       sim_name <- ecto_list[[loc]]$LID
     }
 
-      # substitute the underscore in 'timeper' with a dash
-    # time <- ecto_list[[loc]]$timeper
-    if(ecto_list[[loc]]$timeper != "present") {
-      ecto_list[[loc]]$timeper <- gsub(pattern = "_", replacement = "-",
-                                       x = ecto_list[[loc]]$timeper)
-    }
-
-      # make the rcp to a decimal (correct value of radiative forcing)
-    sim_name <- paste0(sim_name, ", ", ecto_list[[loc]]$timeper)
-    if(ecto_list[[loc]]$rcp != "none") {
-      rcp_name <- ifelse(ecto_list[[loc]]$rcp == "45", yes = "4.5", no = "8.5")
-      if(rcp_name == "8.5" & ecto_list[[loc]]$rcp != "85") {
-        cat("something's fishy...\n")
-      }
-      sim_name <- paste0(sim_name, ", RCP", rcp_name)
-    }
-
-      # make the subtitle more flexible and applicable for the situation (sigular or plural)
-    subtitle <- paste0(ndays/12)
-    if(ndays/12 > 1) {
-      subtitle <- paste0(subtitle, " days per month, ")
-    } else {
-      assertthat::are_equal(ndays/12, 1)
-      subtitle <- paste0(subtitle, " day per month, ")
-    }
-    if(nyears > 1) {
-      subtitle <- paste0(subtitle, nyears, " years")
-    } else {
-      assertthat::are_equal(nyears, 1)
-      subtitle <- paste0(subtitle, nyears, " year")
-    }
+    #   # substitute the underscore in 'timeper' with a dash
+    # # time <- ecto_list[[loc]]$timeper
+    # if(ecto_list[[loc]]$timeper != "present") {
+    #   ecto_list[[loc]]$timeper <- gsub(pattern = "_", replacement = "-",
+    #                                    x = ecto_list[[loc]]$timeper)
+    # }
+    #
+    #   # make the rcp to a decimal (correct value of radiative forcing)
+    # sim_name <- paste0(sim_name, ", ", ecto_list[[loc]]$timeper)
+    # if(ecto_list[[loc]]$rcp != "none") {
+    #   rcp_name <- ifelse(ecto_list[[loc]]$rcp == "45", yes = "4.5", no = "8.5")
+    #   if(rcp_name == "8.5" & ecto_list[[loc]]$rcp != "85") {
+    #     cat("something's fishy...\n")
+    #   }
+    #   sim_name <- paste0(sim_name, ", RCP", rcp_name)
+    # }
+    #
+    #   # make the subtitle more flexible and applicable for the situation (sigular or plural)
+    # subtitle <- paste0(ndays/12)
+    # if(ndays/12 > 1) {
+    #   subtitle <- paste0(subtitle, " days per month, ")
+    # } else {
+    #   assertthat::are_equal(ndays/12, 1)
+    #   subtitle <- paste0(subtitle, " day per month, ")
+    # }
+    # if(nyears > 1) {
+    #   subtitle <- paste0(subtitle, nyears, " years")
+    # } else {
+    #   assertthat::are_equal(nyears, 1)
+    #   subtitle <- paste0(subtitle, nyears, " year")
+    # }
 
       # actually plot things now
-    m_plot_ecto(ecto = ecto_list[[loc]], sim_name = sim_name,
-                sub_title = subtitle)
+    m_plot_ecto(ecto = ecto_list[[loc]], sim_name = sim_name)
 
     cat("\nplotted and saved results in ./Plots...\n")
 

@@ -4,16 +4,13 @@
 \alias{m_plot_ecto}
 \title{Plot results of ectotherm function}
 \usage{
-m_plot_ecto(ecto, sim_name = ecto$LID, sub_title = "")
+m_plot_ecto(ecto, sim_name = ecto$LID)
 }
 \arguments{
 \item{ecto}{A list with the structure of the output of the ectotherm function (see
 vignette of ectotherm in NicheMapR package).}
 
 \item{sim_name}{A character string naming the simulation output.}
-
-\item{sub_title}{A character string to be shown as subtitle of the plot.
-This is to display some parameter values, like days and years the model is run for.}
 }
 \value{
 Plot
