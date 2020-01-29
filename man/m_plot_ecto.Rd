@@ -4,13 +4,15 @@
 \alias{m_plot_ecto}
 \title{Plot results of ectotherm function}
 \usage{
-m_plot_ecto(ecto, sim_name = ecto$LID)
+m_plot_ecto(ecto, sim_name = ecto$LID, save_plot = F)
 }
 \arguments{
 \item{ecto}{A list with the structure of the output of the ectotherm function (see
 vignette of ectotherm in NicheMapR package).}
 
 \item{sim_name}{A character string naming the simulation output.}
+
+\item{save_plot}{Boolean whether the plot should be saved or not (default = FALSE).}
 }
 \value{
 Plot

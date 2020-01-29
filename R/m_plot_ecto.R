@@ -5,12 +5,14 @@
 #' @param ecto A list with the structure of the output of the ectotherm function (see
 #' vignette of ectotherm in NicheMapR package).
 #' @param sim_name A character string naming the simulation output.
+#' @param save_plot Boolean whether the plot should be saved or not (default = FALSE).
 #' @return Plot
 #' @importFrom graphics abline legend text
 #' @importFrom grDevices png
 #' @export
 
-m_plot_ecto <- function(ecto, sim_name = ecto$LID) {
+m_plot_ecto <- function(ecto, sim_name = ecto$LID, save_plot = F) {
+
   # retrieve output
   environ <- as.data.frame(ecto$environ) # behaviour, Tb and environment
   enbal <- as.data.frame(ecto$enbal) # heat balance outputs
@@ -36,7 +38,7 @@ m_plot_ecto <- function(ecto, sim_name = ecto$LID) {
   CT_max <- ecto$CT_max
   CT_min <- ecto$CT_min
   # TODO: pipe preferred body temperature
-  T_pref <- 33.6
+  T_pref <- ecto$T_pref
 
   # substitute the underscore in 'timeper' with a dash
   # time <- ecto$timeper
@@ -46,13 +48,13 @@ m_plot_ecto <- function(ecto, sim_name = ecto$LID) {
   }
 
   # make the rcp to a decimal (correct value of radiative forcing)
-  sim_name <- paste0(sim_name, ", ", ecto$timeper)
+  sim_title <- paste0(sim_name, ", ", ecto$timeper)
   if(ecto$rcp != "none") {
     rcp_name <- ifelse(ecto$rcp == "45", yes = "4.5", no = "8.5")
     if(rcp_name == "8.5" & ecto$rcp != "85") {
       cat("something's fishy...\n")
     }
-    sim_name <- paste0(sim_name, ", RCP", rcp_name)
+    sim_title <- paste0(sim_title, ", RCP", rcp_name)
   }
 
   # make the subtitle more flexible and applicable for the situation (sigular or plural)
@@ -70,21 +72,32 @@ m_plot_ecto <- function(ecto, sim_name = ecto$LID) {
     subtitle <- paste0(subtitle, ecto$nyears, " year")
   }
 
+  # save plot if applicable
+  if(save_plot) {
+    # directory to save plots
+    save_path <- paste0("Plots/", sim_name)
 
-  # make the plot and save
-  grDevices::png(filename = paste0("Plots/", sim_name, ".png"),
-                 type = "cairo", units = "in",
-                 width = 6, height = 6, res = 300)
+    if(!dir.exists(save_path)) {
+      dir.create(save_path, recursive = T)
+      cat(paste0("Created folder ", save_path))
+    }
+
+    # make the plot and save
+    grDevices::png(filename = paste0(save_path, "/", sim_title, ".png"),
+                   type = "cairo", units = "in",
+                   width = 6, height = 6, res = 300)
+  }
+
   ylim_min <- -8
   depth_div <- 10
   if(ecto$burrow) {
       with(environ, graphics::plot(TC ~ dates, ylab = "T_b, activity, shade & depth",
                                xlab = "days", ylim = c(ylim_min, 50), type = "l",
-                               main = sim_name, sub = subtitle))
+                               main = sim_title, sub = subtitle))
   } else {
     with(environ, graphics::plot(TC ~ dates, ylab = "T_b, activity & shade",
                      xlab = "days", ylim = c(ylim_min, 50), type = "l",
-                     main = sim_name, sub = subtitle))
+                     main = sim_title, sub = subtitle))
   }
   with(environ, graphics::points(ACT * 5 ~ dates, type = "l", col = "orange"))
   with(environ, graphics::points(SHADE / 10 ~ dates, type = "h", col = "dark green"))
@@ -112,5 +125,9 @@ m_plot_ecto <- function(ecto, sim_name = ecto$LID) {
          col = c("black", "orange", "dark green"), lty = rep(1, 3), bty = "n")
   }
 
-  grDevices::dev.off()
+  # save plot if applicable
+  if(save_plot) {
+    cat(paste0("\nplotted and saved results in ", save_path, "\n"))
+    grDevices::dev.off()
+  }
 }

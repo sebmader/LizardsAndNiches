@@ -84,6 +84,7 @@ m_run_ectotherm <- function(param,
   )
   ecto$LID <- loc_name
   ecto$burrow <- burrow
+  ecto$T_pref <- temp_pref
   ecto$timeper <- micro$timeper
   ecto$rcp <- micro$rcp
   ecto$nyears <- micro$nyears

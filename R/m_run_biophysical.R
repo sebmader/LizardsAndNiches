@@ -1,7 +1,7 @@
-#' @title m_run_climate_analysis
+#' @title m_run_biophysical
 #' @description This function runs a full analysis of the climate niche starting with importing
 #' our standard dataframe, running microclimate model and ectotherm function subsequently.
-#' @name m_run_climate_analysis
+#' @name m_run_biophysical
 #' @param liz_file A file with lizard data (see example_lizard_data.csv) containing at least
 #' one individual with location, morphology and reflectance data.
 #' @param species The species to be looked at, which will be selected from the data frame and
@@ -20,15 +20,15 @@
 #' @export
 
 
-m_run_climate_analysis <- function(liz_file = "example_lizard_data.csv",
-                                   species = "Karusasaurus_polyzonus",
-                                   loc_file = "example_coordinates.csv",
-                                   nyears = 1,
-                                   ndays = 12,
-                                   burrow = FALSE,
-                                   DEB = FALSE,
-                                   timeper = "present",
-                                   rcp = "none") {
+m_run_biophysical <- function(liz_file = "example_lizard_data.csv",
+                              species = "Karusasaurus_polyzonus",
+                              loc_file = "example_coordinates.csv",
+                              nyears = 1,
+                              ndays = 12,
+                              burrow = FALSE,
+                              DEB = FALSE,
+                              timeper = "present",
+                              rcp = "none") {
 
   # import dataset from file
   data <- m_import_lizard_data(path = liz_file, species = species)
@@ -59,60 +59,16 @@ m_run_climate_analysis <- function(liz_file = "example_lizard_data.csv",
                                         micro = micro_list[[loc]],
                                         burrow = burrow,
                                         DEB = DEB)
-    # m_extract_ectotherm_input()
-    # morph <- as.character(data$VID[which(data$LID == loc)])
-    # for(m in morph) {
-    #   param <- ecto_input[which(ecto_input$species == m),]
-    #   ecto_list[[loc]][[m]] <- m_run_ectotherm(param = param,
-    #                                            micro = micro_list[[loc]],
-    #                                            DEB = DEB)
-    # }
 
     # plot and save results
       # add 'DEB' to sim_name if applicable
-    sim_name <- ""
+    sim_name <- ecto_list[[loc]]$LID
     if(DEB) {
-      sim_name <- paste0(ecto_list[[loc]]$LID, "_DEB")
-    } else {
-      sim_name <- ecto_list[[loc]]$LID
+      sim_name <- paste0(sim_name, "_DEB")
     }
-
-    #   # substitute the underscore in 'timeper' with a dash
-    # # time <- ecto_list[[loc]]$timeper
-    # if(ecto_list[[loc]]$timeper != "present") {
-    #   ecto_list[[loc]]$timeper <- gsub(pattern = "_", replacement = "-",
-    #                                    x = ecto_list[[loc]]$timeper)
-    # }
-    #
-    #   # make the rcp to a decimal (correct value of radiative forcing)
-    # sim_name <- paste0(sim_name, ", ", ecto_list[[loc]]$timeper)
-    # if(ecto_list[[loc]]$rcp != "none") {
-    #   rcp_name <- ifelse(ecto_list[[loc]]$rcp == "45", yes = "4.5", no = "8.5")
-    #   if(rcp_name == "8.5" & ecto_list[[loc]]$rcp != "85") {
-    #     cat("something's fishy...\n")
-    #   }
-    #   sim_name <- paste0(sim_name, ", RCP", rcp_name)
-    # }
-    #
-    #   # make the subtitle more flexible and applicable for the situation (sigular or plural)
-    # subtitle <- paste0(ndays/12)
-    # if(ndays/12 > 1) {
-    #   subtitle <- paste0(subtitle, " days per month, ")
-    # } else {
-    #   assertthat::are_equal(ndays/12, 1)
-    #   subtitle <- paste0(subtitle, " day per month, ")
-    # }
-    # if(nyears > 1) {
-    #   subtitle <- paste0(subtitle, nyears, " years")
-    # } else {
-    #   assertthat::are_equal(nyears, 1)
-    #   subtitle <- paste0(subtitle, nyears, " year")
-    # }
 
       # actually plot things now
     m_plot_ecto(ecto = ecto_list[[loc]], sim_name = sim_name)
-
-    cat("\nplotted and saved results in ./Plots...\n")
 
   }
   ecto_list
