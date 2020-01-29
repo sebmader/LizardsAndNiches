@@ -8,7 +8,7 @@
 #' @param save_plot Boolean whether the plot should be saved or not (default = FALSE).
 #' @return Plot
 #' @importFrom graphics abline legend text
-#' @importFrom grDevices png
+#' @importFrom grDevices png dev.off
 #' @export
 
 m_plot_ecto <- function(ecto, sim_name = ecto$LID, save_plot = F) {
@@ -72,14 +72,14 @@ m_plot_ecto <- function(ecto, sim_name = ecto$LID, save_plot = F) {
     subtitle <- paste0(subtitle, ecto$nyears, " year")
   }
 
+  # directory to save plots
+  save_path <- paste0("Plots/", sim_name)
   # save plot if applicable
   if(save_plot) {
-    # directory to save plots
-    save_path <- paste0("Plots/", sim_name)
 
     if(!dir.exists(save_path)) {
       dir.create(save_path, recursive = T)
-      cat(paste0("Created folder ", save_path))
+      cat(paste0("Created folder ", save_path, "\n"))
     }
 
     # make the plot and save

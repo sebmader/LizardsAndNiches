@@ -4,11 +4,14 @@
 \alias{m_plot_micro}
 \title{Plot microclimate conditions}
 \usage{
-m_plot_micro(multi_ecto)
+m_plot_micro(multi_ecto, save_plot = FALSE)
 }
 \arguments{
 \item{multi_ecto}{A list of lists with the structure of the output of the micro_global()
 function (see vignette of microclimate in NicheMapR package).}
+
+\item{save_plot}{Boolean whether the microclimate plot should be saved or not
+(default = FALSE)}
 }
 \value{
 Plot
