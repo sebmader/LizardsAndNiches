@@ -3,17 +3,20 @@
 #' multiple ectotherm models of different conditions (locations, times, emission
 #' scenarios) together in one plot
 #' @name m_plot_micro
-#' @param multi_ecto A list of lists with the structure of the output of the micro_global()
-#' function (see vignette of microclimate in NicheMapR package).
+#' @param ectoall A climate scenario which is a list of lists
+#' of locations which are lists with the structure of the output of the micro_global()
+#' function (see vignette of microclimate in NicheMapR package)
 #' @param save_plot Boolean whether the microclimate plot should be saved or not
 #' (default = FALSE)
 #' @return Plot
-#' @importFrom ggplot2 ggplot aes geom_line facet_grid vars scale_x_discrete labs
-#' @importFrom grDevices png dev.off
+# @importFrom ggplot2 ggplot aes geom_line facet_grid vars scale_x_discrete labs
+# @importFrom grDevices png dev.off
 #' @export
 
 
-m_plot_micro <- function(multi_ecto, save_plot = FALSE) {
+m_plot_micro <- function(ectoall, save_plot = FALSE) {
+
+  # TODO: make this function facet.grid the single locations
 
   # calculate average microclimate conditions (over all locations per month)
   T_loc <- vector(mode = "numeric", length = 12)
@@ -23,18 +26,18 @@ m_plot_micro <- function(multi_ecto, save_plot = FALSE) {
   days <- seq(1,12,1)
 
   # save sim_name for plot title and saving directory
-  sim_name <- multi_ecto[[1]]$timeper
-  if(multi_ecto[[1]]$timeper != "present") {
+  sim_name <- ectoall[[1]]$timeper
+  if(ectoall[[1]]$timeper != "present") {
     sim_name <- gsub(pattern = "_", replacement = "-", x = sim_name)
-    rcp_name <- ifelse(multi_ecto[[1]]$rcp == "45", yes = "4.5", no = "8.5")
-    if(rcp_name == "8.5" & multi_ecto[[1]]$rcp != "85") {
-      cat("something's fishy...\n")
+    rcp_name <- ifelse(ectoall[[1]]$rcp == "45", yes = "4.5", no = "8.5")
+    if(rcp_name == "8.5" & ectoall[[1]]$rcp != "85") {
+      stop("something's fishy...\n")
     }
     sim_name <- paste0(sim_name, ", RCP", rcp_name)
   }
 
   # sum the monthly averages of all locations
-  for(ecto in multi_ecto) {
+  for(ecto in ectoall) {
     list_days <- split.data.frame(x = ecto$metout[,3:6], f = ecto$metout[,1])
     avg_days <- lapply(X = list_days,
                        FUN = function(x) c(mean(x[,1]),
@@ -57,8 +60,8 @@ m_plot_micro <- function(multi_ecto, save_plot = FALSE) {
   }
 
   # divide by number of locations and make dataframe from climate variables
-  n_loc <- length(multi_ecto)
-  # rm(multi_ecto)
+  n_loc <- length(ectoall)
+  # rm(ectoall)
   T_loc <- T_loc/n_loc
   Temp <- data.frame(T_loc, rep("local", length(T_loc)))
   T_ref <- T_ref/n_loc
@@ -82,7 +85,7 @@ m_plot_micro <- function(multi_ecto, save_plot = FALSE) {
   clim_data <- data.frame(rbind(Temp, RH_df))
 
   # directory to save plots
-  save_path <- paste0("Plots/", "microclim/")
+  save_path <- "./Plots/microclim/"
   # save plot if applicable
   if(save_plot) {
 
@@ -92,19 +95,19 @@ m_plot_micro <- function(multi_ecto, save_plot = FALSE) {
     }
 
     # make the plot and save
-    grDevices::png(filename = paste0(save_path, "/", sim_name, ".png"),
-                   type = "cairo", units = "in",
-                   width = 6, height = 6, res = 300)
+    # save_path <- paste0(save_path, sim_name, ".png")
+    # grDevices::png(filename = save_path,
+                   # type = "cairo", units = "in",
+                   # width = 6, height = 6, res = 300)
   }
 
   plot_title <- paste0("Microclimate at ", sim_name)
   # plot the data
-  ggplot2::ggplot(data = clim_data,
-                  mapping = ggplot2::aes_string(x = 'Month',
-                                         y = 'Value',
-                                         colour = 'Height'),
-                  environment = environment())+
-    ggplot2::geom_line(size = 1)+
+  p <- ggplot2::ggplot(data = clim_data)+
+    ggplot2::geom_line(size = 1,
+                       mapping = ggplot2::aes_string(x = 'Month',
+                                                     y = 'Value',
+                                                     colour = 'Height'))+
     ggplot2::facet_grid(rows = ggplot2::vars(clim_data$Climate.variable),
                         scales = "free")+
     ggplot2::scale_x_discrete(limits = as.character(days))+
@@ -112,7 +115,14 @@ m_plot_micro <- function(multi_ecto, save_plot = FALSE) {
 
   # save plot if applicable
   if(save_plot) {
-    cat(paste0("\nplotted and saved micro climate in ", save_path, "\n"))
-    grDevices::dev.off()
+    sim_name <- paste0(sim_name, ".png")
+    cat(paste0("\nplotted and saved micro climate in ", save_path, sim_name, "\n"))
+    # grDevices::dev.off()
+    ggplot2::ggsave(filename = sim_name, plot = p, device = png(),
+                    path = save_path, units = "in",
+                    width = 6, height = 6, dpi = 300)
+    unlink(sim_name)
   }
+  # print(p)
+  p
 }

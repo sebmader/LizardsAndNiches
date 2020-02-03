@@ -7,7 +7,8 @@
 m_run_biophysical(liz_file = "example_lizard_data.csv",
   species = "Karusasaurus_polyzonus",
   loc_file = "example_coordinates.csv", nyears = 1, ndays = 12,
-  burrow = FALSE, DEB = FALSE, timeper = "present", rcp = "none")
+  burrow = FALSE, DEB = FALSE, timeper = "present", rcp = "none",
+  save_plot = FALSE)
 }
 \arguments{
 \item{liz_file}{A file with lizard data (see example_lizard_data.csv) containing at least
@@ -32,9 +33,12 @@ predictions ("present", "2040_2059", "2080_2099").}
 
 \item{rcp}{Character string to specify the emission scenario in case of climate
 predictions ("none", "45", "85").}
+
+\item{save_plot}{Boolean whether plots shall be saved or not.}
 }
 \value{
-List of lists with output if ectotherm function for each species/population/entity
+List of lists with output of ectotherm function for each
+species/population/entity
 }
 \description{
 This function runs a full analysis of the climate niche starting with importing

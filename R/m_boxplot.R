@@ -6,7 +6,8 @@
 #' @param fill potential second factor to take into account
 #' @param labs vector of two elements for axis labels
 #'   (c("x label", "y label))
-#' @import ggplot2
+# @importFrom ggplot2 ggplot aes geom_boxplot scale_x_discrete theme_bw geom_point labs
+# position_jitterdodge position_jitter scale_fill_discrete
 #' @export
 
 # require(assertthat)
@@ -39,27 +40,27 @@ m_boxplot <- function(x, y, labs = c("", "", ""), fill = c("")) {
       names_with_N2[pos] <- paste0(name, " (", "n = ", n, ")")
     }
 
-    ggplot(mapping = aes(x = x, y = y, fill = fill))+
-      geom_boxplot()+
-      scale_x_discrete(labels = names_with_N)+
-      scale_fill_discrete(labels = names_with_N2)+
-      theme_bw()+
-      geom_point(mapping = aes(fill = fill),
+    ggplot2::ggplot(mapping = ggplot2::aes(x = x, y = y, fill = fill))+
+      ggplot2::geom_boxplot()+
+      ggplot2::scale_x_discrete(labels = names_with_N)+
+      ggplot2::scale_fill_discrete(labels = names_with_N2)+
+      ggplot2::theme_bw()+
+      ggplot2::geom_point(mapping = ggplot2::aes(fill = fill),
                  size = 1.5,
                  pch = 21,
-                 position = position_jitterdodge(jitter.width = 0.2))+
-      labs(x = labs[1], y = labs[2], fill = labs[3])
+                 position = ggplot2::position_jitterdodge(jitter.width = 0.2))+
+      ggplot2::labs(x = labs[1], y = labs[2], fill = labs[3])
   } else {
 
-    ggplot(mapping = aes(x = x, y = y))+
-      geom_boxplot()+
-      scale_x_discrete(labels = names_with_N)+
-      theme_bw()+
-      geom_point(size = 1.5,
-                 position = position_jitter(width = 0.05),
+    ggplot2::ggplot(mapping = ggplot2::aes(x = x, y = y))+
+      ggplot2::geom_boxplot()+
+      ggplot2::scale_x_discrete(labels = names_with_N)+
+      ggplot2::theme_bw()+
+      ggplot2::geom_point(size = 1.5,
+                 position = ggplot2::position_jitter(width = 0.05),
                  pch = 21,
                  colour = "darkgrey",
                  fill = "grey")+
-      labs(x = labs[1], y = labs[2])
+      ggplot2::labs(x = labs[1], y = labs[2])
   }
 }

@@ -7,7 +7,7 @@
 #' @param species The name of the species starting with a capital letter and an underscore as
 #' seperation between genus and species name; by default empty to load the whole data set
 #' @return R data frame
-#' @importFrom utils read.csv
+# @importFrom utils read.csv
 #' @export
 
 # require(assertthat)
@@ -16,7 +16,7 @@ m_import_lizard_data <- function(path, species = "") {
   assertthat::is.string(path)
   assertthat::is.string(species)
 
-  data <- read.csv(file = path, header = T)
+  data <- utils::read.csv(file = path, header = T)
 
   # drop non-adults
   data <- data[which(data$SEX == "M" | data$SEX == "F"),]

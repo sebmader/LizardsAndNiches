@@ -13,7 +13,7 @@ m_run_ectotherm(param, micro, burrow = FALSE, DEB = FALSE)
 
 \item{burrow}{Boolean whether lizard is allowed to seek shelter in burrow.}
 
-\item{DEB}{Boolean whether Dynamic Energy Budget (DEB) model should be included.}
+\item{DEB}{Boolean whether Dynamic Energy Budget (DEB) model shall be included.}
 }
 \description{
 This function runs the ectotherm function of NicheMapR given the input

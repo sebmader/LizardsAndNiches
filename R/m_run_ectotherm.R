@@ -5,7 +5,7 @@
 #' @param param List of input parameters for ectotherm function.
 #' @param micro List of microclimate data as the output of micro_global function.
 #' @param burrow Boolean whether lizard is allowed to seek shelter in burrow.
-#' @param DEB Boolean whether Dynamic Energy Budget (DEB) model should be included.
+#' @param DEB Boolean whether Dynamic Energy Budget (DEB) model shall be included.
 #' @export
 
 m_run_ectotherm <- function(param,
@@ -28,29 +28,10 @@ m_run_ectotherm <- function(param,
   temp_pref <- param$t_pref
   temp_bask <- param$t_bask
 
-  # micro <- micro # I don't get why I need to do this but otherwise it cannot find
-                 # the variable 'micro'
-
-  # as in example on github:
-  # TODO: I don't use them as input for ectotherm()... even need it ??? -> nope
-  # retrieve output
-  # metout <- as.data.frame(micro$metout) # above ground microclimatic conditions, min shade
-  # shadmet <- as.data.frame(micro$shadmet) # above ground microclimatic conditions, max shade
-  # soil <- as.data.frame(micro$soil) # soil temperatures, minimum shade
-  # shadsoil <- as.data.frame(micro$shadsoil) # soil temperatures, maximum shade
-  #
-  # # append dates
-  # dates <- micro$dates
-  # metout <- cbind(dates, metout)
-  # soil <- cbind(dates, soil)
-  # shadmet <- cbind(dates, shadmet)
-  # shadsoil <- cbind(dates, shadsoil)
-
   # some fixed parameter values
   minshade <- 0
-  maxdepth <- 9
+  maxdepth <- 9  # because the last jump from -100 to -200 cm causes problems
   mindepth <- 2  # because soil node 1 is the surface
-  # burrow <- as.numeric(burrow)
 
   # m_estimate_deb(param)
 
@@ -82,12 +63,14 @@ m_run_ectotherm <- function(param,
                                longitude = as.numeric(micro$longlat[1]),
                                latitude = as.numeric(micro$longlat[2])
   )
-  ecto$LID <- loc_name
+  # ecto$LID <- droplevels(loc_name)
+  ecto$LID <- micro$LID
   ecto$burrow <- burrow
   ecto$T_pref <- temp_pref
   ecto$timeper <- micro$timeper
   ecto$rcp <- micro$rcp
   ecto$nyears <- micro$nyears
   ecto$ndays <- micro$ndays
+  ecto$absorp <- absorp
   ecto
 }

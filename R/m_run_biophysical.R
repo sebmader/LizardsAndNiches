@@ -16,7 +16,9 @@
 #' predictions ("present", "2040_2059", "2080_2099").
 #' @param rcp Character string to specify the emission scenario in case of climate
 #' predictions ("none", "45", "85").
-#' @return List of lists with output if ectotherm function for each species/population/entity
+#' @param save_plot Boolean whether plots shall be saved or not.
+#' @return List of lists with output of ectotherm function for each
+#' species/population/entity
 #' @export
 
 
@@ -28,7 +30,8 @@ m_run_biophysical <- function(liz_file = "example_lizard_data.csv",
                               burrow = FALSE,
                               DEB = FALSE,
                               timeper = "present",
-                              rcp = "none") {
+                              rcp = "none",
+                              save_plot = FALSE) {
 
   # import dataset from file
   data <- m_import_lizard_data(path = liz_file, species = species)
@@ -37,7 +40,7 @@ m_run_biophysical <- function(liz_file = "example_lizard_data.csv",
   locations <- levels(data$LID)
 
   # import location information from file and run microclimate model at these locations
-  loc_data <- read.csv(loc_file)
+  loc_data <- utils::read.csv(loc_file)
   micro_list <- split(locations, locations, drop = T)
   ecto_list <- micro_list
   for(loc in micro_list) {
@@ -52,7 +55,7 @@ m_run_biophysical <- function(liz_file = "example_lizard_data.csv",
                                          )
   }
 
-  ecto_input <- read.csv("Physio_sum_locations.csv")
+  ecto_input <- utils::read.csv("Physio_sum_locations.csv")
   for(loc in ecto_list) {
     param <- ecto_input[which(ecto_input$LID == loc),]
     ecto_list[[loc]] <- m_run_ectotherm(param = param,
@@ -68,7 +71,7 @@ m_run_biophysical <- function(liz_file = "example_lizard_data.csv",
     }
 
       # actually plot things now
-    m_plot_ecto(ecto = ecto_list[[loc]], sim_name = sim_name)
+    m_plot_ecto(ecto = ecto_list[[loc]], sim_name = sim_name, save_plot = save_plot)
 
   }
   ecto_list

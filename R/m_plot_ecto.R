@@ -7,8 +7,8 @@
 #' @param sim_name A character string naming the simulation output.
 #' @param save_plot Boolean whether the plot should be saved or not (default = FALSE).
 #' @return Plot
-#' @importFrom graphics abline legend text
-#' @importFrom grDevices png dev.off
+# @importFrom graphics abline legend text
+# @importFrom grDevices png dev.off
 #' @export
 
 m_plot_ecto <- function(ecto, sim_name = ecto$LID, save_plot = F) {
@@ -73,7 +73,7 @@ m_plot_ecto <- function(ecto, sim_name = ecto$LID, save_plot = F) {
   }
 
   # directory to save plots
-  save_path <- paste0("Plots/", sim_name)
+  save_path <- paste0("Plots/ecophysio_plots/", sim_name)
   # save plot if applicable
   if(save_plot) {
 
