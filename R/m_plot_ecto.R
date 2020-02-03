@@ -42,7 +42,7 @@ m_plot_ecto <- function(ecto, sim_name = ecto$LID, save_plot = F) {
 
   # substitute the underscore in 'timeper' with a dash
   # time <- ecto$timeper
-  if(ecto$timeper != "present") {
+  if(!stringr::str_detect(ecto$timeper, "present")) {
     ecto$timeper <- gsub(pattern = "_", replacement = "-",
                                      x = ecto$timeper)
   }
@@ -52,7 +52,7 @@ m_plot_ecto <- function(ecto, sim_name = ecto$LID, save_plot = F) {
   if(ecto$rcp != "none") {
     rcp_name <- ifelse(ecto$rcp == "45", yes = "4.5", no = "8.5")
     if(rcp_name == "8.5" & ecto$rcp != "85") {
-      cat("something's fishy...\n")
+      stop("something's fishy...\n")
     }
     sim_title <- paste0(sim_title, ", RCP", rcp_name)
   }
@@ -79,7 +79,7 @@ m_plot_ecto <- function(ecto, sim_name = ecto$LID, save_plot = F) {
 
     if(!dir.exists(save_path)) {
       dir.create(save_path, recursive = T)
-      cat(paste0("Created folder ", save_path, "\n"))
+      message(paste0("Created folder ", save_path, "\n"))
     }
 
     # make the plot and save
@@ -127,7 +127,7 @@ m_plot_ecto <- function(ecto, sim_name = ecto$LID, save_plot = F) {
 
   # save plot if applicable
   if(save_plot) {
-    cat(paste0("\nplotted and saved results in ", save_path, "\n"))
+    message(paste0("\nplotted and saved results in ", save_path, "\n"))
     grDevices::dev.off()
   }
 }

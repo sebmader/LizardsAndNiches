@@ -29,7 +29,8 @@ split into sub groups of morphs if present.}
 the Dynamic Energy Budget model.}
 
 \item{timeper}{Character string of the time period for the climate data /
-predictions ("present", "2040_2059", "2080_2099").}
+predictions ("present", "2040_2059", "2080_2099", and "presentCCKP" to compare
+the 1961-1990 of CCKP with the one frome NicheMapR).}
 
 \item{rcp}{Character string to specify the emission scenario in case of climate
 predictions ("none", "45", "85").}

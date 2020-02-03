@@ -13,7 +13,8 @@
 #' @param DEB Boolean stating wheather the ectotherm should be run with or without
 #' the Dynamic Energy Budget model.
 #' @param timeper Character string of the time period for the climate data /
-#' predictions ("present", "2040_2059", "2080_2099").
+#' predictions ("present", "2040_2059", "2080_2099", and "presentCCKP" to compare
+#' the 1961-1990 of CCKP with the one frome NicheMapR).
 #' @param rcp Character string to specify the emission scenario in case of climate
 #' predictions ("none", "45", "85").
 #' @param save_plot Boolean whether plots shall be saved or not.
@@ -54,15 +55,14 @@ m_run_biophysical <- function(liz_file = "example_lizard_data.csv",
                                          rcp = rcp
                                          )
   }
-
   ecto_input <- utils::read.csv("Physio_sum_locations.csv")
   for(loc in ecto_list) {
     param <- ecto_input[which(ecto_input$LID == loc),]
     ecto_list[[loc]] <- m_run_ectotherm(param = param,
                                         micro = micro_list[[loc]],
                                         burrow = burrow,
-                                        DEB = DEB)
-
+                                        DEB = DEB
+                                        )
     # plot and save results
       # add 'DEB' to sim_name if applicable
     sim_name <- ecto_list[[loc]]$LID

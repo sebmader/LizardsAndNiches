@@ -27,7 +27,7 @@ m_plot_micro <- function(ectoall, save_plot = FALSE) {
 
   # save sim_name for plot title and saving directory
   sim_name <- ectoall[[1]]$timeper
-  if(ectoall[[1]]$timeper != "present") {
+  if(!stringr::str_detect(ectoall[[1]]$timeper, "present")) {
     sim_name <- gsub(pattern = "_", replacement = "-", x = sim_name)
     rcp_name <- ifelse(ectoall[[1]]$rcp == "45", yes = "4.5", no = "8.5")
     if(rcp_name == "8.5" & ectoall[[1]]$rcp != "85") {
@@ -122,7 +122,5 @@ m_plot_micro <- function(ectoall, save_plot = FALSE) {
                     path = save_path, units = "in",
                     width = 6, height = 6, dpi = 300)
     unlink(sim_name)
-  }
-  # print(p)
-  p
+  } else { print(p) }
 }
