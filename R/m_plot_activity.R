@@ -50,6 +50,7 @@ m_plot_activity <- function(multi_ecto, save_plot = FALSE) {
       multi_ecto[[scen]][[loc]]$perc_active <- perc_active
       multi_ecto[[scen]][[loc]]$h_bask <- h_bask
       multi_ecto[[scen]][[loc]]$perc_bask <- perc_bask
+      multi_ecto[[scen]][[loc]]$act_bask_ratio <- h_active/h_bask
       multi_ecto[[scen]][[loc]]$ndays <- ndays
       multi_ecto[[scen]][[loc]]$nyears <- nyears
     }
@@ -59,6 +60,13 @@ m_plot_activity <- function(multi_ecto, save_plot = FALSE) {
   for(scen in scenarios) {
     for(loc in locations) {
       multi_ecto[[scen]][[loc]]$environ <- NULL
+      # calculate activity change to present
+      multi_ecto[[scen]][[loc]]$change_act <- multi_ecto[[scen]][[loc]]$h_active - multi_ecto[["present"]][[loc]]$h_active
+      multi_ecto[[scen]][[loc]]$change_bask <- multi_ecto[[scen]][[loc]]$h_bask - multi_ecto[["present"]][[loc]]$h_bask
+      # calculate percentage of change
+      multi_ecto[[scen]][[loc]]$perc_change_act <- multi_ecto[[scen]][[loc]]$h_active / multi_ecto[["present"]][[loc]]$h_active
+      multi_ecto[[scen]][[loc]]$perc_change_bask <- multi_ecto[[scen]][[loc]]$h_bask / multi_ecto[["present"]][[loc]]$h_bask
+
     }
   }
 
@@ -66,12 +74,10 @@ m_plot_activity <- function(multi_ecto, save_plot = FALSE) {
   multi_ecto_tab <- data.table::rbindlist(lapply(multi_ecto,
                                              function(x) data.table::rbindlist(x)),
                                       idcol = "id")
-  # calculate the activity-basking ratio and add it to dataframe
-  act_bask_ratio <- multi_ecto_tab$h_active/multi_ecto_tab$h_bask
-  multi_ecto_tab <- cbind(multi_ecto_tab, act_bask_ratio)
 
-
-  #### plot the data ####
+  # # calculate the activity-basking ratio and add it to dataframe
+  # act_bask_ratio <- multi_ecto_tab$h_active/multi_ecto_tab$h_bask
+  # multi_ecto_tab <- cbind(multi_ecto_tab, act_bask_ratio)
 
     # make dataframe with 'present' being both rcp 4.5 and 8.5 instead of none
   present45 <- multi_ecto_tab[which(stringr::str_detect(multi_ecto_tab$timeper,
@@ -99,6 +105,11 @@ m_plot_activity <- function(multi_ecto, save_plot = FALSE) {
   multi_ecto_tab_rcps$id <- as.factor(multi_ecto_tab_rcps$id)
   multi_ecto_tab_rcps$timeper <- as.factor(multi_ecto_tab_rcps$timeper)
   multi_ecto_tab_rcps$rcp <- as.factor(multi_ecto_tab_rcps$rcp)
+
+
+
+  #### plot the data ####
+
 
     # act-bask ratio vs. time point; facet grid locations
   p <- ggplot2::ggplot(data = multi_ecto_tab_rcps)+
@@ -156,6 +167,63 @@ m_plot_activity <- function(multi_ecto, save_plot = FALSE) {
     # unlink(file_name)
   } else { print(p) }
 
+  # change in active hours vs. time point; facet grid locations
+  p <- ggplot2::ggplot(data = multi_ecto_tab_rcps)+
+    ggplot2::geom_point(size = 2,
+                        mapping = ggplot2::aes_string(x = 'timeper',
+                                                      y = 'change_act',
+                                                      colour = 'rcp',
+                                                      shape = 'rcp'))+
+    ggplot2::geom_line(size = 1,
+                       mapping = ggplot2::aes_string(x = 'timeper',
+                                                     y = 'change_act',
+                                                     colour = 'rcp',
+                                                     group = 'rcp'))+
+    ggplot2::scale_x_discrete(limits = c("pres", "40-59", "80-99"))+
+    ggplot2::facet_wrap(~LID)+
+    ggplot2::theme_bw()
+
+  # print or save plot
+  if(save_plot) {
+    file_name <- "change_act_scenario.png"
+    ggplot2::ggsave(filename = file_name, plot = p, device = png(),
+                    path = save_path, units = "in",
+                    width = 6, height = 6, dpi = 500)
+
+    message(paste0("Plot ", file_name, " has been saved in ", save_path, "\n"))
+    # unlink(file_name)
+  } else { print(p) }
+
+
+  # percentage of change in active hours vs. time point; facet grid locations
+  p <- ggplot2::ggplot(data = multi_ecto_tab_rcps)+
+    ggplot2::geom_point(size = 2,
+                        mapping = ggplot2::aes_string(x = 'timeper',
+                                                      y = 'perc_change_act',
+                                                      colour = 'rcp',
+                                                      shape = 'rcp'))+
+    ggplot2::geom_line(size = 1,
+                       mapping = ggplot2::aes_string(x = 'timeper',
+                                                     y = 'perc_change_act',
+                                                     colour = 'rcp',
+                                                     group = 'rcp'))+
+    ggplot2::scale_x_discrete(limits = c("pres", "40-59", "80-99"))+
+    ggplot2::facet_wrap(~LID)+
+    ggplot2::theme_bw()
+
+  # print or save plot
+  if(save_plot) {
+    file_name <- "perc_change_act_scenario.png"
+    ggplot2::ggsave(filename = file_name, plot = p, device = png(),
+                    path = save_path, units = "in",
+                    width = 6, height = 6, dpi = 500)
+
+    message(paste0("Plot ", file_name, " has been saved in ", save_path, "\n"))
+    # unlink(file_name)
+  } else { print(p) }
+
+
+
     # activity-basking hours ratio vs. absorptivity (all locations & scenarios)
   p <- ggplot2::ggplot(data = multi_ecto_tab)+
     ggplot2::geom_point(size = 2,
@@ -206,6 +274,60 @@ m_plot_activity <- function(multi_ecto, save_plot = FALSE) {
     message(paste0("Plot ", file_name, " has been saved in ", save_path, "\n"))
     # unlink(file_name)
   } else { print(p) }
+
+
+  # change in hours active vs. absorptivity (all locations & scenarios)
+  p <- ggplot2::ggplot(data = multi_ecto_tab[which(multi_ecto_tab$timeper != "present")])+
+    ggplot2::geom_point(size = 2,
+                        mapping = ggplot2::aes_string(x = 'absorp',
+                                                      y = 'change_act',
+                                                      colour = 'id',
+                                                      shape = 'id'))+
+    ggplot2::geom_line(size = 1,
+                       mapping = ggplot2::aes_string(x = 'absorp',
+                                                     y = 'change_act',
+                                                     colour = 'id'))+
+    ggplot2::labs(title = "Change in activity hours (per year) vs. absorptivity")+
+    ggplot2::theme_bw()
+
+  # save plot
+  if(save_plot) {
+    file_name <- "change_act_absorp.png"
+    ggplot2::ggsave(filename = file_name, plot = p, device = png(),
+                    path = save_path, units = "in",
+                    width = 6, height = 6, dpi = 500)
+
+    message(paste0("Plot ", file_name, " has been saved in ", save_path, "\n"))
+    # unlink(file_name)
+  } else { print(p) }
+
+
+
+  # percantage of change in hours active vs. absorptivity (all locations & scenarios)
+  p <- ggplot2::ggplot(data = multi_ecto_tab[which(multi_ecto_tab$timeper != "present")])+
+    ggplot2::geom_point(size = 2,
+                        mapping = ggplot2::aes_string(x = 'absorp',
+                                                      y = 'perc_change_act',
+                                                      colour = 'id',
+                                                      shape = 'id'))+
+    ggplot2::geom_line(size = 1,
+                       mapping = ggplot2::aes_string(x = 'absorp',
+                                                     y = 'perc_change_act',
+                                                     colour = 'id'))+
+    ggplot2::labs(title = "% of change in activity (per year) vs. absorptivity")+
+    ggplot2::theme_bw()
+
+  # save plot
+  if(save_plot) {
+    file_name <- "perc_change_act_absorp.png"
+    ggplot2::ggsave(filename = file_name, plot = p, device = png(),
+                    path = save_path, units = "in",
+                    width = 6, height = 6, dpi = 500)
+
+    message(paste0("Plot ", file_name, " has been saved in ", save_path, "\n"))
+    # unlink(file_name)
+  } else { print(p) }
+
 
   #   # total hours basking vs. absorptivity (all locations & scenarios)
   # ggplot2::ggplot(data = multi_ecto_tab)+
