@@ -26,7 +26,7 @@ split into sub groups of morphs if present.}
 \item{burrow}{Boolean whether lizard is allowed to seek shelter in burrow.}
 
 \item{burrowtype}{Character string defining the burrow type: "sun" (always in the sun),
-"shade" (always in the shade), "sun_shade" (organism decides if burrow is in the sun
+"shade" (always in the shade), "sunshade" (organism decides if burrow is in the sun
 or in the shade).}
 
 \item{DEB}{Boolean stating wheather the ectotherm should be run with or without

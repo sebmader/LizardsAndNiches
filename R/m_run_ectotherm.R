@@ -5,17 +5,22 @@
 #' @param param List of input parameters for ectotherm function.
 #' @param micro List of microclimate data as the output of micro_global function.
 #' @param burrow Boolean whether lizard is allowed to seek shelter in burrow.
+#' @param burtype Numeric to specify type burrow: 0 (always in the sun),
+#' 1 (organism decides if burrow is in the sun or in the shade),
+#' 2 (always in the shade)
 #' @param DEB Boolean whether Dynamic Energy Budget (DEB) model shall be included.
 #' @export
 
 m_run_ectotherm <- function(param,
                             micro,
                             burrow = FALSE,
+                            burtype = 0,
                             DEB = FALSE) {
   assertthat::assert_that(is.data.frame(param))
   assertthat::assert_that(is.list(micro))
   assertthat::assert_that(is.logical(DEB))
   assertthat::assert_that(is.logical(burrow))
+  assertthat::assert_that(is.numeric(burtype))
   # require(NicheMapR)
 
   loc_name <- param$LID
@@ -39,7 +44,7 @@ m_run_ectotherm <- function(param,
   ecto <- NicheMapR::ectotherm(Ww_g = ww, shape = 3, alpha_max = absorp, alpha_min = absorp,
                                T_F_min = temp_f_min, T_F_max = temp_f_max, T_B_min = temp_bask,
                                T_RB_min = temp_bask, T_pref = temp_pref, CT_min = ct_min,
-                               CT_max = ct_max, burrow = as.numeric(burrow), shdburrow = 1,
+                               CT_max = ct_max, burrow = as.numeric(burrow), shdburrow = burtype,
                                DEB = DEB, maxdepth = maxdepth, mindepth = mindepth,
                                nyears = micro$nyears,
                                minshade = minshade,
