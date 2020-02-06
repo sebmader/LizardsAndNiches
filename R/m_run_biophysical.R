@@ -10,6 +10,9 @@
 #' @param nyears Number of years the model is run.
 #' @param ndays Number of days modeled per year.
 #' @param burrow Boolean whether lizard is allowed to seek shelter in burrow.
+#' @param burrowtype Character string defining the burrow type: "sun" (always in the sun),
+#' "shade" (always in the shade), "sun_shade" (organism decides if burrow is in the sun
+#' or in the shade).
 #' @param DEB Boolean stating wheather the ectotherm should be run with or without
 #' the Dynamic Energy Budget model.
 #' @param timeper Character string of the time period for the climate data /
@@ -29,6 +32,7 @@ m_run_biophysical <- function(liz_file = "example_lizard_data.csv",
                               nyears = 1,
                               ndays = 12,
                               burrow = FALSE,
+                              burrowtype = "sun",
                               DEB = FALSE,
                               timeper = "present",
                               rcp = "none",
@@ -55,7 +59,12 @@ m_run_biophysical <- function(liz_file = "example_lizard_data.csv",
                                          rcp = rcp
                                          )
   }
+
+  # load physiological data
   ecto_input <- utils::read.csv("Physio_sum_locations.csv")
+
+  # transform burrow type into numerical value
+  if(b)
   for(loc in ecto_list) {
     param <- ecto_input[which(ecto_input$LID == loc),]
     ecto_list[[loc]] <- m_run_ectotherm(param = param,

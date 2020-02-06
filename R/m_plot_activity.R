@@ -110,6 +110,10 @@ m_plot_activity <- function(multi_ecto, save_plot = FALSE) {
 
   #### plot the data ####
 
+  # plot size
+  unit <- "cm"
+  width <- 22
+  height <- 13.7
 
     # act-bask ratio vs. time point; facet grid locations
   p <- ggplot2::ggplot(data = multi_ecto_tab_rcps)+
@@ -133,8 +137,8 @@ m_plot_activity <- function(multi_ecto, save_plot = FALSE) {
   if(save_plot) {
     file_name <- "act-bask_ratio_scenario.png"
     ggplot2::ggsave(filename = file_name, plot = p, device = png(),
-                    path = save_path, units = "in",
-                    width = 6, height = 6, dpi = 500)
+                    path = save_path, units = unit,
+                    width = width, height = height, dpi = 500)
 
     message(paste0("Plot ", file_name, " has been saved in ", save_path, "\n"))
     # unlink(file_name)
@@ -160,8 +164,8 @@ m_plot_activity <- function(multi_ecto, save_plot = FALSE) {
   if(save_plot) {
     file_name <- "total_act_scenario.png"
     ggplot2::ggsave(filename = file_name, plot = p, device = png(),
-                    path = save_path, units = "in",
-                    width = 6, height = 6, dpi = 500)
+                    path = save_path, units = unit,
+                    width = width, height = height, dpi = 500)
 
     message(paste0("Plot ", file_name, " has been saved in ", save_path, "\n"))
     # unlink(file_name)
@@ -187,8 +191,8 @@ m_plot_activity <- function(multi_ecto, save_plot = FALSE) {
   if(save_plot) {
     file_name <- "change_act_scenario.png"
     ggplot2::ggsave(filename = file_name, plot = p, device = png(),
-                    path = save_path, units = "in",
-                    width = 6, height = 6, dpi = 500)
+                    path = save_path, units = unit,
+                    width = width, height = height, dpi = 500)
 
     message(paste0("Plot ", file_name, " has been saved in ", save_path, "\n"))
     # unlink(file_name)
@@ -215,8 +219,8 @@ m_plot_activity <- function(multi_ecto, save_plot = FALSE) {
   if(save_plot) {
     file_name <- "perc_change_act_scenario.png"
     ggplot2::ggsave(filename = file_name, plot = p, device = png(),
-                    path = save_path, units = "in",
-                    width = 6, height = 6, dpi = 500)
+                    path = save_path, units = unit,
+                    width = width, height = height, dpi = 500)
 
     message(paste0("Plot ", file_name, " has been saved in ", save_path, "\n"))
     # unlink(file_name)
@@ -242,8 +246,8 @@ m_plot_activity <- function(multi_ecto, save_plot = FALSE) {
   if(save_plot) {
     file_name <- "act-bask_ratio_absorp.png"
     ggplot2::ggsave(filename = file_name, plot = p, device = png(),
-                    path = save_path, units = "in",
-                    width = 6, height = 6, dpi = 500)
+                    path = save_path, units = unit,
+                    width = width, height = height, dpi = 500)
 
     message(paste0("Plot ", file_name, " has been saved in ", save_path, "\n"))
     # unlink(file_name)
@@ -268,8 +272,8 @@ m_plot_activity <- function(multi_ecto, save_plot = FALSE) {
   if(save_plot) {
     file_name <- "total_act_absorp.png"
     ggplot2::ggsave(filename = file_name, plot = p, device = png(),
-                    path = save_path, units = "in",
-                    width = 6, height = 6, dpi = 500)
+                    path = save_path, units = unit,
+                    width = width, height = height, dpi = 500)
 
     message(paste0("Plot ", file_name, " has been saved in ", save_path, "\n"))
     # unlink(file_name)
@@ -294,17 +298,18 @@ m_plot_activity <- function(multi_ecto, save_plot = FALSE) {
   if(save_plot) {
     file_name <- "change_act_absorp.png"
     ggplot2::ggsave(filename = file_name, plot = p, device = png(),
-                    path = save_path, units = "in",
-                    width = 6, height = 6, dpi = 500)
+                    path = save_path, units = unit,
+                    width = width, height = height, dpi = 500)
 
     message(paste0("Plot ", file_name, " has been saved in ", save_path, "\n"))
     # unlink(file_name)
   } else { print(p) }
 
 
+  multi_ecto_tab_nopres <- multi_ecto_tab[which(multi_ecto_tab$timeper != "present"),]
 
   # percantage of change in hours active vs. absorptivity (all locations & scenarios)
-  p <- ggplot2::ggplot(data = multi_ecto_tab[which(multi_ecto_tab$timeper != "present")])+
+  p <- ggplot2::ggplot(data = multi_ecto_tab_nopres)+
     ggplot2::geom_point(size = 2,
                         mapping = ggplot2::aes_string(x = 'absorp',
                                                       y = 'perc_change_act',
@@ -321,8 +326,8 @@ m_plot_activity <- function(multi_ecto, save_plot = FALSE) {
   if(save_plot) {
     file_name <- "perc_change_act_absorp.png"
     ggplot2::ggsave(filename = file_name, plot = p, device = png(),
-                    path = save_path, units = "in",
-                    width = 6, height = 6, dpi = 500)
+                    path = save_path, units = unit,
+                    width = width, height = height, dpi = 500)
 
     message(paste0("Plot ", file_name, " has been saved in ", save_path, "\n"))
     # unlink(file_name)

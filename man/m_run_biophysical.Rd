@@ -7,8 +7,8 @@
 m_run_biophysical(liz_file = "example_lizard_data.csv",
   species = "Karusasaurus_polyzonus",
   loc_file = "example_coordinates.csv", nyears = 1, ndays = 12,
-  burrow = FALSE, DEB = FALSE, timeper = "present", rcp = "none",
-  save_plot = FALSE)
+  burrow = FALSE, burrowtype = "sun", DEB = FALSE,
+  timeper = "present", rcp = "none", save_plot = FALSE)
 }
 \arguments{
 \item{liz_file}{A file with lizard data (see example_lizard_data.csv) containing at least
@@ -24,6 +24,10 @@ split into sub groups of morphs if present.}
 \item{ndays}{Number of days modeled per year.}
 
 \item{burrow}{Boolean whether lizard is allowed to seek shelter in burrow.}
+
+\item{burrowtype}{Character string defining the burrow type: "sun" (always in the sun),
+"shade" (always in the shade), "sun_shade" (organism decides if burrow is in the sun
+or in the shade).}
 
 \item{DEB}{Boolean stating wheather the ectotherm should be run with or without
 the Dynamic Energy Budget model.}

@@ -19,11 +19,11 @@ m_plot_micro <- function(ectoall, save_plot = FALSE) {
   # TODO: make this function facet.grid the single locations
 
   # calculate average microclimate conditions (over all locations per month)
-  T_loc <- vector(mode = "numeric", length = 12)
-  T_ref <- vector(mode = "numeric", length = 12)
-  RH_loc <- vector(mode = "numeric", length = 12)
-  RH_ref <- vector(mode = "numeric", length = 12)
   days <- seq(1,12,1)
+  T_loc <- vector(mode = "numeric", length = length(days))
+  T_ref <- vector(mode = "numeric", length = length(days))
+  RH_loc <- vector(mode = "numeric", length = length(days))
+  RH_ref <- vector(mode = "numeric", length = length(days))
 
   # save sim_name for plot title and saving directory
   sim_name <- ectoall[[1]]$timeper
