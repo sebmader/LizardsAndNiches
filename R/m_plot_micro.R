@@ -10,7 +10,7 @@
 #' (default = FALSE)
 #' @return Plot
 # @importFrom ggplot2 ggplot aes geom_line facet_grid vars scale_x_discrete labs
-# @importFrom grDevices png dev.off
+#' @importFrom grDevices png
 #' @export
 
 

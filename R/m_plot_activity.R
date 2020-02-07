@@ -8,7 +8,7 @@
 #' @param save_plot Boolean whether the plot should be saved or not (default = FALSE).
 #' @return Plot
 # @importFrom graphics abline legend text
-# @importFrom grDevices png dev.off
+#' @importFrom grDevices png
 #' @export
 
 m_plot_activity <- function(multi_ecto, save_plot = FALSE) {
@@ -281,7 +281,7 @@ m_plot_activity <- function(multi_ecto, save_plot = FALSE) {
 
 
   # change in hours active vs. absorptivity (all locations & scenarios)
-  p <- ggplot2::ggplot(data = multi_ecto_tab[which(multi_ecto_tab$timeper != "present")])+
+  p <- ggplot2::ggplot(data = multi_ecto_tab[which(multi_ecto_tab$timeper != "present"),])+
     ggplot2::geom_point(size = 2,
                         mapping = ggplot2::aes_string(x = 'absorp',
                                                       y = 'change_act',

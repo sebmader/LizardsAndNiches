@@ -81,7 +81,7 @@ m_run_biophysical <- function(liz_file = "example_lizard_data.csv",
     ecto_list[[loc]] <- m_run_ectotherm(param = param,
                                         micro = micro_list[[loc]],
                                         burrow = burrow,
-                                        burrowtype = burtype,
+                                        burtype = burtype,
                                         DEB = DEB
                                         )
 

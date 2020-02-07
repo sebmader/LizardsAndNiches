@@ -18,7 +18,7 @@ m_get_microclim <- function(loc_row, nyears = 1, ndays = 12,
                             timeper = "present", rcp = "none") {
   # load NicheMapR; otherwise an error is thrown because there is an object in the package
   # that is used by micro_global() ...
-  require(NicheMapR)
+  requireNamespace("NicheMapR")
 
   assertthat::assert_that(is.data.frame(loc_row))
 
