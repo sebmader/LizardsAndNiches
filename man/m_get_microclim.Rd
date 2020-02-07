@@ -5,7 +5,7 @@
 \title{m_get_microclim}
 \usage{
 m_get_microclim(loc_row, nyears = 1, ndays = 12, timeper = "present",
-  rcp = "none")
+  rcp = "none", shade = c(0, 90))
 }
 \arguments{
 \item{loc_row}{A data frame row containing information on location
@@ -21,6 +21,9 @@ soilgrids (downloading: yes or no))}
 
 \item{rcp}{Pick a representative concentration pathway (rcp) for climate predictions
 ("none" (for present), "45" (medium low emissions), "85" (high emissions))}
+
+\item{shade}{Vector of 2 numeric values: the first for minimum, the second for
+maximum shade.}
 }
 \value{
 list of locations (as sublists) with corresponding microclimate data

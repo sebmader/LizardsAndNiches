@@ -20,6 +20,7 @@
 #' the 1961-1990 of CCKP with the one frome NicheMapR).
 #' @param rcp Character string to specify the emission scenario in case of climate
 #' predictions ("none", "45", "85").
+#' @param shade Vector of 2 numerics defining minimum and maximum shade.
 #' @param save_plot Boolean whether plots shall be saved or not.
 #' @return List of lists with output of ectotherm function for each
 #' species/population/entity
@@ -36,6 +37,7 @@ m_run_biophysical <- function(liz_file = "example_lizard_data.csv",
                               DEB = FALSE,
                               timeper = "present",
                               rcp = "none",
+                              shade = c(0, 90),
                               save_plot = FALSE) {
 
   # import dataset from file
@@ -56,8 +58,8 @@ m_run_biophysical <- function(liz_file = "example_lizard_data.csv",
                                          nyears = nyears,
                                          ndays = ndays,
                                          timeper = timeper,
-                                         rcp = rcp
-                                         )
+                                         rcp = rcp,
+                                         shade = shade)
   }
 
   # load physiological data

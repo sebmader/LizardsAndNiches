@@ -24,6 +24,7 @@ m_run_ectotherm <- function(param,
   # require(NicheMapR)
 
   loc_name <- param$LID
+  ttl <- param$TTL_mean
   ww <- param$WW_mean
   absorp <- param$absorp_mean
   temp_f_min <- param$tf_min
@@ -77,5 +78,7 @@ m_run_ectotherm <- function(param,
   ecto$nyears <- micro$nyears
   ecto$ndays <- micro$ndays
   ecto$absorp <- absorp
+  ecto$ttl <- ttl
+  ecto$ww <- ww
   ecto
 }

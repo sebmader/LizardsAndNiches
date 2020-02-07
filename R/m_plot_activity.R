@@ -115,6 +115,8 @@ m_plot_activity <- function(multi_ecto, save_plot = FALSE) {
   width <- 22
   height <- 13.7
 
+  ### split into locations ###
+
     # act-bask ratio vs. time point; facet grid locations
   p <- ggplot2::ggplot(data = multi_ecto_tab_rcps)+
     ggplot2::geom_point(size = 2,
@@ -211,6 +213,10 @@ m_plot_activity <- function(multi_ecto, save_plot = FALSE) {
                                                      y = 'perc_change_act',
                                                      colour = 'rcp',
                                                      group = 'rcp'))+
+    ggplot2::geom_hline(ggplot2::aes(yintercept = 1, linetype = "present"),
+                        colour = "black")+
+    ggplot2::scale_linetype_manual(name = "Reference", values = 2,
+                                   guide = ggplot2::guide_legend(override.aes = list(color = "black")))+
     ggplot2::scale_x_discrete(limits = c("pres", "40-59", "80-99"))+
     ggplot2::facet_wrap(~LID)+
     ggplot2::theme_bw()
@@ -227,6 +233,10 @@ m_plot_activity <- function(multi_ecto, save_plot = FALSE) {
   } else { print(p) }
 
 
+
+  ### activity vs. physio data ###
+
+  # absorptivity #
 
     # activity-basking hours ratio vs. absorptivity (all locations & scenarios)
   p <- ggplot2::ggplot(data = multi_ecto_tab)+
@@ -319,12 +329,164 @@ m_plot_activity <- function(multi_ecto, save_plot = FALSE) {
                        mapping = ggplot2::aes_string(x = 'absorp',
                                                      y = 'perc_change_act',
                                                      colour = 'id'))+
+    ggplot2::geom_hline(ggplot2::aes(yintercept = 1, linetype = "present"),
+                        colour = "black")+
+    ggplot2::scale_linetype_manual(name = "Reference", values = 2,
+                                   guide = ggplot2::guide_legend(override.aes = list(color = "black")))+
     ggplot2::labs(title = "% of change in activity (per year) vs. absorptivity")+
     ggplot2::theme_bw()
 
   # save plot
   if(save_plot) {
     file_name <- "perc_change_act_absorp.png"
+    ggplot2::ggsave(filename = file_name, plot = p, device = png(),
+                    path = save_path, units = unit,
+                    width = width, height = height, dpi = 500)
+
+    message(paste0("Plot ", file_name, " has been saved in ", save_path, "\n"))
+    # unlink(file_name)
+  } else { print(p) }
+
+
+  # body weight #
+
+  # activity-basking hours ratio vs. body weight (all locations & scenarios)
+  p <- ggplot2::ggplot(data = multi_ecto_tab)+
+    ggplot2::geom_point(size = 2,
+                        mapping = ggplot2::aes_string(x = 'ww',
+                                                      y = 'act_bask_ratio',
+                                                      colour = 'id',
+                                                      shape = 'id'))+
+    ggplot2::geom_line(size = 1,
+                       mapping = ggplot2::aes_string(x = 'ww',
+                                                     y = 'act_bask_ratio',
+                                                     colour = 'id'))+
+    ggplot2::labs(title = "Activity-basking ratio (per year) vs. body weight")+
+    ggplot2::theme_bw()
+
+  # save plot
+  if(save_plot) {
+    file_name <- "act-bask_ratio_ww.png"
+    ggplot2::ggsave(filename = file_name, plot = p, device = png(),
+                    path = save_path, units = unit,
+                    width = width, height = height, dpi = 500)
+
+    message(paste0("Plot ", file_name, " has been saved in ", save_path, "\n"))
+    # unlink(file_name)
+  } else { print(p) }
+
+  # percantage of change in hours active vs. absorptivity (all locations & scenarios)
+  p <- ggplot2::ggplot(data = multi_ecto_tab_nopres)+
+    ggplot2::geom_point(size = 2,
+                        mapping = ggplot2::aes_string(x = 'ww',
+                                                      y = 'perc_change_act',
+                                                      colour = 'id',
+                                                      shape = 'id'))+
+    ggplot2::geom_line(size = 1,
+                       mapping = ggplot2::aes_string(x = 'ww',
+                                                     y = 'perc_change_act',
+                                                     colour = 'id'))+
+    ggplot2::geom_hline(ggplot2::aes(yintercept = 1, linetype = "present"),
+                        colour = "black")+
+    ggplot2::scale_linetype_manual(name = "Reference", values = 2,
+                                   guide = ggplot2::guide_legend(override.aes = list(color = "black")))+
+    ggplot2::labs(title = "% of change in activity (per year) vs. body weight")+
+    ggplot2::theme_bw()
+
+  # save plot
+  if(save_plot) {
+    file_name <- "perc_change_act_weight.png"
+    ggplot2::ggsave(filename = file_name, plot = p, device = png(),
+                    path = save_path, units = unit,
+                    width = width, height = height, dpi = 500)
+
+    message(paste0("Plot ", file_name, " has been saved in ", save_path, "\n"))
+    # unlink(file_name)
+  } else { print(p) }
+
+
+  # body length #
+
+  # activity-basking hours ratio vs. body length (all locations & scenarios)
+  p <- ggplot2::ggplot(data = multi_ecto_tab)+
+    ggplot2::geom_point(size = 2,
+                        mapping = ggplot2::aes_string(x = 'ttl',
+                                                      y = 'act_bask_ratio',
+                                                      colour = 'id',
+                                                      shape = 'id'))+
+    ggplot2::geom_line(size = 1,
+                       mapping = ggplot2::aes_string(x = 'ttl',
+                                                     y = 'act_bask_ratio',
+                                                     colour = 'id'))+
+    ggplot2::labs(title = "Activity-basking ratio (per year) vs. body length")+
+    ggplot2::theme_bw()
+
+  # save plot
+  if(save_plot) {
+    file_name <- "act-bask_ratio_ttl.png"
+    ggplot2::ggsave(filename = file_name, plot = p, device = png(),
+                    path = save_path, units = unit,
+                    width = width, height = height, dpi = 500)
+
+    message(paste0("Plot ", file_name, " has been saved in ", save_path, "\n"))
+    # unlink(file_name)
+  } else { print(p) }
+
+  # percantage of change in hours active vs. absorptivity (all locations & scenarios)
+  p <- ggplot2::ggplot(data = multi_ecto_tab_nopres)+
+    ggplot2::geom_point(size = 2,
+                        mapping = ggplot2::aes_string(x = 'ttl',
+                                                      y = 'perc_change_act',
+                                                      colour = 'id',
+                                                      shape = 'id'))+
+    ggplot2::geom_line(size = 1,
+                       mapping = ggplot2::aes_string(x = 'ttl',
+                                                     y = 'perc_change_act',
+                                                     colour = 'id'))+
+    ggplot2::geom_hline(ggplot2::aes(yintercept = 1, linetype = "present"),
+                        colour = "black")+
+    ggplot2::scale_linetype_manual(name = "Reference", values = 2,
+                                   guide = ggplot2::guide_legend(override.aes = list(color = "black")))+
+    ggplot2::labs(title = "% of change in activity (per year) vs. body length")+
+    ggplot2::theme_bw()
+
+  # save plot
+  if(save_plot) {
+    file_name <- "perc_change_act_length.png"
+    ggplot2::ggsave(filename = file_name, plot = p, device = png(),
+                    path = save_path, units = unit,
+                    width = width, height = height, dpi = 500)
+
+    message(paste0("Plot ", file_name, " has been saved in ", save_path, "\n"))
+    # unlink(file_name)
+  } else { print(p) }
+
+
+  # weight / length #
+
+  multi_ecto_tab_nopres$wwttl_ratio <- multi_ecto_tab_nopres$ww / multi_ecto_tab_nopres$ttl
+
+  # percantage of change in hours active vs. absorptivity (all locations & scenarios)
+  p <- ggplot2::ggplot(data = multi_ecto_tab_nopres)+
+    ggplot2::geom_point(size = 2,
+                        mapping = ggplot2::aes_string(x = 'wwttl_ratio',
+                                                      y = 'perc_change_act',
+                                                      colour = 'id',
+                                                      shape = 'id'))+
+    ggplot2::geom_line(size = 1,
+                       mapping = ggplot2::aes_string(x = 'wwttl_ratio',
+                                                     y = 'perc_change_act',
+                                                     colour = 'id'))+
+    ggplot2::geom_hline(ggplot2::aes(yintercept = 1, linetype = "present"),
+                        colour = "black")+
+    ggplot2::scale_linetype_manual(name = "Reference", values = 2,
+                                   guide = ggplot2::guide_legend(override.aes = list(color = "black")))+
+    ggplot2::labs(title = "% of change in activity (per year) vs. weight-length ratio")+
+    ggplot2::theme_bw()
+
+  # save plot
+  if(save_plot) {
+    file_name <- "perc_change_act_wwttl-ratio.png"
     ggplot2::ggsave(filename = file_name, plot = p, device = png(),
                     path = save_path, units = unit,
                     width = width, height = height, dpi = 500)

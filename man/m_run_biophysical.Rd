@@ -8,7 +8,8 @@ m_run_biophysical(liz_file = "example_lizard_data.csv",
   species = "Karusasaurus_polyzonus",
   loc_file = "example_coordinates.csv", nyears = 1, ndays = 12,
   burrow = FALSE, burrowtype = "sun", DEB = FALSE,
-  timeper = "present", rcp = "none", save_plot = FALSE)
+  timeper = "present", rcp = "none", shade = c(0, 90),
+  save_plot = FALSE)
 }
 \arguments{
 \item{liz_file}{A file with lizard data (see example_lizard_data.csv) containing at least
@@ -38,6 +39,8 @@ the 1961-1990 of CCKP with the one frome NicheMapR).}
 
 \item{rcp}{Character string to specify the emission scenario in case of climate
 predictions ("none", "45", "85").}
+
+\item{shade}{Vector of 2 numerics defining minimum and maximum shade.}
 
 \item{save_plot}{Boolean whether plots shall be saved or not.}
 }

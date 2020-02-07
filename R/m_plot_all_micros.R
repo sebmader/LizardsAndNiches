@@ -54,18 +54,25 @@ m_plot_all_micros <- function(multi_micro, save_plot = FALSE) {
         RH_ref[month] <- mean(list_days[[month]][,4])
       }
 
-      # clim_tab <- cbind(months, T_loc, T_ref, RH_loc, RH_ref)
-
-      # multi_micro[[scen]][[loc]]$clim_tab <- clim_tab
-
       multi_micro[[scen]][[loc]]$months <- months
       multi_micro[[scen]][[loc]]$T_loc <- T_loc
       multi_micro[[scen]][[loc]]$T_ref <- T_ref
       multi_micro[[scen]][[loc]]$RH_loc <- RH_loc
       multi_micro[[scen]][[loc]]$RH_ref <- RH_ref
+    }
+  }
+
+
+  for(scen in scenarios) {
+    for(loc in locations) {
+      # calculate and save total change
+      multi_micro[[scen]][[loc]]$change_T_loc <- multi_micro[[scen]][[loc]]$T_loc - multi_micro[["present"]][[loc]]$T_loc
+      multi_micro[[scen]][[loc]]$change_RH_loc <- multi_micro[[scen]][[loc]]$RH_loc - multi_micro[["present"]][[loc]]$RH_loc
+      # calculate and save percentage change
+      multi_micro[[scen]][[loc]]$perc_T_loc <- multi_micro[[scen]][[loc]]$T_loc / multi_micro[["present"]][[loc]]$T_loc
+      multi_micro[[scen]][[loc]]$perc_RH_loc <- multi_micro[[scen]][[loc]]$RH_loc / multi_micro[["present"]][[loc]]$RH_loc
 
       multi_micro[[scen]][[loc]]$metout <- NULL
-
     }
   }
 
@@ -109,7 +116,7 @@ m_plot_all_micros <- function(multi_micro, save_plot = FALSE) {
   multi_micro_tab_rcps$rcp <- as.factor(multi_micro_tab_rcps$rcp)
 
 
-  # plot data
+  #### plot data ####
 
   # plot size
   unit <- "cm"
@@ -147,6 +154,67 @@ m_plot_all_micros <- function(multi_micro, save_plot = FALSE) {
   } else { print(p) }
 
 
+  # change in local temperature over the year; facet grid locations and RCPs
+  p <- ggplot2::ggplot(data = multi_micro_tab_rcps[which(multi_micro_tab_rcps$timeper != "pres"),])+
+    ggplot2::geom_point(size = 2,
+                        mapping = ggplot2::aes_string(x = 'months',
+                                                      y = 'change_T_loc',
+                                                      colour = 'timeper',
+                                                      shape = 'timeper'))+
+    ggplot2::geom_line(size = 1,
+                       mapping = ggplot2::aes_string(x = 'months',
+                                                     y = 'change_T_loc',
+                                                     colour = 'timeper',
+                                                     group = 'timeper'))+
+    # ggplot2::facet_wrap(~LID)+
+    ggplot2::facet_grid(cols = ggplot2::vars(LID), rows = ggplot2::vars(rcp))+
+    ggplot2::theme_bw()
+
+  # save plot
+  if(save_plot) {
+    file_name <- "microclimates_change_localTemp.png"
+    ggplot2::ggsave(filename = file_name, plot = p, device = png(),
+                    path = save_path, units = unit,
+                    width = width, height = height, dpi = 500)
+
+    message(paste0("Plot ", file_name, " has been saved in ", save_path, "\n"))
+    # unlink(file_name)
+  } else { print(p) }
+
+
+  # % of change in local temperature over the year; facet grid locations and RCPs
+  p <- ggplot2::ggplot(data = multi_micro_tab_rcps[which(multi_micro_tab_rcps$timeper != "pres"),])+
+    ggplot2::geom_point(size = 2,
+                        mapping = ggplot2::aes_string(x = 'months',
+                                                      y = 'perc_T_loc',
+                                                      colour = 'timeper',
+                                                      shape = 'timeper'))+
+    ggplot2::geom_line(size = 1,
+                       mapping = ggplot2::aes_string(x = 'months',
+                                                     y = 'perc_T_loc',
+                                                     colour = 'timeper',
+                                                     group = 'timeper'))+
+    ggplot2::geom_hline(ggplot2::aes(yintercept = 1, linetype = "present"),
+                        colour = "black")+
+    ggplot2::scale_linetype_manual(name = "Reference", values = 2,
+                                   guide = ggplot2::guide_legend(override.aes = list(color = "black")))+
+    # ggplot2::facet_wrap(~LID)+
+    ggplot2::facet_grid(cols = ggplot2::vars(LID), rows = ggplot2::vars(rcp))+
+    ggplot2::theme_bw()
+
+  # save plot
+  if(save_plot) {
+    file_name <- "microclimates_percentagechange_localTemp.png"
+    ggplot2::ggsave(filename = file_name, plot = p, device = png(),
+                    path = save_path, units = unit,
+                    width = width, height = height, dpi = 500)
+
+    message(paste0("Plot ", file_name, " has been saved in ", save_path, "\n"))
+    # unlink(file_name)
+  } else { print(p) }
+
+
+
   # reference temperature over the year; facet grid locations and RCPs
   p <- ggplot2::ggplot(data = multi_micro_tab_rcps)+
     ggplot2::geom_point(size = 2,
@@ -173,6 +241,7 @@ m_plot_all_micros <- function(multi_micro, save_plot = FALSE) {
     message(paste0("Plot ", file_name, " has been saved in ", save_path, "\n"))
     # unlink(file_name)
   } else { print(p) }
+
 
 
 
@@ -206,7 +275,68 @@ m_plot_all_micros <- function(multi_micro, save_plot = FALSE) {
   } else { print(p) }
 
 
-  # local relative humidity over the year; facet grid locations and RCPs
+  # # total change in local RH over the year; facet grid locations and RCPs
+  # p <- ggplot2::ggplot(data = multi_micro_tab_rcps[which(multi_micro_tab_rcps$timeper != "pres"),])+
+  #   ggplot2::geom_point(size = 2,
+  #                       mapping = ggplot2::aes_string(x = 'months',
+  #                                                     y = 'change_RH_loc',
+  #                                                     colour = 'timeper',
+  #                                                     shape = 'timeper'))+
+  #   ggplot2::geom_line(size = 1,
+  #                      mapping = ggplot2::aes_string(x = 'months',
+  #                                                    y = 'change_RH_loc',
+  #                                                    colour = 'timeper',
+  #                                                    group = 'timeper'))+
+  #   # ggplot2::facet_wrap(~LID)+
+  #   ggplot2::facet_grid(cols = ggplot2::vars(LID), rows = ggplot2::vars(rcp))+
+  #   ggplot2::theme_bw()
+  #
+  # # save plot
+  # if(save_plot) {
+  #   file_name <- "microclimates_change_localRH.png"
+  #   ggplot2::ggsave(filename = file_name, plot = p, device = png(),
+  #                   path = save_path, units = unit,
+  #                   width = width, height = height, dpi = 500)
+  #
+  #   message(paste0("Plot ", file_name, " has been saved in ", save_path, "\n"))
+  #   # unlink(file_name)
+  # } else { print(p) }
+
+
+  # % of change in local RH over the year; facet grid locations and RCPs
+  p <- ggplot2::ggplot(data = multi_micro_tab_rcps[which(multi_micro_tab_rcps$timeper != "pres"),])+
+    ggplot2::geom_point(size = 2,
+                        mapping = ggplot2::aes_string(x = 'months',
+                                                      y = 'perc_RH_loc',
+                                                      colour = 'timeper',
+                                                      shape = 'timeper'))+
+    ggplot2::geom_line(size = 1,
+                       mapping = ggplot2::aes_string(x = 'months',
+                                                     y = 'perc_RH_loc',
+                                                     colour = 'timeper',
+                                                     group = 'timeper'))+
+    ggplot2::geom_hline(ggplot2::aes(yintercept = 1, linetype = "present"),
+                        colour = "black")+
+    ggplot2::scale_linetype_manual(name = "Reference", values = 2,
+                                   guide = ggplot2::guide_legend(override.aes = list(color = "black")))+
+    # ggplot2::facet_wrap(~LID)+
+    ggplot2::facet_grid(cols = ggplot2::vars(LID), rows = ggplot2::vars(rcp))+
+    ggplot2::theme_bw()
+
+  # save plot
+  if(save_plot) {
+    file_name <- "microclimates_percentagechange_localRH.png"
+    ggplot2::ggsave(filename = file_name, plot = p, device = png(),
+                    path = save_path, units = unit,
+                    width = width, height = height, dpi = 500)
+
+    message(paste0("Plot ", file_name, " has been saved in ", save_path, "\n"))
+    # unlink(file_name)
+  } else { print(p) }
+
+
+
+  # reference relative humidity over the year; facet grid locations and RCPs
   p <- ggplot2::ggplot(data = multi_micro_tab_rcps)+
     ggplot2::geom_point(size = 2,
                         mapping = ggplot2::aes_string(x = 'months',
