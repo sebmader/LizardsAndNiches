@@ -13,6 +13,9 @@
 
 m_plot_ecto <- function(ecto, sim_name = ecto$LID, save_plot = F) {
 
+  # directory to save plots
+  save_path <- paste0("./Plots/ecophysio_plots/", sim_name)
+
   # retrieve output
   environ <- as.data.frame(ecto$environ) # behaviour, Tb and environment
   enbal <- as.data.frame(ecto$enbal) # heat balance outputs
@@ -72,8 +75,7 @@ m_plot_ecto <- function(ecto, sim_name = ecto$LID, save_plot = F) {
     subtitle <- paste0(subtitle, ecto$nyears, " year")
   }
 
-  # directory to save plots
-  save_path <- paste0("Plots/ecophysio_plots/", sim_name)
+
   # save plot if applicable
   if(save_plot) {
 
@@ -90,13 +92,14 @@ m_plot_ecto <- function(ecto, sim_name = ecto$LID, save_plot = F) {
 
   ylim_min <- -8
   depth_div <- 10
+  xlab <- ifelse(ecto$ndays == 12, "months", "days")
   if(ecto$burrow) {
       with(environ, graphics::plot(TC ~ dates, ylab = "T_b, activity, shade & depth",
-                               xlab = "days", ylim = c(ylim_min, 50), type = "l",
+                               xlab = xlab, ylim = c(ylim_min, 50), type = "l",
                                main = sim_title, sub = subtitle))
   } else {
     with(environ, graphics::plot(TC ~ dates, ylab = "T_b, activity & shade",
-                     xlab = "days", ylim = c(ylim_min, 50), type = "l",
+                     xlab = xlab, ylim = c(ylim_min, 50), type = "l",
                      main = sim_title, sub = subtitle))
   }
   with(environ, graphics::points(ACT * 5 ~ dates, type = "l", col = "orange"))
@@ -104,16 +107,18 @@ m_plot_ecto <- function(ecto, sim_name = ecto$LID, save_plot = F) {
   if(ecto$burrow) {
       with(environ, points(DEP / depth_div ~ dates, type = "l",col = "brown"))
   }
-  graphics::abline(T_F_max, 0, lty = 2, col = "orange")
-  graphics::abline(T_F_min, 0, lty = 2, col = "lightblue3")
-  graphics::abline(T_pref, 0, lty = 2, col = "green")
-  graphics::abline(h = CT_max, lty = 2, col = "red")
-  graphics::abline(h = CT_min, lty = 2, col = "blue")
+  graphics::abline(T_F_max, 0, lty = 5, lwd = 1.6, col = "orange")
+  graphics::abline(T_F_min, 0, lty = 5, lwd = 1.6, col = "lightblue3")
+  graphics::abline(T_pref, 0, lty = 5, lwd = 1.6, col = "green")
+  graphics::abline(h = CT_max, lty = 5, lwd = 1.6, col = "red")
+  graphics::abline(h = CT_min, lty = 5, lwd = 1.6, col = "mediumblue")
+  graphics::abline(v = dates[which(environ$TIME == 12)], lty = 3, lwd = 0.7, col = "yellow3")
+  graphics::abline(v = dates[which(environ$TIME == 0)], lty = 3, lwd = 0.7, col = "violet")
   graphics::text(x = 0, y = T_F_max + 2, "T_F_max", col = "orange", adj = c(0,0.5))
   graphics::text(x = 0, y = T_F_min + 2, "T_F_min", col = "lightblue3", adj = c(0,0.5))
   graphics::text(x = 0, y = T_pref + 2, "T_pref", col = "green", adj = c(0,0.5))
   graphics::text(x = 0, y = CT_max + 2, "CT_max", col = "red", adj = c(0,0.5))
-  graphics::text(x = 0, y = CT_min + 2, "CT_min", col = "blue", adj = c(0,0.5))
+  graphics::text(x = 0, y = CT_min + 2, "CT_min", col = "mediumblue", adj = c(0,0.5))
   if(ecto$burrow) {
       graphics::legend(x = "topright",
                    legend = c("T_b (°C)", "activity (0, 5 or 10)", "shade (%/10)",

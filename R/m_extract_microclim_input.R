@@ -35,7 +35,14 @@ m_extract_microclim_input <- function(location = "", loc_data) {
   loc_data$Nature <- gsub("S", "6", loc_data$Nature) #The only soil instance si Windheuwel where the soil was sandy clay loam (Info from https://data.isric.org/geonetwork/srv/ita/catalog.search#/metadata/10aa9a99-1433-11e9-a8fa-a0481ca9e724)
   loc_data$Nature <- gsub("P", "1", loc_data$Nature) #Macropholis in labertbaai lives on plants but the soild underneath is sand
   loc_data$Nature <- as.numeric(loc_data$Nature)
+
+  # specific heat capacity needs multiplication by 1000
+  # our data is in J(g^-1)(K^-1), NicheMapR wants J(kg^-1)(K^-1)
+  loc_data$Spec.Heat <- loc_data$Spec.Heat * 1000
+
+  # output
   loc_data
+
   # # make list to add the micro_global output to each location
   # loc_list <- split(loc_data, loc_data$LID)
   #

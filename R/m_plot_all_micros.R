@@ -17,6 +17,7 @@ m_plot_all_micros <- function(multi_micro, save_plot = FALSE) {
 
   # create directory of save path if applicable
   save_path <- "./Plots/microclim_plots/"
+
   if(save_plot) {
 
     if(!dir.exists(save_path)) {
@@ -138,6 +139,7 @@ m_plot_all_micros <- function(multi_micro, save_plot = FALSE) {
                                                      y = 'T_loc',
                                                      colour = 'timeper',
                                                      group = 'timeper'))+
+    ggplot2::scale_x_continuous(breaks = seq(2, 12, 2), limits = c(1,12))+
     # ggplot2::facet_wrap(~LID)+
     ggplot2::facet_grid(cols = ggplot2::vars(LID), rows = ggplot2::vars(rcp))+
     ggplot2::theme_bw()
@@ -166,6 +168,7 @@ m_plot_all_micros <- function(multi_micro, save_plot = FALSE) {
                                                      y = 'change_T_loc',
                                                      colour = 'timeper',
                                                      group = 'timeper'))+
+    ggplot2::scale_x_continuous(breaks = seq(2, 12, 2), limits = c(1,12))+
     # ggplot2::facet_wrap(~LID)+
     ggplot2::facet_grid(cols = ggplot2::vars(LID), rows = ggplot2::vars(rcp))+
     ggplot2::theme_bw()
@@ -198,6 +201,7 @@ m_plot_all_micros <- function(multi_micro, save_plot = FALSE) {
                         colour = "black")+
     ggplot2::scale_linetype_manual(name = "Reference", values = 2,
                                    guide = ggplot2::guide_legend(override.aes = list(color = "black")))+
+    ggplot2::scale_x_continuous(breaks = seq(2, 12, 2), limits = c(1,12))+
     # ggplot2::facet_wrap(~LID)+
     ggplot2::facet_grid(cols = ggplot2::vars(LID), rows = ggplot2::vars(rcp))+
     ggplot2::theme_bw()
@@ -227,6 +231,7 @@ m_plot_all_micros <- function(multi_micro, save_plot = FALSE) {
                                                      y = 'T_ref',
                                                      colour = 'timeper',
                                                      group = 'timeper'))+
+    ggplot2::scale_x_continuous(breaks = seq(2, 12, 2), limits = c(1,12))+
     # ggplot2::facet_wrap(~LID)+
     ggplot2::facet_grid(cols = ggplot2::vars(LID), rows = ggplot2::vars(rcp))+
     ggplot2::theme_bw()
@@ -259,6 +264,7 @@ m_plot_all_micros <- function(multi_micro, save_plot = FALSE) {
                                                      y = 'RH_loc',
                                                      colour = 'timeper',
                                                      group = 'timeper'))+
+    ggplot2::scale_x_continuous(breaks = seq(2, 12, 2), limits = c(1,12))+
     # ggplot2::facet_wrap(~LID)+
     ggplot2::facet_grid(cols = ggplot2::vars(LID), rows = ggplot2::vars(rcp))+
     ggplot2::theme_bw()
@@ -319,6 +325,7 @@ m_plot_all_micros <- function(multi_micro, save_plot = FALSE) {
                         colour = "black")+
     ggplot2::scale_linetype_manual(name = "Reference", values = 2,
                                    guide = ggplot2::guide_legend(override.aes = list(color = "black")))+
+    ggplot2::scale_x_continuous(breaks = seq(2, 12, 2), limits = c(1,12))+
     # ggplot2::facet_wrap(~LID)+
     ggplot2::facet_grid(cols = ggplot2::vars(LID), rows = ggplot2::vars(rcp))+
     ggplot2::theme_bw()
@@ -348,6 +355,7 @@ m_plot_all_micros <- function(multi_micro, save_plot = FALSE) {
                                                      y = 'RH_ref',
                                                      colour = 'timeper',
                                                      group = 'timeper'))+
+    ggplot2::scale_x_continuous(breaks = seq(2, 12, 2), limits = c(1,12))+
     # ggplot2::facet_wrap(~LID)+
     ggplot2::facet_grid(cols = ggplot2::vars(LID), rows = ggplot2::vars(rcp))+
     ggplot2::theme_bw()

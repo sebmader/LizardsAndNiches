@@ -57,6 +57,7 @@ m_get_microclim <- function(loc_row, nyears = 1,
   elev <- loc_row$Elevation
   slope <- ifelse(is.na(loc_row$Slope), 0, loc_row$Slope)
   asp <- ifelse(is.na(loc_row$Aspect), 0, loc_row$Aspect)
+  spec_heat <- ifelse(is.na(loc_row$Spec.Heat), 870, loc_row$Spec.Heat) # 870 is default in NicheMapR
 
 
   # function micro_global uses variables as defaults that are defined in the defaults..
@@ -71,7 +72,7 @@ m_get_microclim <- function(loc_row, nyears = 1,
                                    soiltype = soiltype, REFL = soilrefl, runshade = 1,
                                    run.gads = 1, Usrhyt = 0.01, elev = elev,
                                    slope = slope, aspect = asp, minshade = shade[1],
-                                   maxshade = shade[2]
+                                   maxshade = shade[2], SpecHeat = spec_heat
                                    )
   # sometimes: "no climate data for this site, using dummy data so solar is still produced "
   # ... fuck?
