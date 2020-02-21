@@ -7,9 +7,9 @@
 m_plot_all_micros(multi_micro, save_plot = FALSE)
 }
 \arguments{
-\item{multi_micro}{A list of climate scenarios which are lists of lists
-of locations containing the 'metout' data structure of the output of the micro_global()
-function (see vignette of microclimate in NicheMapR package)}
+\item{multi_micro}{A tidy data frame of summarised output results of the ecotherm function
+containing monthly (!) averaged microclimate variables per scenario and location
+(for details see ?m_tidy_output).}
 
 \item{save_plot}{Boolean whether the microclimate plot should be saved or not
 (default = FALSE)}

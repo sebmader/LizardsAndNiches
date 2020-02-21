@@ -7,9 +7,9 @@
 m_plot_activity(multi_ecto, save_plot = FALSE)
 }
 \arguments{
-\item{multi_ecto}{A list of different climate scenarios which are lists
-of locations which are lists with the structure of the output of the
-ectotherm function (see vignette of ectotherm in NicheMapR package).}
+\item{multi_ecto}{A tidy data frame of summarised output results of the ecotherm function
+containing the activity times (total, percentage, ratios, etc.), absorptivity, weight,
+yearly averaged microclimate variables per scenario and location (for details see ?m_tidy_output).}
 
 \item{save_plot}{Boolean whether the plot should be saved or not (default = FALSE).}
 }

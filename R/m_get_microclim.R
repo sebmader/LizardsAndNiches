@@ -16,7 +16,8 @@
 #' @return list of locations (as sublists) with corresponding microclimate data
 #' @export
 
-m_get_microclim <- function(loc_row, nyears = 1,
+m_get_microclim <- function(loc_row,
+                            nyears = 1,
                             ndays = 12,
                             timeper = "present",
                             rcp = "none",
@@ -74,10 +75,12 @@ m_get_microclim <- function(loc_row, nyears = 1,
                                    slope = slope, aspect = asp, minshade = shade[1],
                                    maxshade = shade[2], SpecHeat = spec_heat
                                    )
-  # sometimes: "no climate data for this site, using dummy data so solar is still produced "
-  # ... fuck?
+
+  # make coordinates a character string
+  coor <- paste0(as.character(loc[1]), ", ", as.character(loc[2]))
 
   micro$LID <- loc_row$LID
+  micro$coor <- coor
   micro$timeper <- timeper
   micro$rcp <- rcp
   micro$shade <- shade
