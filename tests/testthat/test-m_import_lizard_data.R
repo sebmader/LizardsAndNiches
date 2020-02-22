@@ -2,12 +2,8 @@
 
 context("Testing importing lizard data")
 
-test_that("import does not work without path", {
-  expect_error(m_import_lizard_data(), regexp = "argument \"path\" is missing, with no default")
-})
-
 test_that("importing a data set results in data frame", {
-  expect_output(str(m_import_lizard_data(path = "example_lizard_data.csv")),
+  expect_output(str(m_import_lizard_data()),
                 "data.frame")
 })
 

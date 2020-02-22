@@ -12,7 +12,8 @@
 
 # require(assertthat)
 
-m_import_lizard_data <- function(path, species = "") {
+m_import_lizard_data <- function(path = "example_lizard_data.csv",
+                                 species = "") {
   assertthat::is.string(path)
   assertthat::is.string(species)
 

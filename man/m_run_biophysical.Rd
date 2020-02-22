@@ -6,7 +6,8 @@
 \usage{
 m_run_biophysical(liz_file = "example_lizard_data.csv",
   species = "Karusasaurus_polyzonus",
-  loc_file = "example_coordinates.csv", nyears = 1, ndays = 12,
+  loc_file = "example_coordinates.csv", loc_mean = TRUE,
+  physio_file = "example_physio.csv", nyears = 1, ndays = 12,
   burrow = FALSE, burrowtype = "sun", DEB = FALSE,
   timeper = "present", rcp = "none", shade = c(0, 90),
   save_plot = FALSE)
@@ -19,6 +20,12 @@ one individual with location, morphology and reflectance data.}
 split into sub groups of morphs if present.}
 
 \item{loc_file}{File with information on locations (see example_coordinates.csv).}
+
+\item{loc_mean}{Boolean whether the biophysical model should be run with location means
+to decrease computational demand (loc_mean = TRUE) or if it should be run per individual (FALSE).}
+
+\item{physio_file}{File path with physiological data of the lizards per location (see
+'example_lizard_data.csv' for structure of dataframe).}
 
 \item{nyears}{Number of years the model is run.}
 
