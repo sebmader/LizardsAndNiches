@@ -96,6 +96,7 @@ m_run_biophysical <- function(liz_file = "example_lizard_data.csv",
 
       # save burrowtype in list
       ecto_list[[loc]]$burrowtype <- burrowtype
+
     } else {
       # run biophysical per individual
       ecto_list[[loc]] <- list()
@@ -112,6 +113,10 @@ m_run_biophysical <- function(liz_file = "example_lizard_data.csv",
                                                  burrow = burrow,
                                                  burtype = burtype,
                                                  DEB = DEB)
+        # save ID in list per ID
+        ecto_list[[loc]][[id]]$ID <- id
+
+        # remove unnecessary dataframes to reduce file size
         ecto_list[[loc]][[id]]$soil <- NULL
         ecto_list[[loc]][[id]]$shadsoil <- NULL
         ecto_list[[loc]][[id]]$shadmet <- NULL

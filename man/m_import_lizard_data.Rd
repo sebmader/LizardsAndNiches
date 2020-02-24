@@ -7,8 +7,7 @@ This function imports a CSV file of processed field data of lizard individuals
 of different species including sites, their location (coordinates), morphology data
 and reflectance means}
 \usage{
-m_import_lizard_data(path = "example_lizard_data.csv",
-  species = "Karusasaurus_polyzonus")
+m_import_lizard_data(path = "example_lizard_data.csv", species = "")
 }
 \arguments{
 \item{path}{The path to the csv data file}

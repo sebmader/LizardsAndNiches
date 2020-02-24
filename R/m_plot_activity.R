@@ -207,15 +207,15 @@ m_plot_activity <- function(multi_ecto, save_plot = FALSE) {
   # percentage of change in active hours vs. time point; facet grid locations
   p <- ggplot2::ggplot(data = multi_ecto_tab_rcps)+
     ggplot2::geom_point(size = 2,
-                        mapping = ggplot2::aes_string(x = 'timeper',
-                                                      y = 'perc_change_act',
-                                                      colour = 'rcp',
-                                                      shape = 'rcp'))+
+                        mapping = ggplot2::aes_(x = quote(timeper),
+                                                y = quote(perc_change_act),
+                                                colour = quote(rcp),
+                                                shape = quote(rcp)))+
     ggplot2::geom_line(size = 1,
-                       mapping = ggplot2::aes_string(x = 'timeper',
-                                                     y = 'perc_change_act',
-                                                     colour = 'rcp',
-                                                     group = 'rcp'))+
+                       mapping = ggplot2::aes_(x = quote(timeper),
+                                               y = quote(perc_change_act),
+                                               colour = quote(rcp),
+                                               group = quote(ID)))+
     ggplot2::geom_hline(ggplot2::aes(yintercept = 1, linetype = "present"),
                         colour = "black")+
     ggplot2::scale_linetype_manual(name = "Reference", values = 2,
@@ -348,23 +348,23 @@ m_plot_activity <- function(multi_ecto, save_plot = FALSE) {
     ggplot2::geom_point(size = 2,
                         mapping = ggplot2::aes_string(x = 'absorp',
                                                       y = 'perc_change_act',
-                                                      colour = 'id',
-                                                      shape = 'id'))+
+                                                      colour = 'scenario',
+                                                      shape = 'scenario'))+
     ggplot2::geom_line(size = 1,
                        mapping = ggplot2::aes_string(x = 'absorp',
                                                      y = 'perc_change_act',
-                                                     colour = 'id'))+
+                                                     colour = 'scenario'))+
     ggplot2::geom_hline(ggplot2::aes(yintercept = 1, linetype = "present"),
                         colour = "black")+
     ggplot2::scale_linetype_manual(name = "Reference", values = 2,
                                    guide = ggplot2::guide_legend(override.aes = list(color = "black")))+
-    ggplot2::annotate(geom = "text", x = unique(multi_ecto_tab_nopres$absorp),
-                      y = 0.1 * (max(multi_ecto_tab_nopres$perc_change_act) -
-                                   min(multi_ecto_tab_nopres$perc_change_act)) +
-                        unlist(lapply(split(multi_ecto_tab_nopres,
-                                            f = multi_ecto_tab_nopres$LID),
-                                      function(x) max(x$perc_change_act))),
-                      label = unique(multi_ecto_tab_nopres$LID))+
+    # ggplot2::annotate(geom = "text", x = unique(multi_ecto_tab_nopres$absorp),
+    #                   y = 0.1 * (max(multi_ecto_tab_nopres$perc_change_act) -
+    #                                min(multi_ecto_tab_nopres$perc_change_act)) +
+    #                     unlist(lapply(split(multi_ecto_tab_nopres,
+    #                                         f = multi_ecto_tab_nopres$LID),
+    #                                   function(x) max(x$perc_change_act))),
+    #                   label = unique(multi_ecto_tab_nopres$LID))+
     ggplot2::labs(title = "% of change in activity (per year) vs. absorptivity")+
     ggplot2::theme_bw()
 
@@ -398,13 +398,13 @@ m_plot_activity <- function(multi_ecto, save_plot = FALSE) {
                         colour = "black")+
     ggplot2::scale_linetype_manual(name = "Reference", values = 2,
                                    guide = ggplot2::guide_legend(override.aes = list(color = "black")))+
-    ggplot2::annotate(geom = "text", x = unique(multi_ecto_tab_85$absorp),
-                      y = 0.1 * (max(multi_ecto_tab_85$perc_change_act) -
-                                   min(multi_ecto_tab_85$perc_change_act)) +
-                        unlist(lapply(split(multi_ecto_tab_85,
-                                            f = multi_ecto_tab_85$LID),
-                                      function(x) max(x$perc_change_act))),
-                      label = unique(multi_ecto_tab_85$LID))+
+    # ggplot2::annotate(geom = "text", x = unique(multi_ecto_tab_85$absorp),
+    #                   y = 0.1 * (max(multi_ecto_tab_85$perc_change_act) -
+    #                                min(multi_ecto_tab_85$perc_change_act)) +
+    #                     unlist(lapply(split(multi_ecto_tab_85,
+    #                                         f = multi_ecto_tab_85$LID),
+    #                                   function(x) max(x$perc_change_act))),
+    #                   label = unique(multi_ecto_tab_85$LID))+
     ggplot2::labs(title = "% of change in activity (per year) vs. absorptivity")+
     ggplot2::theme_bw()
 
@@ -508,13 +508,13 @@ m_plot_activity <- function(multi_ecto, save_plot = FALSE) {
                         colour = "black")+
     ggplot2::scale_linetype_manual(name = "Reference", values = 2,
                                    guide = ggplot2::guide_legend(override.aes = list(color = "black")))+
-    ggplot2::annotate(geom = "text", x = unique(multi_ecto_tab_85$ww),
-                      y = 0.1 * (max(multi_ecto_tab_85$perc_change_act) -
-                                   min(multi_ecto_tab_85$perc_change_act)) +
-                        unlist(lapply(split(multi_ecto_tab_85,
-                                            f = multi_ecto_tab_85$LID),
-                                      function(x) max(x$perc_change_act))),
-                      label = unique(multi_ecto_tab_85$LID))+
+    # ggplot2::annotate(geom = "text", x = unique(multi_ecto_tab_85$ww),
+    #                   y = 0.1 * (max(multi_ecto_tab_85$perc_change_act) -
+    #                                min(multi_ecto_tab_85$perc_change_act)) +
+    #                     unlist(lapply(split(multi_ecto_tab_85,
+    #                                         f = multi_ecto_tab_85$LID),
+    #                                   function(x) max(x$perc_change_act))),
+    #                   label = unique(multi_ecto_tab_85$LID))+
     ggplot2::labs(title = "% of change in activity (per year) vs. body weight")+
     ggplot2::theme_bw()
 
