@@ -67,7 +67,9 @@ m_run_ectotherm <- function(param,
                                rainhr = rep(-1,nrow(micro$metout)),
                                elev = as.numeric(micro$elev),
                                longitude = as.numeric(micro$longlat[1]),
-                               latitude = as.numeric(micro$longlat[2])
+                               latitude = as.numeric(micro$longlat[2]),
+                               CT_kill = 0,    # TODO: maybe allow it to die ??!!
+                               CT_minthresh = 12    # and give a threshold time period it can endure CT_min (1?)
   )
   # ecto$LID <- droplevels(loc_name)
   ecto$LID <- micro$LID

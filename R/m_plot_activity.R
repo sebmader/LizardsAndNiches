@@ -23,90 +23,15 @@ m_plot_activity <- function(multi_ecto, save_plot = FALSE) {
       cat(paste0("Created folder ", save_path, "\n"))
     }
   }
-  # make tidyverse data frame with activity times summed over the whole year
-  # and absorptivity per location per climate scenario and time period
 
-    # vector of scenario names
-  # scenarios <- names(multi_ecto)
-  #
-  #   # vector of location names
-  # locations <- names(multi_ecto[[1]])
-  #
-  # # loop through multi_ecto and save total activity time per year
-  # for(scen in scenarios) {
-  #   for(loc in locations) {
-  #     ndays <- length(unique(multi_ecto[[scen]][[loc]]$environ[,1]))
-  #     nyears <- length(unique(multi_ecto[[scen]][[loc]]$environ[,2]))
-  #
-  #     # count hours with activity == 2 for activity times
-  #     h_active <- length(which(multi_ecto[[scen]][[loc]]$environ[,9] == 2))
-  #     perc_active <- h_active/(nyears*ndays*24)
-  #
-  #     # count hours with activity == 1 for basking times
-  #     h_bask <- length(which(multi_ecto[[scen]][[loc]]$environ[,9] == 1))
-  #     perc_bask <- h_bask/(nyears*ndays*24)
-  #
-  #     # save in multi_ecto
-  #     multi_ecto[[scen]][[loc]]$h_active <- h_active
-  #     multi_ecto[[scen]][[loc]]$perc_active <- perc_active
-  #     multi_ecto[[scen]][[loc]]$h_bask <- h_bask
-  #     multi_ecto[[scen]][[loc]]$perc_bask <- perc_bask
-  #     multi_ecto[[scen]][[loc]]$act_bask_ratio <- h_active/h_bask
-  #     multi_ecto[[scen]][[loc]]$ndays <- ndays
-  #     multi_ecto[[scen]][[loc]]$nyears <- nyears
-  #   }
-  # }
-  #
-  # # no need for the environ table anymore (and it makes unlisting very tricky)
-  # for(scen in scenarios) {
-  #   for(loc in locations) {
-  #     multi_ecto[[scen]][[loc]]$environ <- NULL
-  #     multi_ecto[[scen]][[loc]]$metout <- NULL # never needed this in the first place...
-  #     # calculate activity change to present
-  #     multi_ecto[[scen]][[loc]]$change_act <- multi_ecto[[scen]][[loc]]$h_active - multi_ecto[["present"]][[loc]]$h_active
-  #     multi_ecto[[scen]][[loc]]$change_bask <- multi_ecto[[scen]][[loc]]$h_bask - multi_ecto[["present"]][[loc]]$h_bask
-  #     # calculate percentage of change
-  #     multi_ecto[[scen]][[loc]]$perc_change_act <- multi_ecto[[scen]][[loc]]$h_active / multi_ecto[["present"]][[loc]]$h_active
-  #     multi_ecto[[scen]][[loc]]$perc_change_bask <- multi_ecto[[scen]][[loc]]$h_bask / multi_ecto[["present"]][[loc]]$h_bask
-  #
-  #   }
-  # }
-  #
-  # # unlist multi_ecto into a dataframe
-  # multi_ecto_tab <- data.table::rbindlist(lapply(multi_ecto,
-  #                                            function(x) data.table::rbindlist(x)),
-  #                                     idcol = "id")
-  #
-  # # # calculate the activity-basking ratio and add it to dataframe
-  # # act_bask_ratio <- multi_ecto_tab$h_active/multi_ecto_tab$h_bask
-  # # multi_ecto_tab <- cbind(multi_ecto_tab, act_bask_ratio)
-  #
-  #   # make dataframe with 'present' being both rcp 4.5 and 8.5 instead of none
-  # present45 <- multi_ecto_tab[which(stringr::str_detect(multi_ecto_tab$timeper,
-  #                                                       "present")),]
-  # present85 <- present45
-  # present45$rcp <- "45"
-  # present85$rcp <- "85"
-  #
-  # multi_ecto_tab_rcps <- rbind(multi_ecto_tab[which(
-  #                                     !stringr::str_detect(multi_ecto_tab$timeper,
-  #                                                          "present")
-  #                                     ),], present45, present85)
-  #
-  #   # change 'timeper' to nicely displayable strings
-  # multi_ecto_tab_rcps$timeper <- gsub(pattern = "present.*",
-  #                                     replacement = "pres",
-  #                                     x = multi_ecto_tab_rcps$timeper)
-  # multi_ecto_tab_rcps$timeper <- gsub(pattern = "2040_2059",
-  #                                     replacement = "40-59",
-  #                                     x = multi_ecto_tab_rcps$timeper)
-  # multi_ecto_tab_rcps$timeper <- gsub(pattern = "2080_2099",
-  #                                     replacement = "80-99",
-  #                                     x = multi_ecto_tab_rcps$timeper)
-  #
-  # multi_ecto_tab_rcps$id <- as.factor(multi_ecto_tab_rcps$id)
-  # multi_ecto_tab_rcps$timeper <- as.factor(multi_ecto_tab_rcps$timeper)
-  # multi_ecto_tab_rcps$rcp <- as.factor(multi_ecto_tab_rcps$rcp)
+  # average individual data over locations
+
+  spl_tidy <- split.data.frame(x = tidy_multi,
+                               f = tidy_multi$scenario,
+                               drop = T)
+  spl_tidy <- lapply(spl_tidy, function(x) split.data.frame(x,
+                                                            f = x$LID,
+                                                            drop = T))
 
   assertthat::assert_that(is.data.frame(multi_ecto))
   multi_ecto_tab_rcps <- multi_ecto
@@ -209,19 +134,20 @@ m_plot_activity <- function(multi_ecto, save_plot = FALSE) {
     ggplot2::geom_point(size = 2,
                         mapping = ggplot2::aes_(x = quote(timeper),
                                                 y = quote(perc_change_act),
-                                                colour = quote(rcp),
-                                                shape = quote(rcp)))+
+                                                colour = quote(ID)))+
     ggplot2::geom_line(size = 1,
                        mapping = ggplot2::aes_(x = quote(timeper),
                                                y = quote(perc_change_act),
-                                               colour = quote(rcp),
+                                               colour = quote(ID),
                                                group = quote(ID)))+
     ggplot2::geom_hline(ggplot2::aes(yintercept = 1, linetype = "present"),
                         colour = "black")+
     ggplot2::scale_linetype_manual(name = "Reference", values = 2,
                                    guide = ggplot2::guide_legend(override.aes = list(color = "black")))+
     ggplot2::scale_x_discrete(limits = c("pres", "40-59", "80-99"))+
-    ggplot2::facet_wrap(~LID)+
+    ggplot2::scale_color_discrete(guide = "none")+
+    ggplot2::scale_shape(guide = "none")+
+    ggplot2::facet_grid(rows = ggplot2::vars(rcp), cols = ggplot2::vars(LID))+
     ggplot2::theme_bw()
 
   # print or save plot
@@ -666,11 +592,22 @@ m_plot_activity <- function(multi_ecto, save_plot = FALSE) {
   qqnorm(multi_ecto_tab_rcps$h_active); qqline(multi_ecto_tab_rcps$h_active)
 
   library(ggpubr)
-  ggscatter(multi_ecto_tab_rcps, x = "T_loc", y = "h_active",
+  p <- ggscatter(multi_ecto_tab_rcps, x = "T_loc", y = "h_active",
             use = "complete.obs",
             add = "reg.line", conf.int = TRUE,
             cor.coef = TRUE, cor.method = "pearson",
             xlab = "Microclimate temperature [°C]", ylab = "Hours of activity [h]")
+
+  # save plot
+  if(save_plot) {
+    file_name <- "relationship_h_act_vs_temp_ind.png"
+    ggplot2::ggsave(filename = file_name, plot = p, device = png(),
+                    path = save_path, units = unit,
+                    width = width, height = height, dpi = 500)
+
+    message(paste0("Plot ", file_name, " has been saved in ", save_path, "\n"))
+    # unlink(file_name)
+  } else { print(p) }
 
 
   # total vs. total

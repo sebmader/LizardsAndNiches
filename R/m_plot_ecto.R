@@ -40,7 +40,6 @@ m_plot_ecto <- function(ecto, sim_name = ecto$LID, save_plot = F) {
   T_F_min <- ecto$T_F_min
   CT_max <- ecto$CT_max
   CT_min <- ecto$CT_min
-  # TODO: pipe preferred body temperature
   T_pref <- ecto$T_pref
 
   # substitute the underscore in 'timeper' with a dash

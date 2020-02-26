@@ -29,8 +29,6 @@ m_get_microclim <- function(loc_row,
   assertthat::assert_that(is.data.frame(loc_row))
   assertthat::assert_that(is.vector(shade) & length(shade) == 2)
 
-  # TODO: implementation of model of future micro climate
-
   # List of multiple locations
   # micro_list <- loc_row
 

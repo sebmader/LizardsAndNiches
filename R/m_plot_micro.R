@@ -16,7 +16,6 @@
 
 m_plot_micro <- function(ectoall, save_plot = FALSE) {
 
-  # TODO: make this function facet.grid the single locations
 
   # calculate average microclimate conditions (over all locations per month)
   days <- seq(1,12,1)
