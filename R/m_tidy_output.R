@@ -43,17 +43,17 @@ m_tidy_output <- function(multi_all, monthly_clim = FALSE, avg_loc_out = FALSE) 
   # act_bask_ratio <- multi_all_tab$h_active/multi_all_tab$h_bask
   # multi_all_tab <- cbind(multi_all_tab, act_bask_ratio)
 
-  # make dataframe with 'present' being both rcp 4.5 and 8.5 instead of none
-  present45 <- multi_all_tab[which(stringr::str_detect(multi_all_tab$timeper,
-                                                        "present")),]
-  present85 <- present45
-  present45$rcp <- "45"
-  present85$rcp <- "85"
-
-  multi_all_tab <- rbind(multi_all_tab[which(
-    !stringr::str_detect(multi_all_tab$timeper,
-                         "present")),],
-    present45, present85)
+  # # make dataframe with 'present' being both rcp 4.5 and 8.5 instead of none
+  # present45 <- multi_all_tab[which(stringr::str_detect(multi_all_tab$timeper,
+  #                                                       "present")),]
+  # present85 <- present45
+  # present45$rcp <- "45"
+  # present85$rcp <- "85"
+  #
+  # multi_all_tab <- rbind(multi_all_tab[which(
+  #   !stringr::str_detect(multi_all_tab$timeper,
+  #                        "present")),],
+  #   present45, present85)
 
   # change 'timeper' and 'rcp' to nicely displayable strings
   multi_all_tab$timeper <- gsub(pattern = "present.*",

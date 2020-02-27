@@ -27,6 +27,18 @@ m_plot_activity <- function(multi_ecto, save_plot = FALSE) {
 
   assertthat::assert_that(is.data.frame(multi_ecto))
 
+  # make dataframe with 'present' being both rcp 4.5 and 8.5 instead of none
+  present45 <- multi_ecto[which(stringr::str_detect(multi_ecto$timeper,
+                                                        "pres")),]
+  present85 <- present45
+  present45$rcp <- "4.5"
+  present85$rcp <- "8.5"
+
+  multi_ecto_4585pres <- rbind(multi_ecto[which(
+    !stringr::str_detect(multi_ecto$timeper,
+                         "pres")),],
+    present45, present85)
+
   #### plot the data ####
 
   # plot size
@@ -121,7 +133,7 @@ m_plot_activity <- function(multi_ecto, save_plot = FALSE) {
 
 
   # percentage of change in active hours vs. time point; facet grid locations
-  p <- ggplot2::ggplot(data = multi_ecto)+
+  p <- ggplot2::ggplot(data = multi_ecto_4585pres)+
     ggplot2::geom_point(size = 2,
                         mapping = ggplot2::aes_(x = quote(timeper),
                                                 y = quote(perc_change_act),
@@ -577,28 +589,23 @@ m_plot_activity <- function(multi_ecto, save_plot = FALSE) {
 
   #### activity vs. temperature ####
 
-  shapiro.test(multi_ecto$T_loc) # p = 1.053e-10 (-> not normal!)
-  shapiro.test(multi_ecto$h_active) # p = 7.616e-10 (-> not normal!)
-  qqnorm(multi_ecto$T_loc); qqline(multi_ecto$T_loc)
-  qqnorm(multi_ecto$h_active); qqline(multi_ecto$h_active)
-
-  library(ggpubr)
-  p <- ggscatter(multi_ecto, x = "T_loc", y = "h_active",
-            use = "complete.obs",
-            add = "reg.line", conf.int = TRUE,
-            cor.coef = TRUE, cor.method = "pearson",
-            xlab = "Microclimate temperature [°C]", ylab = "Hours of activity [h]")
-
-  # save plot
-  if(save_plot) {
-    file_name <- "relationship_h_act_vs_temp_ind.png"
-    ggplot2::ggsave(filename = file_name, plot = p, device = png(),
-                    path = save_path, units = unit,
-                    width = width, height = height, dpi = 500)
-
-    message(paste0("Plot ", file_name, " has been saved in ", save_path, "\n"))
-    # unlink(file_name)
-  } else { print(p) }
+  # library(ggpubr)
+  # p <- ggscatter(multi_ecto, x = "T_loc", y = "h_active",
+  #           use = "complete.obs",
+  #           add = "reg.line", conf.int = TRUE,
+  #           cor.coef = TRUE, cor.method = "pearson",
+  #           xlab = "Microclimate temperature [°C]", ylab = "Hours of activity [h]")
+  #
+  # # save plot
+  # if(save_plot) {
+  #   file_name <- "relationship_h_act_vs_temp_ind.png"
+  #   ggplot2::ggsave(filename = file_name, plot = p, device = png(),
+  #                   path = save_path, units = unit,
+  #                   width = width, height = height, dpi = 500)
+  #
+  #   message(paste0("Plot ", file_name, " has been saved in ", save_path, "\n"))
+  #   # unlink(file_name)
+  # } else { print(p) }
 
 
   # total vs. total
