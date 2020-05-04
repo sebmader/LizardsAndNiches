@@ -5,13 +5,15 @@
 #' @param multi_ecto A tidy data frame of summarised output results of the ecotherm function
 #' containing the activity times (total, percentage, ratios, etc.), absorptivity, weight,
 #' yearly averaged microclimate variables per scenario and location (for details see ?m_tidy_output).
+#' @param rcps Character stating which RCP scenario shall be plotted: "4.5", "8.5" or "both".
+#' The latter leads to facet rows for each RCP scenario.
 #' @param save_plot Boolean whether the plot should be saved or not (default = FALSE).
 #' @return Plot
 # @importFrom graphics abline legend text
 #' @importFrom grDevices png
 #' @export
 
-m_plot_activity <- function(multi_ecto, save_plot = FALSE) {
+m_plot_activity <- function(multi_ecto, rcps = "both", save_plot = FALSE) {
 
   # create directory of save path if applicable
   save_path <- "./Plots/activity_plots/"
@@ -24,20 +26,85 @@ m_plot_activity <- function(multi_ecto, save_plot = FALSE) {
     }
   }
 
-
   assertthat::assert_that(is.data.frame(multi_ecto))
+  assertthat::assert_that(is.character(rcps))
+
+
+  # rename variables
+  names(multi_ecto)[17] <- "Temp"
+  names(multi_ecto)[19] <- "RH"
+  names(multi_ecto)[5] <- "time"
+  names(multi_ecto)[23] <- "mag_change_act"
+  multi_ecto$time <- factor(multi_ecto$time, levels = c("pres", "40-59", "80-99"))
+
+
 
   # make dataframe with 'present' being both rcp 4.5 and 8.5 instead of none
-  present45 <- multi_ecto[which(stringr::str_detect(multi_ecto$timeper,
+  present45 <- multi_ecto[which(stringr::str_detect(multi_ecto$time,
                                                         "pres")),]
   present85 <- present45
   present45$rcp <- "4.5"
   present85$rcp <- "8.5"
 
-  multi_ecto_4585pres <- rbind(multi_ecto[which(
-    !stringr::str_detect(multi_ecto$timeper,
+  multi_ecto_full <- rbind(multi_ecto[which(
+    !stringr::str_detect(multi_ecto$time,
                          "pres")),],
     present45, present85)
+
+  # depending on which rcp is supposed to be plotted, collapse dataframe
+  if(rcps == "4.5") {
+    multi_ecto <- multi_ecto_full[which(multi_ecto_full$rcp == "4.5"),]
+  } else if(rcps == "8.5") {
+    multi_ecto <- multi_ecto_full[which(multi_ecto_full$rcp == "8.5"),]
+  }
+
+
+  multi_ecto$rcp <- droplevels(multi_ecto$rcp)
+  multi_ecto$rcp <- factor(multi_ecto$rcp, levels = c("8.5", "4.5"))
+
+
+  summarySE <- function(data=NULL, measurevar, groupvars=NULL, na.rm=FALSE,
+                        conf.interval=.95, .drop=TRUE) {
+    library(plyr)
+
+    # New version of length which can handle NA's: if na.rm==T, don't count them
+    length2 <- function (x, na.rm=FALSE) {
+      if (na.rm) sum(!is.na(x))
+      else       length(x)
+    }
+
+    # This does the summary. For each group's data frame, return a vector with
+    # N, mean, and sd
+    datac <- ddply(data, groupvars, .drop=.drop,
+                   .fun = function(xx, col) {
+                     c(N    = length2(xx[[col]], na.rm=na.rm),
+                       mean = mean   (xx[[col]], na.rm=na.rm),
+                       sd   = sd     (xx[[col]], na.rm=na.rm)
+                     )
+                   },
+                   measurevar
+    )
+
+    # Rename the "mean" column
+    datac <- rename(datac, c("mean" = measurevar))
+
+    datac$se <- datac$sd / sqrt(datac$N)  # Calculate standard error of the mean
+
+    # Confidence interval multiplier for standard error
+    # Calculate t-statistic for confidence interval:
+    # e.g., if conf.interval is .95, use .975 (above/below), and use df=N-1
+    ciMult <- qt(conf.interval/2 + .5, datac$N-1)
+    datac$ci <- datac$se * ciMult
+
+    return(datac)
+  }
+
+  multi_ecto_SE <- summarySE(multi_ecto,
+                           measurevar = "h_active",
+                           groupvars = c("rcp", "LID", "time"))
+
+  multi_ecto_nopres <- multi_ecto[which(multi_ecto$time != "pres")]
+
 
   #### plot the data ####
 
@@ -48,62 +115,10 @@ m_plot_activity <- function(multi_ecto, save_plot = FALSE) {
 
   ### split into locations ###
 
-  #   # act-bask ratio vs. time point; facet grid locations
-  # p <- ggplot2::ggplot(data = multi_ecto)+
-  #   ggplot2::geom_point(size = 2,
-  #                       mapping = ggplot2::aes_string(x = 'timeper',
-  #                                                     y = 'act_bask_ratio',
-  #                                                     colour = 'rcp',
-  #                                                     shape = 'rcp'))+
-  #   ggplot2::geom_line(size = 1,
-  #                      mapping = ggplot2::aes_string(x = 'timeper',
-  #                                                    y = 'act_bask_ratio',
-  #                                                    colour = 'rcp',
-  #                                                    group = 'rcp'))+
-  #   ggplot2::geom_hline(ggplot2::aes(yintercept = 1), linetype = "dashed",
-  #                       colour = "black")+
-  #   ggplot2::scale_x_discrete(limits = c("pres", "40-59", "80-99"))+
-  #   ggplot2::facet_wrap(~LID)+
-  #   ggplot2::theme_bw()
-  #
-  #   # save plot
-  # if(save_plot) {
-  #   file_name <- "act-bask_ratio_scenario.png"
-  #   ggplot2::ggsave(filename = file_name, plot = p, device = png(),
-  #                   path = save_path, units = unit,
-  #                   width = width, height = height, dpi = 500)
-  #
-  #   message(paste0("Plot ", file_name, " has been saved in ", save_path, "\n"))
-  #   # unlink(file_name)
-  # } else { print(p) }
-  #
-  #   # total active hours vs. time point; facet grid locations
-  # p <- ggplot2::ggplot(data = multi_ecto)+
-  #   ggplot2::geom_point(size = 2,
-  #                       mapping = ggplot2::aes_string(x = 'timeper',
-  #                                                     y = 'h_active',
-  #                                                     colour = 'rcp',
-  #                                                     shape = 'rcp'))+
-  #   ggplot2::geom_line(size = 1,
-  #                      mapping = ggplot2::aes_string(x = 'timeper',
-  #                                                    y = 'h_active',
-  #                                                    colour = 'rcp',
-  #                                                    group = 'rcp'))+
-  #   ggplot2::scale_x_discrete(limits = c("pres", "40-59", "80-99"))+
-  #   ggplot2::facet_wrap(~LID)+
-  #   ggplot2::theme_bw()
-  #
-  # # print or save plot
-  # if(save_plot) {
-  #   file_name <- "total_act_scenario.png"
-  #   ggplot2::ggsave(filename = file_name, plot = p, device = png(),
-  #                   path = save_path, units = unit,
-  #                   width = width, height = height, dpi = 500)
-  #
-  #   message(paste0("Plot ", file_name, " has been saved in ", save_path, "\n"))
-  #   # unlink(file_name)
-  # } else { print(p) }
-  #
+
+
+
+
   # # change in active hours vs. time point; facet grid locations
   # p <- ggplot2::ggplot(data = multi_ecto)+
   #   ggplot2::geom_point(size = 2,

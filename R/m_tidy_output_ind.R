@@ -156,14 +156,30 @@ m_tidy_output_ind <- function(multi_all, monthly_clim = FALSE, avg_loc_out = FAL
         perc_change_act <- vector(mode = "numeric", length = n_ind)
         perc_change_bask <- vector(mode = "numeric", length = n_ind)
 
-        T_loc <- vector(mode = "numeric", length = n_ind)
-        T_ref <- vector(mode = "numeric", length = n_ind)
-        RH_loc <- vector(mode = "numeric", length = n_ind)
-        RH_ref <- vector(mode = "numeric", length = n_ind)
-        change_T_loc <- vector(mode = "numeric", length = n_ind)
-        change_RH_loc <- vector(mode = "numeric", length = n_ind)
-        perc_T_loc <- vector(mode = "numeric", length = n_ind)
-        perc_RH_loc <- vector(mode = "numeric", length = n_ind)
+        if(monthly_clim) {
+          # matrix: for each individuals number of months(/days)
+          n_months <- length(months)
+          T_loc <- matrix(nrow = n_ind, ncol = n_months)
+          T_ref <- matrix(nrow = n_ind, ncol = n_months)
+          RH_loc <- matrix(nrow = n_ind, ncol = n_months)
+          RH_ref <- matrix(nrow = n_ind, ncol = n_months)
+          change_T_loc <- matrix(nrow = n_ind, ncol = n_months)
+          change_RH_loc <- matrix(nrow = n_ind, ncol = n_months)
+          perc_T_loc <- matrix(nrow = n_ind, ncol = n_months)
+          perc_RH_loc <- matrix(nrow = n_ind, ncol = n_months)
+
+        } else {
+          # otherwise (yearly average climate) just a vector of length
+          # of number of individuals
+          T_loc <- vector(mode = "numeric", length = n_ind)
+          T_ref <- vector(mode = "numeric", length = n_ind)
+          RH_loc <- vector(mode = "numeric", length = n_ind)
+          RH_ref <- vector(mode = "numeric", length = n_ind)
+          change_T_loc <- vector(mode = "numeric", length = n_ind)
+          change_RH_loc <- vector(mode = "numeric", length = n_ind)
+          perc_T_loc <- vector(mode = "numeric", length = n_ind)
+          perc_RH_loc <- vector(mode = "numeric", length = n_ind)
+        }
 
         for(i in 1:n_ind) {
 
@@ -180,15 +196,28 @@ m_tidy_output_ind <- function(multi_all, monthly_clim = FALSE, avg_loc_out = FAL
           perc_change_act[i] <- multi_all[[scen]][[loc]][[i]]$perc_change_act
           perc_change_bask[i] <- multi_all[[scen]][[loc]][[i]]$perc_change_bask
 
-          T_loc[i] <- multi_all[[scen]][[loc]][[i]]$T_loc
-          T_ref[i] <- multi_all[[scen]][[loc]][[i]]$T_ref
-          RH_loc[i] <- multi_all[[scen]][[loc]][[i]]$RH_loc
-          RH_ref[i] <- multi_all[[scen]][[loc]][[i]]$RH_ref
-          change_T_loc[i] <- multi_all[[scen]][[loc]][[i]]$change_T_loc
-          change_RH_loc[i] <- multi_all[[scen]][[loc]][[i]]$change_RH_loc
-          perc_T_loc[i] <- multi_all[[scen]][[loc]][[i]]$perc_T_loc
-          perc_RH_loc[i] <- multi_all[[scen]][[loc]][[i]]$perc_RH_loc
+          if(monthly_clim) {
 
+            T_loc[i,] <- multi_all[[scen]][[loc]][[i]]$T_loc
+            T_ref[i,] <- multi_all[[scen]][[loc]][[i]]$T_ref
+            RH_loc[i,] <- multi_all[[scen]][[loc]][[i]]$RH_loc
+            RH_ref[i,] <- multi_all[[scen]][[loc]][[i]]$RH_ref
+            change_T_loc[i,] <- multi_all[[scen]][[loc]][[i]]$change_T_loc
+            change_RH_loc[i,] <- multi_all[[scen]][[loc]][[i]]$change_RH_loc
+            perc_T_loc[i,] <- multi_all[[scen]][[loc]][[i]]$perc_T_loc
+            perc_RH_loc[i,] <- multi_all[[scen]][[loc]][[i]]$perc_RH_loc
+
+
+          } else {
+            T_loc[i] <- multi_all[[scen]][[loc]][[i]]$T_loc
+            T_ref[i] <- multi_all[[scen]][[loc]][[i]]$T_ref
+            RH_loc[i] <- multi_all[[scen]][[loc]][[i]]$RH_loc
+            RH_ref[i] <- multi_all[[scen]][[loc]][[i]]$RH_ref
+            change_T_loc[i] <- multi_all[[scen]][[loc]][[i]]$change_T_loc
+            change_RH_loc[i] <- multi_all[[scen]][[loc]][[i]]$change_RH_loc
+            perc_T_loc[i] <- multi_all[[scen]][[loc]][[i]]$perc_T_loc
+            perc_RH_loc[i] <- multi_all[[scen]][[loc]][[i]]$perc_RH_loc
+          }
         }
 
         # save means and standard deviations
@@ -219,23 +248,44 @@ m_tidy_output_ind <- function(multi_all, monthly_clim = FALSE, avg_loc_out = FAL
         loc_summary$perc_change_bask_sd <- sd(perc_change_bask)
 
           # micro climate (should be the same for every individual)
-        assertthat::are_equal(sd(T_loc), 0)
-        loc_summary$T_loc <- mean(T_loc)
-        assertthat::are_equal(sd(T_ref), 0)
-        loc_summary$T_ref <- mean(T_ref)
-        assertthat::are_equal(sd(RH_loc), 0)
-        loc_summary$RH_loc <- mean(RH_loc)
-        assertthat::are_equal(sd(RH_ref), 0)
-        loc_summary$RH_ref <- mean(RH_ref)
-        assertthat::are_equal(sd(change_T_loc), 0)
-        loc_summary$change_T_loc <- mean(change_T_loc)
-        assertthat::are_equal(sd(change_RH_loc), 0)
-        loc_summary$change_RH_loc <- mean(change_RH_loc)
-        assertthat::are_equal(sd(perc_T_loc), 0)
-        loc_summary$perc_T_loc <- mean(perc_T_loc)
-        assertthat::are_equal(sd(perc_RH_loc), 0)
-        loc_summary$perc_RH_loc <- mean(perc_RH_loc)
+        if(monthly_clim) {
 
+          loc_summary$month <- months
+
+          assertthat::are_equal(sd(T_loc[,1]), 0)
+          loc_summary$T_loc <- colMeans(T_loc)
+          assertthat::are_equal(sd(T_ref[,1]), 0)
+          loc_summary$T_ref <- colMeans(T_ref)
+          assertthat::are_equal(sd(RH_loc[,1]), 0)
+          loc_summary$RH_loc <- colMeans(RH_loc)
+          assertthat::are_equal(sd(RH_ref[,1]), 0)
+          loc_summary$RH_ref <- colMeans(RH_ref)
+          assertthat::are_equal(sd(change_T_loc[,1]), 0)
+          loc_summary$change_T_loc <- colMeans(change_T_loc)
+          assertthat::are_equal(sd(change_RH_loc[,1]), 0)
+          loc_summary$change_RH_loc <- colMeans(change_RH_loc)
+          assertthat::are_equal(sd(perc_T_loc[,1]), 0)
+          loc_summary$perc_T_loc <- colMeans(perc_T_loc)
+          assertthat::are_equal(sd(perc_RH_loc[,1]), 0)
+          loc_summary$perc_RH_loc <- colMeans(perc_RH_loc)
+        } else {
+          assertthat::are_equal(sd(T_loc), 0)
+          loc_summary$T_loc <- mean(T_loc)
+          assertthat::are_equal(sd(T_ref), 0)
+          loc_summary$T_ref <- mean(T_ref)
+          assertthat::are_equal(sd(RH_loc), 0)
+          loc_summary$RH_loc <- mean(RH_loc)
+          assertthat::are_equal(sd(RH_ref), 0)
+          loc_summary$RH_ref <- mean(RH_ref)
+          assertthat::are_equal(sd(change_T_loc), 0)
+          loc_summary$change_T_loc <- mean(change_T_loc)
+          assertthat::are_equal(sd(change_RH_loc), 0)
+          loc_summary$change_RH_loc <- mean(change_RH_loc)
+          assertthat::are_equal(sd(perc_T_loc), 0)
+          loc_summary$perc_T_loc <- mean(perc_T_loc)
+          assertthat::are_equal(sd(perc_RH_loc), 0)
+          loc_summary$perc_RH_loc <- mean(perc_RH_loc)
+        }
         # save in full data list
         multi_all[[scen]][[loc]] <- loc_summary
 

@@ -34,9 +34,9 @@ m_tidy_output <- function(multi_all, monthly_clim = FALSE, avg_loc_out = FALSE) 
   multi_all_tab <- c()
 
   if(loc_mean) {
-    multi_all_tab <- m_tidy_output_loc(multi_all, monthly_clim)
+    multi_all_tab <- LizardsAndNiches:::m_tidy_output_loc(multi_all, monthly_clim)
   } else {
-    multi_all_tab <- m_tidy_output_ind(multi_all, monthly_clim, avg_loc_out)
+    multi_all_tab <- LizardsAndNiches:::m_tidy_output_ind(multi_all, monthly_clim, avg_loc_out)
   }
 
   # # calculate the activity-basking ratio and add it to dataframe
