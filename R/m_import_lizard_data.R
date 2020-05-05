@@ -15,6 +15,10 @@
 m_import_lizard_data <- function(path = "example_lizard_data.csv",
                                  species = "") {
   assertthat::is.string(path)
+  if(!file.exists(path)) {
+    stop("The path you specified for the individual data does not
+         exist.")
+  }
   assertthat::is.string(species)
 
   data <- utils::read.csv(file = path, header = T)

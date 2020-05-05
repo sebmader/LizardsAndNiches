@@ -69,6 +69,10 @@ m_run_biophysical <- function(liz_file = "example_lizard_data.csv",
   }
 
   # load physiological data
+  if(!file.exists(physio_file)) {
+    stop("The path you specified for the physiological summary data does not
+         exist.")
+  }
   ecto_input <- utils::read.csv(physio_file)
 
   # transform burrow type into numerical value
