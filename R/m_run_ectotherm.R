@@ -73,7 +73,9 @@ m_run_ectotherm <- function(param,
   )
   # ecto$LID <- droplevels(loc_name)
   ecto$LID <- micro$LID
-  ecto$coor <- micro$coor
+  # ecto$coor <- micro$coor
+  ecto$Latitude <- micro$Latitude
+  ecto$Longitude <- micro$Longitude
   ecto$burrow <- burrow
   ecto$T_pref <- temp_pref
   ecto$timeper <- micro$timeper

@@ -89,6 +89,7 @@ m_run_biophysical <- function(liz_file = "example_lizard_data.csv",
   }
 
   for(loc in locations) {
+    # param <- ecto_input[which(ecto_input$Species == species),]
     param <- ecto_input[which(ecto_input$LID == loc),]
 
     if(loc_mean) {

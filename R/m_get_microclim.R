@@ -75,10 +75,12 @@ m_get_microclim <- function(loc_row,
                                    )
 
   # make coordinates a character string
-  coor <- paste0(as.character(loc[1]), ", ", as.character(loc[2]))
+  # coor <- paste0(as.character(loc[1]), ", ", as.character(loc[2]))
 
   micro$LID <- loc_row$LID
-  micro$coor <- coor
+  micro$Latitude <- loc_row$Latitude
+  micro$Longitude <- loc_row$Longitude
+  # micro$coor <- coor
   micro$timeper <- timeper
   micro$rcp <- rcp
   micro$shade <- shade
