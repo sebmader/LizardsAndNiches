@@ -32,8 +32,10 @@ m_extract_microclim_input <- function(location = "", loc_data) {
   loc_data <- droplevels(loc_data)
   # change substrate code into the one used by NicheMapR (copied from Fedes script)
   loc_data$Nature <- gsub("R", "0", loc_data$Nature) #Rock is coded as 0 in NicheMapR
-  loc_data$Nature <- gsub("S", "6", loc_data$Nature) #The only soil instance si Windheuwel where the soil was sandy clay loam (Info from https://data.isric.org/geonetwork/srv/ita/catalog.search#/metadata/10aa9a99-1433-11e9-a8fa-a0481ca9e724)
-  loc_data$Nature <- gsub("P", "1", loc_data$Nature) #Macropholis in labertbaai lives on plants but the soild underneath is sand
+  loc_data$Nature <- gsub("S", "6", loc_data$Nature) #The only soil instance is Windheuwel
+      # where the soil was sandy clay loam (Info from https://data.isric.org/geonetwork/srv/ita/catalog.search#/metadata/10aa9a99-1433-11e9-a8fa-a0481ca9e724)
+  loc_data$Nature <- gsub("P", "1", loc_data$Nature) #Macropholis in labertbaai lives on
+      # plants but the soild underneath is sand
   loc_data$Nature <- as.numeric(loc_data$Nature)
 
   # specific heat capacity needs multiplication by 1000

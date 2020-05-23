@@ -24,15 +24,17 @@ m_run_ectotherm <- function(param,
   # require(NicheMapR)
 
   loc_name <- param$LID
-  ttl <- param$TTL_mean
-  ww <- param$WW_mean
-  absorp <- param$absorp_mean
   temp_f_min <- param$tf_min
   temp_f_max <- param$tf_max
   ct_min <- param$ct_min
   ct_max <- param$ct_max
   temp_pref <- param$t_pref
   temp_bask <- param$t_bask
+
+  ttl <- param$TTL_mean
+  ww <- param$WW_mean
+  absorp <- param$absorp_mean
+
 
   # some fixed parameter values
   minshade <- 0
