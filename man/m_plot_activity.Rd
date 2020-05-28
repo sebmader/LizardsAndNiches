@@ -4,12 +4,15 @@
 \alias{m_plot_activity}
 \title{Plot activity times over the organisms reflectance}
 \usage{
-m_plot_activity(multi_ecto, save_plot = FALSE)
+m_plot_activity(multi_ecto, rcps = "both", save_plot = FALSE)
 }
 \arguments{
 \item{multi_ecto}{A tidy data frame of summarised output results of the ecotherm function
 containing the activity times (total, percentage, ratios, etc.), absorptivity, weight,
 yearly averaged microclimate variables per scenario and location (for details see ?m_tidy_output).}
+
+\item{rcps}{Character stating which RCP scenario shall be plotted: "4.5", "8.5" or "both".
+The latter leads to facet rows for each RCP scenario.}
 
 \item{save_plot}{Boolean whether the plot should be saved or not (default = FALSE).}
 }

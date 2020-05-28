@@ -31,9 +31,9 @@ m_run_ectotherm <- function(param,
   temp_pref <- param$t_pref
   temp_bask <- param$t_bask
 
-  ttl <- param$TTL_mean
-  ww <- param$WW_mean
-  absorp <- param$absorp_mean
+  ttl <- param$ttl
+  ww <- param$ww
+  absorp <- param$absorp
 
 
   # some fixed parameter values

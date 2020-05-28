@@ -31,11 +31,11 @@
 #' @export
 
 
-m_run_biophysical <- function(liz_file = "example_lizard_data.csv",
-                              species = "Karusasaurus_polyzonus",
-                              loc_file = "example_coordinates.csv",
+m_run_biophysical <- function(liz_file,
+                              species,
+                              loc_file,
                               loc_mean = FALSE,
-                              physio_file = "example_physio.csv",
+                              physio_file,
                               nyears = 1,
                               ndays = 12,
                               burrow = FALSE,
@@ -92,12 +92,12 @@ m_run_biophysical <- function(liz_file = "example_lizard_data.csv",
     param <- ecto_input[which(ecto_input$Species == species),]
     # param <- ecto_input[which(ecto_input$LID == loc),]
 
-    # calculate means for TTL, WW and absorp
-    param$TTL_mean <- mean(data$TTL[which(data$LID == loc)])
-    param$WW_mean <- mean(data$W[which(data$LID == loc)])
-    param$absorp_mean <- 1 - mean(data$REFL_W[which(data$LID == loc)])
-
     if(loc_mean) {
+      # calculate means for TTL, WW and absorp
+      param$ttl <- mean(data$TTL[which(data$LID == loc)])
+      param$ww <- mean(data$W[which(data$LID == loc)])
+      param$absorp <- 1 - mean(data$REFL_W[which(data$LID == loc)])
+
       ecto_list[[loc]] <- LizardsAndNiches::m_run_ectotherm(param = param,
                                           micro = micro_list[[loc]],
                                           burrow = burrow,
@@ -114,9 +114,9 @@ m_run_biophysical <- function(liz_file = "example_lizard_data.csv",
       for(id in ids) {
         id_data <- data[which(data$ID == id),]
         param_new <- param
-        param_new$TTL_mean <- id_data$TTL
-        param_new$WW_mean <- id_data$W
-        param_new$absorp_mean <- 1 - id_data$REFL_W
+        param_new$ttl <- as.numeric(id_data$TTL)
+        param_new$ww <- as.numeric(id_data$W)
+        param_new$absorp <- 1 - id_data$REFL_W
 
         ecto_list[[loc]][[id]] <- LizardsAndNiches::m_run_ectotherm(param = param_new,
                                                  micro = micro_list[[loc]],
@@ -153,7 +153,9 @@ m_run_biophysical <- function(liz_file = "example_lizard_data.csv",
       # actually plot things now
       # but only if loc_mean: don't need the ecophysio plots of every individual
     if(loc_mean) {
-      LizardsAndNiches::m_plot_ecto(ecto = ecto_list[[loc]], sim_name = sim_name, save_plot = save_plot)
+      LizardsAndNiches::m_plot_ecto(ecto = ecto_list[[loc]],
+                                    sim_name = sim_name,
+                                    save_plot = save_plot)
     }
 
   }

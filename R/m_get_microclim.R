@@ -52,7 +52,8 @@ m_get_microclim <- function(loc_row,
   loc <- c(loc_row$Longitude, loc_row$Latitude)
   soiltype <- loc_row$Nature
   soilgrids <- loc_row$soilgrids
-  soilrefl <- ifelse(is.na(loc_row$SREF), FALSE, loc_row$SREF)
+  soilrefl <- ifelse(is.na(loc_row$SREF), 0.15, loc_row$SREF) # 0.15 is default in NicheMapR
+  # cat(paste(soilrefl, "\n"))
   elev <- loc_row$Elevation
   slope <- ifelse(is.na(loc_row$Slope), 0, loc_row$Slope)
   asp <- ifelse(is.na(loc_row$Aspect), 0, loc_row$Aspect)

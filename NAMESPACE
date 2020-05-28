@@ -2,7 +2,6 @@
 
 export(m_boxplot)
 export(m_estimate_deb)
-export(m_extract_ectotherm_input)
 export(m_extract_microclim_input)
 export(m_get_microclim)
 export(m_import_lizard_data)
