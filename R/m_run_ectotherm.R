@@ -43,7 +43,7 @@ m_run_ectotherm <- function(param,
 
   # some fixed parameter values
   minshade <- 0
-  # maxdepth <- 9  # because the last jump from -100 to -200 cm causes problems
+  maxdepth <- burdepth  # because the last jump from -100 to -200 cm causes problems
   mindepth <- 2  # because soil node 1 is the surface
 
   # m_estimate_deb(param)
@@ -53,7 +53,7 @@ m_run_ectotherm <- function(param,
                                T_F_min = temp_f_min, T_F_max = temp_f_max, T_B_min = temp_bask,
                                T_RB_min = temp_bask, T_pref = temp_pref, CT_min = ct_min,
                                CT_max = ct_max, burrow = as.numeric(burrow), shdburrow = burtype,
-                               DEB = DEB, maxdepth = burdepth, mindepth = mindepth,
+                               DEB = DEB, maxdepth = maxdepth, mindepth = mindepth,
                                nyears = micro$nyears,
                                minshade = minshade,
                                minshades = rep(minshade, length(micro$MAXSHADES)),

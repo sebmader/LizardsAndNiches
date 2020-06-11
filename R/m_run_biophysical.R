@@ -129,7 +129,7 @@ m_run_biophysical <- function(liz_file,
                                                  micro = micro_list[[loc]],
                                                  burrow = burrow,
                                                  burtype = burtype,
-                                                 burdepth = burdepth,
+                                                 burdepth = burrowdepth,
                                                  DEB = DEB)
         # save ID in list per ID
         ecto_list[[loc]][[id]]$ID <- id
