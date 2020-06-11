@@ -17,6 +17,9 @@
 #' @param burrowtype Character string defining the burrow type: "sun" (always in the sun),
 #' "shade" (always in the shade), "sunshade" (organism decides if burrow is in the sun
 #' or in the shade).
+#' @param burrowdepth The burrows depth in "soil nodes", a numeric ranging from 2 to 10.
+#' 2 equals to 2.5 cm, 3 to 5 cm, 4 to 10 cm, 5 to 15 cm, 6 to 20 cm, 7 to 30 cm, 8 to 50 cm,
+#' 9 to 100 cm and 10 to 200 cm. These are also the steps the lizard takes while burrowing.
 #' @param DEB Boolean stating wheather the ectotherm should be run with or without
 #' the Dynamic Energy Budget model.
 #' @param timeper Character string of the time period for the climate data /
@@ -40,6 +43,7 @@ m_run_biophysical <- function(liz_file,
                               ndays = 12,
                               burrow = FALSE,
                               burrowtype = "sun",
+                              burrowdepth = 9,
                               DEB = FALSE,
                               timeper = "present",
                               rcp = "none",
@@ -58,6 +62,8 @@ m_run_biophysical <- function(liz_file,
   ecto_list <- micro_list
   for(loc in locations) {
     # micro_list[[loc]] <- list()
+    message(paste0("\nExtracting microclimate data at '", loc, "'.\n"))
+
     loc_row <- LizardsAndNiches::m_extract_microclim_input(location = loc,
                                          loc_data = loc_data)
     micro_list[[loc]] <- LizardsAndNiches::m_get_microclim(loc_row = loc_row,
@@ -102,6 +108,7 @@ m_run_biophysical <- function(liz_file,
                                           micro = micro_list[[loc]],
                                           burrow = burrow,
                                           burtype = burtype,
+                                          burdepth = burrowdepth,
                                           DEB = DEB)
 
       # save burrowtype in list
@@ -122,6 +129,7 @@ m_run_biophysical <- function(liz_file,
                                                  micro = micro_list[[loc]],
                                                  burrow = burrow,
                                                  burtype = burtype,
+                                                 burdepth = burdepth,
                                                  DEB = DEB)
         # save ID in list per ID
         ecto_list[[loc]][[id]]$ID <- id

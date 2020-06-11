@@ -5,7 +5,7 @@
 \title{m_run_ectotherm}
 \usage{
 m_run_ectotherm(param, micro, burrow = FALSE, burtype = 0,
-  DEB = FALSE)
+  burdepth = 9, DEB = FALSE)
 }
 \arguments{
 \item{param}{List of input parameters for ectotherm function.}
@@ -17,6 +17,10 @@ m_run_ectotherm(param, micro, burrow = FALSE, burtype = 0,
 \item{burtype}{Numeric to specify type burrow: 0 (always in the sun),
 1 (organism decides if burrow is in the sun or in the shade),
 2 (always in the shade)}
+
+\item{burdepth}{The burrows depth in "soil nodes", a numeric ranging from 2 to 10.
+2 equals to 2.5 cm, 3 to 5 cm, 4 to 10 cm, 5 to 15 cm, 6 to 20 cm, 7 to 30 cm, 8 to 50 cm,
+9 to 100 cm and 10 to 200 cm. These are also the steps the lizard takes while burrowing.}
 
 \item{DEB}{Boolean whether Dynamic Energy Budget (DEB) model shall be included.}
 }

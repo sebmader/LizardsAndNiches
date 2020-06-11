@@ -8,6 +8,9 @@
 #' @param burtype Numeric to specify type burrow: 0 (always in the sun),
 #' 1 (organism decides if burrow is in the sun or in the shade),
 #' 2 (always in the shade)
+#' @param burdepth The burrows depth in "soil nodes", a numeric ranging from 2 to 10.
+#' 2 equals to 2.5 cm, 3 to 5 cm, 4 to 10 cm, 5 to 15 cm, 6 to 20 cm, 7 to 30 cm, 8 to 50 cm,
+#' 9 to 100 cm and 10 to 200 cm. These are also the steps the lizard takes while burrowing.
 #' @param DEB Boolean whether Dynamic Energy Budget (DEB) model shall be included.
 #' @export
 
@@ -15,12 +18,14 @@ m_run_ectotherm <- function(param,
                             micro,
                             burrow = FALSE,
                             burtype = 0,
+                            burdepth = 9,
                             DEB = FALSE) {
   assertthat::assert_that(is.data.frame(param))
   assertthat::assert_that(is.list(micro))
   assertthat::assert_that(is.logical(DEB))
   assertthat::assert_that(is.logical(burrow))
   assertthat::assert_that(is.numeric(burtype))
+  assertthat::assert_that(is.numeric(burdepth))
   # require(NicheMapR)
 
   loc_name <- param$LID
@@ -38,7 +43,7 @@ m_run_ectotherm <- function(param,
 
   # some fixed parameter values
   minshade <- 0
-  maxdepth <- 9  # because the last jump from -100 to -200 cm causes problems
+  # maxdepth <- 9  # because the last jump from -100 to -200 cm causes problems
   mindepth <- 2  # because soil node 1 is the surface
 
   # m_estimate_deb(param)
@@ -48,7 +53,7 @@ m_run_ectotherm <- function(param,
                                T_F_min = temp_f_min, T_F_max = temp_f_max, T_B_min = temp_bask,
                                T_RB_min = temp_bask, T_pref = temp_pref, CT_min = ct_min,
                                CT_max = ct_max, burrow = as.numeric(burrow), shdburrow = burtype,
-                               DEB = DEB, maxdepth = maxdepth, mindepth = mindepth,
+                               DEB = DEB, maxdepth = burdepth, mindepth = mindepth,
                                nyears = micro$nyears,
                                minshade = minshade,
                                minshades = rep(minshade, length(micro$MAXSHADES)),

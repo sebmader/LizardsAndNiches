@@ -51,6 +51,7 @@ m_plot_ecto <- function(ecto, sim_name = ecto$LID, save_plot = F) {
 
   # make the rcp to a decimal (correct value of radiative forcing)
   sim_title <- paste0(sim_name, ", ", ecto$timeper)
+  # sim_title <- ecto$timeper
   if(ecto$rcp != "none") {
     rcp_name <- ifelse(ecto$rcp == "45", yes = "4.5", no = "8.5")
     if(rcp_name == "8.5" & ecto$rcp != "85") {

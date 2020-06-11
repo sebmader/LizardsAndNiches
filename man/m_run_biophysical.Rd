@@ -6,8 +6,9 @@
 \usage{
 m_run_biophysical(liz_file, species, loc_file, loc_mean = FALSE,
   physio_file, nyears = 1, ndays = 12, burrow = FALSE,
-  burrowtype = "sun", DEB = FALSE, timeper = "present",
-  rcp = "none", shade = c(0, 90), save_plot = FALSE)
+  burrowtype = "sun", burrowdepth = 9, DEB = FALSE,
+  timeper = "present", rcp = "none", shade = c(0, 90),
+  save_plot = FALSE)
 }
 \arguments{
 \item{liz_file}{A file with lizard data (see example_lizard_data.csv) containing at least
@@ -33,6 +34,10 @@ to decrease computational demand (loc_mean = TRUE) or if it should be run per in
 \item{burrowtype}{Character string defining the burrow type: "sun" (always in the sun),
 "shade" (always in the shade), "sunshade" (organism decides if burrow is in the sun
 or in the shade).}
+
+\item{burrowdepth}{The burrows depth in "soil nodes", a numeric ranging from 2 to 10.
+2 equals to 2.5 cm, 3 to 5 cm, 4 to 10 cm, 5 to 15 cm, 6 to 20 cm, 7 to 30 cm, 8 to 50 cm,
+9 to 100 cm and 10 to 200 cm. These are also the steps the lizard takes while burrowing.}
 
 \item{DEB}{Boolean stating wheather the ectotherm should be run with or without
 the Dynamic Energy Budget model.}
