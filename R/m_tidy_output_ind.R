@@ -133,10 +133,12 @@ m_tidy_output_ind <- function(multi_all, monthly_clim = FALSE, avg_loc_out = FAL
         loc_summary <- list()  # empty list to calculate the means
 
         # save shared descriptive parameters
+        loc_summary$Species <- multi_all[[scen]][[loc]][[1]]$Species
         loc_summary$LID <- multi_all[[scen]][[loc]][[1]]$LID
         # loc_summary$coor <- multi_all[[scen]][[loc]][[1]]$coor
         loc_summary$Latitude <- multi_all[[scen]][[loc]][[1]]$Latitude
         loc_summary$Longitude <- multi_all[[scen]][[loc]][[1]]$Longitude
+        loc_summary$Elevation <- multi_all[[scen]][[loc]][[1]]$Elevation
         loc_summary$timeper <- multi_all[[scen]][[loc]][[1]]$timeper
         loc_summary$rcp <- multi_all[[scen]][[loc]][[1]]$rcp
         loc_summary$ndays <- multi_all[[scen]][[loc]][[1]]$ndays

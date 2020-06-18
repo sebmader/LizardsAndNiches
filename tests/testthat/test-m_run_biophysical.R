@@ -45,9 +45,45 @@ context("Testing wrapper for microclimate and biophysical models")
             when no values are provided", {
               species <- "Cordylus_cordylus"
               expect_warning(bio <- m_run_biophysical(liz_file = liz_file,
-                                       physio_file = physio,
-                                       loc_file = loc_file,
-                                       species = species,
-                                       loc_mean = FALSE))
+                                                      physio_file = physio,
+                                                      loc_file = loc_file,
+                                                      species = species,
+                                                      loc_mean = FALSE))
             })
+
+  test_that("elevation is added to final list", {
+    liz_data <- m_import_lizard_data(species = species)
+    # individual analysis
+    bio <- m_run_biophysical(liz_file = liz_file,
+                             physio_file = physio,
+                             loc_file = loc_file,
+                             species = species,
+                             loc_mean = FALSE)
+    expect_true(is.numeric(bio[[1]][[1]]$elev))
+    # loc mean
+    bio <- m_run_biophysical(liz_file = liz_file,
+                             physio_file = physio,
+                             loc_file = loc_file,
+                             species = species,
+                             loc_mean = TRUE)
+    expect_true(is.numeric(bio[[1]]$elev))
+  })
+
+  test_that("species in final list", {
+    liz_data <- m_import_lizard_data(species = species)
+    # individual analysis
+    bio <- m_run_biophysical(liz_file = liz_file,
+                             physio_file = physio,
+                             loc_file = loc_file,
+                             species = species,
+                             loc_mean = FALSE)
+    expect_true(is.character(bio[[1]][[1]]$species))
+    # loc mean
+    bio <- m_run_biophysical(liz_file = liz_file,
+                             physio_file = physio,
+                             loc_file = loc_file,
+                             species = species,
+                             loc_mean = TRUE)
+    expect_true(is.character(bio[[1]]$species))
+  })
 }

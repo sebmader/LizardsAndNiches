@@ -90,13 +90,14 @@ m_run_biophysical <- function(liz_file,
   } else if(burrowtype == "sunshade") {
     burtype <- 1
   } else {
-    stop("burrowtype is not specified correctly. Check function description for
+    stop("'burrowtype' is not specified correctly. Check function description for
          viable parameter values.")
   }
 
   for(loc in locations) {
     param <- ecto_input[which(ecto_input$Species == species),]
     # param <- ecto_input[which(ecto_input$LID == loc),]
+
 
     if(loc_mean) {
       # calculate means for TTL, WW and absorp
@@ -113,6 +114,12 @@ m_run_biophysical <- function(liz_file,
 
       # save burrowtype in list
       ecto_list[[loc]]$burrowtype <- burrowtype
+      # save elevation
+      loc_row <- LizardsAndNiches::m_extract_microclim_input(location = loc,
+                                                  loc_data = loc_data)
+      ecto_list[[loc]]$elev <- loc_row$Elevation
+      # save species
+      ecto_list[[loc]]$species <- species
 
     } else {
       # run biophysical per individual
@@ -148,6 +155,12 @@ m_run_biophysical <- function(liz_file,
 
         # save burrowtype in list
         ecto_list[[loc]][[id]]$burrowtype <- burrowtype
+        # save elevation
+        loc_row <- LizardsAndNiches::m_extract_microclim_input(location = loc,
+                                                               loc_data = loc_data)
+        ecto_list[[loc]][[id]]$elev <- loc_row$Elevation
+        # save species
+        ecto_list[[loc]][[id]]$species <- species
       }
     }
 
