@@ -21,7 +21,7 @@ m_import_lizard_data <- function(path = "example_lizard_data.csv",
   }
   assertthat::is.string(species)
 
-  data <- utils::read.csv(file = path, header = T)
+  data <- utils::read.csv(file = path, header = T, stringsAsFactors = T)
 
   # drop non-adults
   data <- data[which(data$SEX == "M" | data$SEX == "F"),]

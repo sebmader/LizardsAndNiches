@@ -4,11 +4,23 @@
 \alias{m_run_biophysical}
 \title{m_run_biophysical}
 \usage{
-m_run_biophysical(liz_file, species, loc_file, loc_mean = FALSE,
-  physio_file, nyears = 1, ndays = 12, burrow = FALSE,
-  burrowtype = "sun", burrowdepth = 9, DEB = FALSE,
-  timeper = "present", rcp = "none", shade = c(0, 90),
-  save_plot = FALSE)
+m_run_biophysical(
+  liz_file,
+  species,
+  loc_file,
+  loc_mean = FALSE,
+  physio_file,
+  nyears = 1,
+  ndays = 12,
+  burrow = FALSE,
+  burrowtype = "sun",
+  burrowdepth = 9,
+  DEB = FALSE,
+  timeper = "present",
+  rcp = "none",
+  shade = c(0, 90),
+  save_plot = FALSE
+)
 }
 \arguments{
 \item{liz_file}{A file with lizard data (see example_lizard_data.csv) containing at least

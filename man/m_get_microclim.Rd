@@ -4,8 +4,14 @@
 \alias{m_get_microclim}
 \title{m_get_microclim}
 \usage{
-m_get_microclim(loc_row, nyears = 1, ndays = 12, timeper = "present",
-  rcp = "none", shade = c(0, 90))
+m_get_microclim(
+  loc_row,
+  nyears = 1,
+  ndays = 12,
+  timeper = "present",
+  rcp = "none",
+  shade = c(0, 90)
+)
 }
 \arguments{
 \item{loc_row}{A data frame row containing information on location

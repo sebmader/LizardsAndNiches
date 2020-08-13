@@ -4,8 +4,14 @@
 \alias{m_run_ectotherm}
 \title{m_run_ectotherm}
 \usage{
-m_run_ectotherm(param, micro, burrow = FALSE, burtype = 0,
-  burdepth = 9, DEB = FALSE)
+m_run_ectotherm(
+  param,
+  micro,
+  burrow = FALSE,
+  burtype = 0,
+  burdepth = 9,
+  DEB = FALSE
+)
 }
 \arguments{
 \item{param}{List of input parameters for ectotherm function.}

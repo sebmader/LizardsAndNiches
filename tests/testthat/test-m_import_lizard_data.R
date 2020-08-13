@@ -8,7 +8,7 @@ test_that("importing a data set results in data frame", {
 })
 
 test_that("default for species parameter includes all species", {
-  data <- read.csv("example_lizard_data.csv")
+  data <- read.csv("example_lizard_data.csv", header = T, stringsAsFactors = T)
   specieslvl <- levels(data$Species)
   data1 <- m_import_lizard_data(path = "example_lizard_data.csv")
   specieslvl1 <- levels(data1$Species)
