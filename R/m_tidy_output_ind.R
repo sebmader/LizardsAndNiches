@@ -80,11 +80,13 @@ m_tidy_output_ind <- function(multi_all, monthly_clim = FALSE, avg_loc_out = FAL
           multi_all[[scen]][[loc]][[id]]$T_ref <- T_ref
           multi_all[[scen]][[loc]][[id]]$RH_loc <- RH_loc
           multi_all[[scen]][[loc]][[id]]$RH_ref <- RH_ref
+          # rainfall is already per day/month
         } else {
           multi_all[[scen]][[loc]][[id]]$T_loc <- mean(T_loc)
           multi_all[[scen]][[loc]][[id]]$T_ref <- mean(T_ref)
           multi_all[[scen]][[loc]][[id]]$RH_loc <- mean(RH_loc)
           multi_all[[scen]][[loc]][[id]]$RH_ref <- mean(RH_ref)
+          multi_all[[scen]][[loc]][[id]]$rainfall <- mean(multi_all[[scen]][[loc]][[id]]$rainfall)
         }
 
       }
@@ -144,6 +146,11 @@ m_tidy_output_ind <- function(multi_all, monthly_clim = FALSE, avg_loc_out = FAL
         loc_summary$ndays <- multi_all[[scen]][[loc]][[1]]$ndays
         loc_summary$nyears <- multi_all[[scen]][[loc]][[1]]$nyears
 
+        # rainfall is already the same for each individual at the same location, right?
+        rainfall1 <- multi_all[[scen]][[loc]][[1]]$rainfall
+        rainfalllast <- multi_all[[scen]][[loc]][[length(multi_all[[scen]][[loc]])]]$rainfall
+        assertthat::are_equal(rainfall1, rainfalllast)
+
         ids <- names(multi_all[[scen]][[loc]])
         n_ind <- length(ids)
 
@@ -171,6 +178,7 @@ m_tidy_output_ind <- function(multi_all, monthly_clim = FALSE, avg_loc_out = FAL
           change_RH_loc <- matrix(nrow = n_ind, ncol = n_months)
           perc_T_loc <- matrix(nrow = n_ind, ncol = n_months)
           perc_RH_loc <- matrix(nrow = n_ind, ncol = n_months)
+          rainfall <- matrix(nrow = n_ind, ncol = n_months)
 
         } else {
           # otherwise (yearly average climate) just a vector of length
@@ -183,6 +191,7 @@ m_tidy_output_ind <- function(multi_all, monthly_clim = FALSE, avg_loc_out = FAL
           change_RH_loc <- vector(mode = "numeric", length = n_ind)
           perc_T_loc <- vector(mode = "numeric", length = n_ind)
           perc_RH_loc <- vector(mode = "numeric", length = n_ind)
+          # rainfall is already per month
         }
 
         for(i in 1:n_ind) {
@@ -210,7 +219,7 @@ m_tidy_output_ind <- function(multi_all, monthly_clim = FALSE, avg_loc_out = FAL
             change_RH_loc[i,] <- multi_all[[scen]][[loc]][[i]]$change_RH_loc
             perc_T_loc[i,] <- multi_all[[scen]][[loc]][[i]]$perc_T_loc
             perc_RH_loc[i,] <- multi_all[[scen]][[loc]][[i]]$perc_RH_loc
-
+            rainfall[i,] <- multi_all[[scen]][[loc]][[i]]$rainfall
 
           } else {
             T_loc[i] <- multi_all[[scen]][[loc]][[i]]$T_loc
@@ -221,6 +230,7 @@ m_tidy_output_ind <- function(multi_all, monthly_clim = FALSE, avg_loc_out = FAL
             change_RH_loc[i] <- multi_all[[scen]][[loc]][[i]]$change_RH_loc
             perc_T_loc[i] <- multi_all[[scen]][[loc]][[i]]$perc_T_loc
             perc_RH_loc[i] <- multi_all[[scen]][[loc]][[i]]$perc_RH_loc
+            rainfall[i] <- multi_all[[scen]][[loc]][[i]]$rainfall
           }
         }
 
@@ -272,6 +282,9 @@ m_tidy_output_ind <- function(multi_all, monthly_clim = FALSE, avg_loc_out = FAL
           loc_summary$perc_T_loc <- colMeans(perc_T_loc)
           assertthat::are_equal(sd(perc_RH_loc[,1]), 0)
           loc_summary$perc_RH_loc <- colMeans(perc_RH_loc)
+          assertthat::are_equal(sd(rainfall[,1]), 0)
+          loc_summary$rainfall <- colMeans(rainfall)
+
         } else {
           assertthat::are_equal(sd(T_loc), 0)
           loc_summary$T_loc <- mean(T_loc)
@@ -289,6 +302,8 @@ m_tidy_output_ind <- function(multi_all, monthly_clim = FALSE, avg_loc_out = FAL
           loc_summary$perc_T_loc <- mean(perc_T_loc)
           assertthat::are_equal(sd(perc_RH_loc), 0)
           loc_summary$perc_RH_loc <- mean(perc_RH_loc)
+          assertthat::are_equal(sd(rainfall), 0)
+          loc_summary$rainfall <- mean(rainfall)
         }
         # save in full data list
         multi_all[[scen]][[loc]] <- loc_summary

@@ -81,6 +81,7 @@ m_tidy_output_loc <- function(multi_all, monthly_clim = FALSE) {
         multi_all[[scen]][[loc]]$T_ref <- mean(T_ref)
         multi_all[[scen]][[loc]]$RH_loc <- mean(RH_loc)
         multi_all[[scen]][[loc]]$RH_ref <- mean(RH_ref)
+        multi_all[[scen]][[loc]]$rainfall <- mean(multi_all[[scen]][[loc]]$rainfall)
       }
     }
   }
