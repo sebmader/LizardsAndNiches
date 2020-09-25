@@ -24,7 +24,7 @@
 #' the Dynamic Energy Budget model.
 #' @param timeper Character string of the time period for the climate data /
 #' predictions ("present", "2040_2059", "2080_2099", "presentCCKP" to compare
-#' the 1961-1990 of CCKP with the one frome NicheMapR, and "presentNASA" to use more recent
+#' the 1961-1990 of CCKP with the one from NicheMapR, and "presentNASA" to use more recent
 #' (1983-2017) climate data).
 #' @param rcp Character string to specify the emission scenario in case of climate
 #' predictions ("none", "45", "85").

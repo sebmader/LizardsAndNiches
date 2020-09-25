@@ -55,8 +55,9 @@ or in the shade).}
 the Dynamic Energy Budget model.}
 
 \item{timeper}{Character string of the time period for the climate data /
-predictions ("present", "2040_2059", "2080_2099", and "presentCCKP" to compare
-the 1961-1990 of CCKP with the one frome NicheMapR).}
+predictions ("present", "2040_2059", "2080_2099", "presentCCKP" to compare
+the 1961-1990 of CCKP with the one from NicheMapR, and "presentNASA" to use more recent
+(1983-2017) climate data).}
 
 \item{rcp}{Character string to specify the emission scenario in case of climate
 predictions ("none", "45", "85").}
