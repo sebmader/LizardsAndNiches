@@ -56,9 +56,15 @@ m_tidy_output <- function(multi_all, monthly_clim = FALSE, avg_loc_out = FALSE) 
   #   present45, present85)
 
   # change 'timeper' and 'rcp' to nicely displayable strings
-  multi_all_tab$timeper <- gsub(pattern = "present.*",
+  multi_all_tab$timeper <- gsub(pattern = "present",
                                       replacement = "pres",
                                       x = multi_all_tab$timeper)
+  multi_all_tab$timeper <- gsub(pattern = "presentCCKP",
+                                replacement = "presCCKP",
+                                x = multi_all_tab$timeper)
+  multi_all_tab$timeper <- gsub(pattern = "presentNASA",
+                                replacement = "presNASA",
+                                x = multi_all_tab$timeper)
   multi_all_tab$timeper <- gsub(pattern = "2040_2059",
                                       replacement = "40-59",
                                       x = multi_all_tab$timeper)
