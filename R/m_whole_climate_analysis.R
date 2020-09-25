@@ -34,9 +34,11 @@
 #' the Dynamic Energy Budget model. !!!NOT FULLY IMPLEMENTED AND TESTED YET!!!
 #' @param shade Vector of 2 numerics defining minimum and maximum shade. Default is 0 %
 #' minimum shade, 50 % maximum shade.
-#' @param plot Boolean whether to produce plots of tactivity pattern of individual
+#' @param plot Boolean whether to produce plots of activity pattern of individual
 #' lizards or not.
 #' @param save_plot Boolean whether plots shall be saved or not.
+#' @param monthly Boolean whether the final dataframe should be organised per individual
+#' or per month at each location.
 #' @return Dataframe with the collective physiological and activity data of all
 #' individuals or populations and their respective climatic environments.
 #' @export
@@ -57,7 +59,8 @@ m_whole_climate_analysis <- function(times = c("present"),
                                      DEB = FALSE,
                                      shade = c(0, 50),
                                      plot = FALSE,
-                                     save_plot = FALSE) {
+                                     save_plot = FALSE,
+                                     monthly = FALSE) {
 
   scenarios <- character()
   for (time in times) {
@@ -182,30 +185,31 @@ m_whole_climate_analysis <- function(times = c("present"),
   }
 
 
-  # tidyverse the sh*t out of that data !!
-  # individual lizards and yearly averaged climate data
-  tidy_multi <- LizardsAndNiches::m_tidy_output(multi_all, monthly_clim = FALSE,
-                                                avg_loc_out = FALSE)
+  # tidy up the data and output the requested dataframe
+  tidy_multi <- data.frame()
+  if(!monthly) {
+    # individual lizards and yearly averaged climate data
+    tidy_multi <- LizardsAndNiches::m_tidy_output(multi_all, monthly_clim = FALSE,
+                                                  avg_loc_out = FALSE)
+  } else {
+    # population level averaged and monthly climate data
+    # TODO: make activity also monthly
+    tidy_multi <- LizardsAndNiches::m_tidy_output(multi_all, monthly_clim = TRUE,
+                                                        avg_loc_out = TRUE)
+  }
   tidy_multi
-
-  # population level averaged and monthly climate data
-  # TODO: make activity also monthly
-  tidy_multi_month <- LizardsAndNiches::m_tidy_output(multi_all, monthly_clim = TRUE,
-                                                      avg_loc_out = TRUE)
-  tidy_multi_month
 
   # TODO fix activity plotting for individual analysis
   # (maybe take means of activity output of individual analysis and plot with SD)
 
-
   # TODO: wrong plots are produced -> take the ones from final_stats_realfinal.R
-  if(plot) {
-    # plot activity times
-    LizardsAndNiches::m_plot_activity(multi_ecto = tidy_multi, save_plot = save_plot)
-
-    # plot microclimates
-    LizardsAndNiches::m_plot_all_micros(multi_micro = tidy_multi_month, save_plot = save_plot)
-  }
+  # if(plot) {
+  #   # plot activity times
+  #   print(LizardsAndNiches::m_plot_activity(multi_ecto = tidy_multi, save_plot = save_plot))
+  #
+  #   # plot microclimates
+  #   print(LizardsAndNiches::m_plot_all_micros(multi_micro = tidy_multi_month, save_plot = save_plot))
+  # }
 
   # # close all open devices
   # if(save_plot) {

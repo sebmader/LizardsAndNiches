@@ -21,7 +21,8 @@ m_whole_climate_analysis(
   DEB = FALSE,
   shade = c(0, 50),
   plot = FALSE,
-  save_plot = FALSE
+  save_plot = FALSE,
+  monthly = FALSE
 )
 }
 \arguments{
@@ -71,10 +72,13 @@ the Dynamic Energy Budget model. !!!NOT FULLY IMPLEMENTED AND TESTED YET!!!}
 \item{shade}{Vector of 2 numerics defining minimum and maximum shade. Default is 0 %
 minimum shade, 50 % maximum shade.}
 
-\item{plot}{Boolean whether to produce plots of tactivity pattern of individual
+\item{plot}{Boolean whether to produce plots of activity pattern of individual
 lizards or not.}
 
 \item{save_plot}{Boolean whether plots shall be saved or not.}
+
+\item{monthly}{Boolean whether the final dataframe should be organised per individual
+or per month at each location.}
 }
 \value{
 Dataframe with the collective physiological and activity data of all
