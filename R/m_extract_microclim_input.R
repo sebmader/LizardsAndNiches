@@ -40,10 +40,15 @@ m_extract_microclim_input <- function(location = "", loc_data) {
 
   # specific heat capacity needs multiplication by 1000
   # our data is in J(g^-1)(K^-1), NicheMapR wants J(kg^-1)(K^-1)
-  if(is.na(loc_data$Spec.Heat) || is.na(loc_data$SREF)) {
-    warning("Specific heat capacity or soil reflectance are not specified.
-            The default of NicheMapR will be used.")
+  if(is.na(loc_data$Spec.Heat)) {
+    warning(paste0("Specific heat capacity at ", location, " is not specified.
+            The default of NicheMapR will be used."))
   }
+  if(is.na(loc_data$SREF)) {
+    warning(paste0("Soil reflectance at ", location, " is not specified.
+            The default of NicheMapR will be used."))
+  }
+
   loc_data$Spec.Heat <- loc_data$Spec.Heat * 1000
 
   # output
