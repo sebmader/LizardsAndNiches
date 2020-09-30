@@ -69,8 +69,8 @@ or in the shade).}
 \item{DEB}{Boolean stating wheather the ectotherm should be run with or without
 the Dynamic Energy Budget model. !!!NOT FULLY IMPLEMENTED AND TESTED YET!!!}
 
-\item{shade}{Vector of 2 numerics defining minimum and maximum shade. Default is 0 %
-minimum shade, 50 % maximum shade.}
+\item{shade}{Vector of 2 numerics defining minimum and maximum shade. Default is 0 \%
+minimum shade, 50 \% maximum shade.}
 
 \item{plot}{Boolean whether to produce plots of activity pattern of individual
 lizards or not.}
@@ -86,5 +86,5 @@ individuals or populations and their respective climatic environments.
 }
 \description{
 All-encompassing function to run all different scenarios at once
-(present & futures), given the input
+(present & futures), given the input.
 }

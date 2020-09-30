@@ -1,6 +1,6 @@
 #' @title Whole climate analysis
 #' @description All-encompassing function to run all different scenarios at once
-#' (present & futures), given the input
+#' (present & futures), given the input.
 #' @name m_whole_climate_analysis
 #' @param times Vector of strings listing the different time periods to run the model on.
 #' Be aware that you need to have downloaded the according climate data and saved it in
@@ -32,8 +32,8 @@
 #' 9 to 100 cm and 10 to 200 cm. These are also the steps the lizard takes while burrowing.
 #' @param DEB Boolean stating wheather the ectotherm should be run with or without
 #' the Dynamic Energy Budget model. !!!NOT FULLY IMPLEMENTED AND TESTED YET!!!
-#' @param shade Vector of 2 numerics defining minimum and maximum shade. Default is 0 %
-#' minimum shade, 50 % maximum shade.
+#' @param shade Vector of 2 numerics defining minimum and maximum shade. Default is 0 \%
+#' minimum shade, 50 \% maximum shade.
 #' @param plot Boolean whether to produce plots of activity pattern of individual
 #' lizards or not.
 #' @param save_plot Boolean whether plots shall be saved or not.
