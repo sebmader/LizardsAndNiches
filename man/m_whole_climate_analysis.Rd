@@ -38,6 +38,8 @@ the 1961-1990 of CCKP with the one from NicheMapR, and "presentNASA" to use more
 scenarios of greenhouse gas concentrations. "45" and "85" stand for RCP4.5 and RCP8.5,
 respectively.}
 
+\item{data_dir}{The path containing the data files. Will be set as working directory.}
+
 \item{liz_file}{A file with lizard data (see example_lizard_data.csv) containing at least
 one individual with location, morphology and reflectance data.}
 

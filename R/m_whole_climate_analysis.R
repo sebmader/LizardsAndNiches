@@ -12,6 +12,7 @@
 #' @param rcps Vector of strings listing the Representative Concentration Pathway (RCP)
 #' scenarios of greenhouse gas concentrations. "45" and "85" stand for RCP4.5 and RCP8.5,
 #' respectively.
+#' @param data_dir The path containing the data files. Will be set as working directory.
 #' @param liz_file A file with lizard data (see example_lizard_data.csv) containing at least
 #' one individual with location, morphology and reflectance data.
 #' @param species The species to be looked at, which will be selected from the data frame and
@@ -62,6 +63,10 @@ m_whole_climate_analysis <- function(times = c("present"),
                                      save_plot = FALSE,
                                      monthly = FALSE) {
 
+  # set working directory as data_dir
+  message(paste0("Setting working directory as ", data_dir, "\n"))
+  setwd(data_dir)
+
   scenarios <- character()
   for (time in times) {
     for (rcp in rcps) {
@@ -95,6 +100,7 @@ m_whole_climate_analysis <- function(times = c("present"),
       rcp <- rcps[stringr::str_detect(string = scen, pattern = rcps)]
     }
 
+    ectoall <- list()
     # run biophysical model and save
     ectoall <- LizardsAndNiches::m_run_biophysical(
       liz_file = liz_file,
