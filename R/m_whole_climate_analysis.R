@@ -46,7 +46,7 @@
 
 m_whole_climate_analysis <- function(times = c("present"),
                                      rcps = c("none"),
-                                     data_dir = "/.",
+                                     data_dir = getwd(),
                                      liz_file = "Darkness_Morpho_Data_Adjusted.csv",
                                      species,
                                      loc_file = "Coordinates_Clean_notransect_MOK.csv",
@@ -62,6 +62,29 @@ m_whole_climate_analysis <- function(times = c("present"),
                                      plot = FALSE,
                                      save_plot = FALSE,
                                      monthly = FALSE) {
+
+  ## catching errors
+  if(!is.vector(times) &
+     !is.vector(rcps)) {
+    stop("'times' and 'rcps' have to be vectors!\n")
+  }
+  if(!is.character(times[1]) &
+     !is.character(rcps[1])) {
+    stop("'times' and 'rcps' have to contain character strings!\n")
+  }
+  if(!is.character(data_dir) &
+     !is.character(liz_file) &
+     !is.character(loc_file) &
+     !is.character(physio_file)) {
+    stop("The paths have to be character strings!\n")
+  }
+  if(!dir.exists(data_dir) &
+     !file.exists(paste0(data_dir, liz_file)) &
+     !file.exists(paste0(data_dir, loc_file)) &
+     !file.exists(paste0(data_dir, physio_file))) {
+    stop("The paths have to exist!\n")
+  }
+
 
   # set working directory as data_dir
   message(paste0("Setting working directory as ", data_dir, "\n"))

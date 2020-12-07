@@ -26,10 +26,10 @@ context("Testing functionality of running ectotherm model")
   })
 
 
-  test_that("ectotherm functions fails for more than 1 year (bug in NicheMapR)", {
-    micro <- m_get_microclim(loc_row = loc_row, nyears = 2)
-    expect_error(ecto <- m_run_ectotherm(params[which(params$Species == species),], micro = micro))
-  })
+  # test_that("ectotherm functions fails for more than 1 year (bug in NicheMapR)", {
+  #   micro <- m_get_microclim(loc_row = loc_row, nyears = 2)
+  #   expect_error(ecto <- m_run_ectotherm(params[which(params$Species == species),], micro = micro))
+  # }) # they fixed it...!!!
 
   {
     micro <- m_get_microclim(loc_row = loc_row, ndays = 365)

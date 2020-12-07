@@ -13,7 +13,7 @@ m_run_biophysical(
   nyears = 1,
   ndays = 12,
   burrow = FALSE,
-  burrowtype = "sun",
+  burrowtype = "sunshade",
   burrowdepth = 9,
   DEB = FALSE,
   timeper = "present",

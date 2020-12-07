@@ -34,9 +34,9 @@ test_that("Throws error when not supplied with location data", {
     expect_equal(length(micro$metout[,1]), ndays * 24)
   })
 
-  test_that("Combination of 1 year and 48 days (4 per month) causes warning", {
-    ndays <- 48
-    expect_warning(micro <- m_get_microclim(loc_row = loc_row, ndays = ndays))
-  })
+  # test_that("Combination of 1 year and 48 days (4 per month) causes warning", {
+  #   ndays <- 48
+  #   expect_warning(micro <- m_get_microclim(loc_row = loc_row, ndays = ndays))
+  # }) # they fixed it...!!!
 }
 
