@@ -104,7 +104,7 @@ m_run_biophysical <- function(liz_file,
       # calculate means for TTL, WW and absorp
       param$ttl <- mean(data$TTL[which(data$LID == loc)])
       param$ww <- mean(data$W[which(data$LID == loc)])
-      param$absorp <- 1 - mean(data$REFL_W[which(data$LID == loc)])
+      param$absorp <- 1 - mean(data$REFL[which(data$LID == loc)])
 
       ecto_list[[loc]] <- LizardsAndNiches::m_run_ectotherm(param = param,
                                           micro = micro_list[[loc]],
@@ -131,7 +131,7 @@ m_run_biophysical <- function(liz_file,
         param_new <- param
         param_new$ttl <- as.numeric(id_data$TTL)
         param_new$ww <- as.numeric(id_data$W)
-        param_new$absorp <- 1 - id_data$REFL_W
+        param_new$absorp <- 1 - id_data$REFL
 
         ecto_list[[loc]][[id]] <- LizardsAndNiches::m_run_ectotherm(param = param_new,
                                                  micro = micro_list[[loc]],
