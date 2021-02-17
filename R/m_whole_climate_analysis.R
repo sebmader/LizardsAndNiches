@@ -87,7 +87,7 @@ m_whole_climate_analysis <- function(times = c("present"),
 
 
   # set working directory as data_dir
-  message(paste0("Setting working directory as ", data_dir, "\n"))
+  message(paste0("Setting working directory as ", getwd(), data_dir, "\n"))
   setwd(data_dir)
 
   scenarios <- character()
