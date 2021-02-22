@@ -1,14 +1,15 @@
 #' @title m_run_biophysical
 #' @description This function runs a full analysis of the climate niche starting with importing
-#' our standard dataframe, running microclimate model and ectotherm function subsequently.
+#' our standard dataframe, running (location mean) microclimate model and (potentially individual)
+#' ectotherm function subsequently.
 #' @name m_run_biophysical
 #' @param liz_file A file with lizard data (see example_lizard_data.csv) containing at least
 #' one individual with location, morphology and reflectance data.
 #' @param species The species to be looked at, which will be selected from the data frame and
 #' split into sub groups of morphs if present.
 #' @param loc_file File with information on locations (see example_coordinates.csv).
-#' @param loc_mean Boolean whether the biophysical model should be run with location means
-#' to decrease computational demand (loc_mean = TRUE) or if it should be run per individual (FALSE).
+#' @param morpho_mean Boolean whether the biophysical model should be run with location means
+#' to decrease computational demand (morpho_mean = TRUE) or if it should be run per individual (FALSE).
 #' @param physio_file File path with physiological data of the lizards per location (see
 #' 'example_lizard_data.csv' for structure of dataframe).
 #' @param nyears Number of years the model is run.
@@ -38,7 +39,7 @@
 m_run_biophysical <- function(liz_file,
                               species,
                               loc_file,
-                              loc_mean = FALSE,
+                              morpho_mean = FALSE,
                               physio_file,
                               nyears = 1,
                               ndays = 12,
@@ -67,6 +68,10 @@ m_run_biophysical <- function(liz_file,
 
     loc_row <- LizardsAndNiches::m_extract_microclim_input(location = loc,
                                          loc_data = loc_data)
+
+
+    # TODO: make microclimate computation individual (terrain data for individual lizards)
+
     micro_list[[loc]] <- LizardsAndNiches::m_get_microclim(loc_row = loc_row,
                                          nyears = nyears,
                                          ndays = ndays,
@@ -100,7 +105,11 @@ m_run_biophysical <- function(liz_file,
     # param <- ecto_input[which(ecto_input$LID == loc),]
 
 
-    if(loc_mean) {
+    if(morpho_mean) {
+
+      message("\nRunning models on average location terrain data and AVERAGED
+              population morphology.")
+
       # calculate means for TTL, WW and absorp
       param$ttl <- mean(data$TTL[which(data$LID == loc)])
       param$ww <- mean(data$W[which(data$LID == loc)])
@@ -124,6 +133,9 @@ m_run_biophysical <- function(liz_file,
 
     } else {
       # run biophysical per individual
+      message("\nRunning models on average location terrain data and INDIVIDUAL
+              morphology.")
+
       ecto_list[[loc]] <- list()
       ids <- as.character(data$ID[which(data$LID == loc)])
       for(id in ids) {
@@ -157,8 +169,8 @@ m_run_biophysical <- function(liz_file,
         # save burrowtype in list
         ecto_list[[loc]][[id]]$burrowtype <- burrowtype
         # save elevation
-        loc_row <- LizardsAndNiches::m_extract_microclim_input(location = loc,
-                                                               loc_data = loc_data)
+        # loc_row <- LizardsAndNiches::m_extract_microclim_input(location = loc,
+        #                                                        loc_data = loc_data)
         ecto_list[[loc]][[id]]$elev <- loc_row$Elevation
         # save species
         ecto_list[[loc]][[id]]$species <- species
@@ -173,8 +185,8 @@ m_run_biophysical <- function(liz_file,
     }
 
       # actually plot things now
-      # but only if loc_mean: don't need the ecophysio plots of every individual
-    if(loc_mean) {
+      # but only if morpho_mean: don't need the ecophysio plots of every individual
+    if(morpho_mean) {
       LizardsAndNiches::m_plot_ecto(ecto = ecto_list[[loc]],
                                     sim_name = sim_name,
                                     save_plot = save_plot)

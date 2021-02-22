@@ -68,6 +68,7 @@ m_get_microclim <- function(loc_row,
   # CampNormTbl9_1 <- NicheMapR::CampNormTbl9_1
 
   micro <- NicheMapR::micro_global(time = timeper, rcp = rcp, loc = loc,
+                                   loc_name = loc_row$LID,
                                    timeinterval = ndays, nyears = nyears,
                                    soiltype = soiltype, REFL = soilrefl, runshade = 1,
                                    run.gads = 1, Usrhyt = 0.01, elev = elev,

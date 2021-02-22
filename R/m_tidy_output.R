@@ -19,13 +19,13 @@ m_tidy_output <- function(multi_all, monthly_clim = FALSE, avg_loc_out = FALSE) 
   # microclimate values and some extra (input) parameters
 
   # check if multi_all is per individual or the average of each location
-  loc_mean <- TRUE
+  morpho_mean <- TRUE
   if(is.list(multi_all[[1]][[1]][[1]])) {
-    loc_mean <- FALSE
+    morpho_mean <- FALSE
   }
 
   # throw error message if input is per location and it shall be averaged over location
-  if(loc_mean == T & avg_loc_out == T) {
+  if(morpho_mean & avg_loc_out) {
     warning("You cannot average the individual data over location if the input
          data is already averaged over location. The averaged input data will be
          reported.")
@@ -33,7 +33,7 @@ m_tidy_output <- function(multi_all, monthly_clim = FALSE, avg_loc_out = FALSE) 
 
   multi_all_tab <- c()
 
-  if(loc_mean) {
+  if(morpho_mean) {
     multi_all_tab <- LizardsAndNiches:::m_tidy_output_loc(multi_all, monthly_clim)
   } else {
     multi_all_tab <- LizardsAndNiches:::m_tidy_output_ind(multi_all, monthly_clim, avg_loc_out)

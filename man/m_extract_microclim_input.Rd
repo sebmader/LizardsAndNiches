@@ -4,13 +4,17 @@
 \alias{m_extract_microclim_input}
 \title{Extract microclimate input}
 \usage{
-m_extract_microclim_input(location = "", loc_data)
+m_extract_microclim_input(location = "", loc_data, individual = NULL)
 }
 \arguments{
 \item{location}{An R factor containing the location ID of interest}
 
 \item{loc_data}{A data frame with location IDs, coordinates, elevation, slope,
 aspect of slope and soil data (type, reflectance, if soilgrids should be computed)}
+
+\item{individual}{A character string of the individuals ID that is of interest.
+If == NULL, it is assumed that no individual data is present, so there is only one set of
+input parameters per location.}
 }
 \value{
 Data frame of input data for given location for the micro_global function

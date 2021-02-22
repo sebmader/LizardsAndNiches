@@ -5,31 +5,37 @@
 #' @param location An R factor containing the location ID of interest
 #' @param loc_data A data frame with location IDs, coordinates, elevation, slope,
 #' aspect of slope and soil data (type, reflectance, if soilgrids should be computed)
+#' @param individual A character string of the individuals ID that is of interest.
+#' If == NULL, it is assumed that no individual data is present, so there is only one set of
+#' input parameters per location.
 #' @return Data frame of input data for given location for the micro_global function
 #' @export
 
-m_extract_microclim_input <- function(location = "", loc_data) {
-  assertthat::assert_that(is.data.frame(loc_data))
+m_extract_microclim_input <- function(location = "", loc_data, individual = NULL) {
 
-  # load data set
-  # data <- m_import_lizard_data(path = file, species = species)
-  # extract location IDs
-  # locations <- levels(data$LID)
-  # load location data
-  # loc_data_all <- read.csv(file = "Coordinates_Clean.csv")
-  # loc_data <- data.frame()
-  # for(loc in location) {
-  #   loc_data <- rbind(loc_data,
-  #                     loc_data_all[which(loc_data_all$LID == loc),])
-  # }
+  assertthat::assert_that(is.data.frame(loc_data))
 
   location <- as.character(location)
   # extract data for location of interest
-  if(!location == "") {
+  if(location != "") {
     loc_data <- loc_data[which(loc_data$LID == location),]
+    if(length(loc_data$LID) == 0) {
+      stop(paste0("Location ", location, " can't be found in location dataset."))
+    }
   }
+  if(!is.null(individual)) {
+    if(is.null(loc_data$ID)) {
+      stop(paste0("There is no individual data supplied in ", loc_file, "."))
+    }
+    loc_data <- loc_data[which(loc_data$ID == individual),]
+    if(length(loc_data$ID) == 0) {
+      stop(paste0("Individual ", individual, " can't be found in location dataset."))
+    }
+  }
+
   # delete levels of factors not present in the selected data frame
   loc_data <- droplevels(loc_data)
+
   # change substrate code into the one used by NicheMapR (copied from Fedes script)
   loc_data$Nature <- gsub("R", "0", loc_data$Nature) #Rock is coded as 0 in NicheMapR
   loc_data$Nature <- gsub("S", "6", loc_data$Nature) #The only soil instance is Windheuwel
@@ -40,13 +46,18 @@ m_extract_microclim_input <- function(location = "", loc_data) {
 
   # specific heat capacity needs multiplication by 1000
   # our data is in J(g^-1)(K^-1), NicheMapR wants J(kg^-1)(K^-1)
-  if(is.na(loc_data$Spec.Heat)) {
-    warning(paste0("Specific heat capacity at ", location, " is not specified.
-            The default of NicheMapR will be used."))
+
+
+
+  if(sum(is.na(loc_data$Spec.Heat)) > 0) {
+    warning(paste0("Specific heat capacity at ", location, " constains ",
+                   sum(is.na(loc_data$Spec.Heat)) > 0, " NAs.
+            The default of NicheMapR will be used for them."))
   }
-  if(is.na(loc_data$SREF)) {
-    warning(paste0("Soil reflectance at ", location, " is not specified.
-            The default of NicheMapR will be used."))
+  if(sum(is.na(loc_data$SREF)) > 0) {
+    warning(paste0("Soil reflectance at ", location, " contains ",
+                   sum(is.na(loc_data$SREF)), " NAs.
+            The default of NicheMapR will be used for them."))
   }
 
   loc_data$Spec.Heat <- loc_data$Spec.Heat * 1000

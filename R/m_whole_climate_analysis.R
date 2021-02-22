@@ -18,8 +18,12 @@
 #' @param species The species to be looked at, which will be selected from the data frame and
 #' split into sub groups of morphs if present.
 #' @param loc_file File with information on locations (see example_coordinates.csv).
-#' @param loc_mean Boolean whether the biophysical model should be run with location means
-#' to decrease computational demand (loc_mean = TRUE) or if it should be run per individual (FALSE).
+#' @param loc_mean Boolean whether the microclimate model should be run with location means
+#' (terrain data) to decrease computational demand (loc_mean = TRUE) or if it should be run
+#' per individual (FALSE). ONLY works when individual location an terrain data is supplied
+#' in loc_file!!
+#' @param morpho_mean Boolean whether the biophysical model should be run on the populations
+#' mean morphology (TRUE) rather than individual data (FALSE) to save time.
 #' @param physio_file File path with physiological data of the lizards per location (see
 #' 'example_lizard_data.csv' for structure of dataframe).
 #' @param nyears Number of years the model is run.
@@ -50,7 +54,8 @@ m_whole_climate_analysis <- function(times = c("present"),
                                      liz_file = "Darkness_Morpho_Data_Adjusted.csv",
                                      species,
                                      loc_file = "Coordinates_Clean_notransect_MOK.csv",
-                                     loc_mean = FALSE,
+                                     loc_mean = TRUE,
+                                     morpho_mean = FALSE,
                                      physio_file = "Physio_info.csv",
                                      nyears = 1,
                                      ndays = 12,
@@ -82,13 +87,13 @@ m_whole_climate_analysis <- function(times = c("present"),
      !file.exists(paste0(data_dir, liz_file)) &
      !file.exists(paste0(data_dir, loc_file)) &
      !file.exists(paste0(data_dir, physio_file))) {
-    stop("The paths have to exist!\n")
+    stop("The files could not be found at the respecitve paths!\n")
   }
 
 
   # set working directory as data_dir
-  message(paste0("Setting working directory as ", getwd(), data_dir, "\n"))
   setwd(data_dir)
+  message(paste0("Set working directory as ", getwd(), "\n"))
 
   scenarios <- character()
   for (time in times) {
@@ -124,30 +129,51 @@ m_whole_climate_analysis <- function(times = c("present"),
     }
 
     ectoall <- list()
-    # run biophysical model and save
-    ectoall <- LizardsAndNiches::m_run_biophysical(
-      liz_file = liz_file,
-      species = species,
-      loc_file = loc_file,
-      loc_mean = loc_mean,
-      physio_file = physio_file,
-      burrow = burrow,
-      burrowtype = burrowtype,
-      burrowdepth = burrowdepth,
-      DEB = DEB,
-      ndays = ndays,
-      nyears = nyears,
-      timeper = time,
-      rcp = rcp,
-      save_plot = save_plot,
-      shade = shade
-    )
+
+    if((!loc_mean) & (!morpho_mean)) {
+      # run INDIVIDUAL microclimate and INDIVIDUAL biophysical model
+      ectoall <- LizardsAndNiches::m_run_ind_biophysical(
+        liz_file = liz_file,
+        species = species,
+        loc_file = loc_file,
+        physio_file = physio_file,
+        burrow = burrow,
+        burrowtype = burrowtype,
+        burrowdepth = burrowdepth,
+        DEB = DEB,
+        ndays = ndays,
+        nyears = nyears,
+        timeper = time,
+        rcp = rcp,
+        save_plot = save_plot,
+        shade = shade
+      )
+    } else {
+      # run MEAN microclimate and CHOSEN biophysical model
+      ectoall <- LizardsAndNiches::m_run_biophysical(
+        liz_file = liz_file,
+        species = species,
+        loc_file = loc_file,
+        morpho_mean = morpho_mean,
+        physio_file = physio_file,
+        burrow = burrow,
+        burrowtype = burrowtype,
+        burrowdepth = burrowdepth,
+        DEB = DEB,
+        ndays = ndays,
+        nyears = nyears,
+        timeper = time,
+        rcp = rcp,
+        save_plot = save_plot,
+        shade = shade
+      )
+    }
 
     locations <- names(ectoall)
 
     for (loc in locations) {
 
-      if(loc_mean) { # if mean lizard simulations per location:
+      if(morpho_mean) { # if mean lizard simulations per location:
 
         # location data
         multi_all[[scen]][[loc]]$Species <- ectoall[[loc]]$species

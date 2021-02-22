@@ -7,11 +7,12 @@
 m_whole_climate_analysis(
   times = c("present"),
   rcps = c("none"),
-  data_dir = "/.",
+  data_dir = getwd(),
   liz_file = "Darkness_Morpho_Data_Adjusted.csv",
   species,
   loc_file = "Coordinates_Clean_notransect_MOK.csv",
-  loc_mean = FALSE,
+  loc_mean = TRUE,
+  morpho_mean = FALSE,
   physio_file = "Physio_info.csv",
   nyears = 1,
   ndays = 12,
@@ -48,8 +49,12 @@ split into sub groups of morphs if present.}
 
 \item{loc_file}{File with information on locations (see example_coordinates.csv).}
 
-\item{loc_mean}{Boolean whether the biophysical model should be run with location means
-to decrease computational demand (loc_mean = TRUE) or if it should be run per individual (FALSE).}
+\item{loc_mean}{Boolean whether the microclimate model should be run with location means
+to decrease computational demand (loc_mean = TRUE) or if it should be run per individual
+(FALSE). ONLY works when individual location an terrain data is supplied in loc_file!!}
+
+\item{morpho_mean}{Boolean whether the biophysical model should be run on the populations
+mean morphology (TRUE) rather than individual data (FALSE) to save time.}
 
 \item{physio_file}{File path with physiological data of the lizards per location (see
 'example_lizard_data.csv' for structure of dataframe).}
